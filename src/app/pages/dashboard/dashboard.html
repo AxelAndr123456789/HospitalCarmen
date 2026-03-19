@@ -1,0 +1,1488 @@
+<div class="dashboard-container">
+  <!-- Sidebar - Siempre visible -->
+  <aside class="sidebar">
+    <div class="logo-container">
+      <div class="logo-box">
+        <img src="logo.png" alt="Logo" style="width: 100%; height: 100%; object-fit: contain;">
+      </div>
+      <div class="logo-text">
+        <h1 [innerHTML]="t('sidebarTitle')"></h1>
+        <span>{{ t('sidebarSubtitle') }}</span>
+      </div>
+    </div>
+
+    <nav class="nav-menu">
+      <a
+        href="javascript:void(0)"
+        class="nav-item"
+        [class.active]="currentView === 'list'"
+        (click)="showList()"
+      >
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+        {{ t('navInicio') }}
+      </a>
+      <a
+        href="javascript:void(0)"
+        class="nav-item"
+        [class.active]="currentView === 'historias'"
+        (click)="showHistorias()"
+      >
+        <svg
+          width="22"
+          height="22"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        {{ t('navHistorias') }}
+      </a>
+      <a
+        href="javascript:void(0)"
+        class="nav-item item-multiline"
+        [class.active]="currentView === 'pendientes'"
+        (click)="showPendientes()"
+      >
+        <svg
+          width="22"
+          height="22"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+          <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+          <circle cx="12" cy="14" r="3"></circle>
+          <path d="M12 12v2l1 1"></path>
+        </svg>
+        <div class="nav-text-stack">
+          <span>{{ t('pendingDocs') }}</span>
+          <span>Pendientes</span>
+        </div>
+      </a>
+      <a
+        href="javascript:void(0)"
+        class="nav-item item-multiline"
+        [class.active]="currentView === 'firmados'"
+        (click)="showFirmados()"
+      >
+        <svg
+          width="22"
+          height="22"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <polyline points="9 15 11 17 15 13"></polyline>
+        </svg>
+        <div class="nav-text-stack">
+          <span>{{ t('pendingDocs') }}</span>
+          <span>{{ t('signedDocs') }}</span>
+        </div>
+      </a>
+
+      <a
+        href="javascript:void(0)"
+        class="nav-item"
+        [class.active]="currentView === 'configuracion'"
+        (click)="showConfig()"
+      >
+        <svg
+          width="22"
+          height="22"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <circle cx="12" cy="12" r="3"></circle>
+          <path
+            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"
+          ></path>
+        </svg>
+        {{ t('navConfig') }}
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="main-content">
+    <!-- Header - Siempre visible -->
+    <header class="top-header">
+      <div class="user-profile">
+        <div class="user-info">
+          <span class="user-name">Dr. Juan Pérez</span>
+          <span class="user-role">Médico Especialista</span>
+        </div>
+        <img
+          src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=100&h=100&fit=crop"
+          alt="User Avatar"
+          class="user-avatar"
+        />
+      </div>
+
+      <div class="header-divider"></div>
+
+      <button class="logout-btn" (click)="logout()">
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+        >
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+          <polyline points="16 17 21 12 16 7"></polyline>
+          <line x1="21" y1="12" x2="9" y2="12"></line>
+        </svg>
+        {{ t('logout') }}
+      </button>
+    </header>
+
+    <!-- VIEW 1: Dashboard Inicial (Inicio) -->
+    <div class="content-body animate-fade" *ngIf="currentView === 'list'">
+      <div class="welcome-section">
+        <h2>{{ t('welcome') }}</h2>
+        <p>{{ activitySummary }}</p>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-info">
+            <span class="stat-label">{{ t('statsHistorias') }}</span>
+            <div class="stat-value-box">
+              <span class="stat-number">{{ todayHistoriesCount }}</span>
+              <span class="stat-trend up">
+                <svg
+                  width="12"
+                  height="12"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="3"
+                >
+                  <polyline points="18 15 12 9 6 15"></polyline>
+                </svg>
+                {{ historicalGrowth }}
+              </span>
+            </div>
+          </div>
+          <div class="stat-icon-wrapper purple">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <path d="M16 13H8M16 17H8M10 9H9H8"></path>
+            </svg>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-info">
+            <span class="stat-label">{{ t('statsPendientes') }}</span>
+            <div class="stat-value-box">
+              <span class="stat-number color-teal">{{ pendingDocsCount | number : '2.0-0' }}</span>
+              <span class="stat-unit">Docs</span>
+            </div>
+          </div>
+          <div class="stat-icon-wrapper teal">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+            </svg>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-info">
+            <span class="stat-label">{{ t('statsFirmados') }}</span>
+            <div class="stat-value-box">
+              <span class="stat-number">{{ signedDocsCount }}</span>
+              <span class="stat-unit">Este mes</span>
+            </div>
+          </div>
+          <div class="stat-icon-wrapper blue">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <div class="table-header">
+          <h3>Documentos por Firmar</h3>
+          <a href="javascript:void(0)" class="view-all" (click)="currentView = 'pendientes'"
+            >Ver todos</a
+          >
+        </div>
+        <div class="custom-table">
+          <div class="table-head">
+            <div class="col-name">NOMBRES Y APELLIDOS</div>
+            <div class="col-priority">PRIORIDAD</div>
+            <div class="col-actions">ACCIONES</div>
+          </div>
+          <div class="table-body">
+            <div class="table-row" *ngFor="let doc of paginatedInicio">
+              <div class="col-name">
+                <div class="doc-icon">
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                  </svg>
+                </div>
+                <div class="patient-info">
+                  <span class="patient-name">{{ doc.nombre }}</span>
+                  <span class="doc-meta">DNI: {{ doc.dni }}</span>
+                </div>
+              </div>
+              <div class="col-priority">
+                <span class="badge" [class.red]="doc.prioridad === 'Urgente'">{{
+                  doc.prioridad
+                }}</span>
+              </div>
+              <div class="col-actions">
+                <button class="firm-btn" (click)="showPreview(doc, true)">Firmar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Pagination para Inicio -->
+        <div class="pagination-bar" *ngIf="totalPagesInicio > 1" style="margin-top: 20px;">
+          <span class="pagination-info">{{ inicioRangeText }}</span>
+          <div class="pagination-controls">
+            <button class="page-prev" (click)="prevPageInicio()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+            </button>
+            <button
+              class="page-num"
+              *ngFor="let page of getPagesArray(totalPagesInicio)"
+              [class.active]="currentPageInicio === page"
+              (click)="setPageInicio(page)"
+            >
+              {{ page }}
+            </button>
+            <button class="page-next" (click)="nextPageInicio()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW 4: Documentos Pendientes de Firma -->
+    <div class="content-body animate-fade" *ngIf="currentView === 'pendientes'">
+      <div class="view-header-row mb-xl">
+        <div class="view-title-group">
+          <h2>Documentos Pendientes de Firma</h2>
+          <p>Revise y firme los documentos médicos que requieren su validación</p>
+        </div>
+      </div>
+
+      <div class="search-filters-bar flex-between">
+        <div class="search-input-wrapper max-w-lg">
+          <svg
+            class="search-icon"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input
+            type="text"
+            placeholder="Buscar por paciente, DNI o tipo de documento..."
+            [(ngModel)]="searchText"
+          />
+        </div>
+        <div class="filter-group-inline">
+          <span class="filter-label">FILTRAR POR:</span>
+          <button class="filter-pill">
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+            </svg>
+            Fecha
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+          <button class="filter-pill">
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+            </svg>
+            Tipo
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+          <button class="filter-pill">
+            <span class="urgency-icon">!</span>
+            Urgencia
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="table-container full-width-table">
+        <div class="custom-table">
+          <div class="table-head grid-pendientes">
+            <div class="col-patient-alt">PACIENTE</div>
+            <div class="col-req-date">FECHA DE EMISIÓN</div>
+            <div class="col-status-priority">PRIORIDAD</div>
+            <div class="col-actions-alt">ACCIONES</div>
+          </div>
+          <div class="table-body">
+            <div class="table-row grid-pendientes" *ngFor="let doc of filteredPendientes">
+              <div class="col-patient-alt">
+                <span class="patient-name-bold">{{ doc.nombre }}</span>
+                <span class="patient-dni-sub">DNI: {{ doc.dni }}</span>
+              </div>
+              <div class="col-req-date">
+                <span class="req-date-text">{{ doc.emision }}</span>
+              </div>
+              <div class="col-status-priority">
+                <span
+                  class="badge-pill"
+                  [class.red-light]="doc.prioridad === 'Urgente'"
+                  [class.blue-light]="doc.prioridad !== 'Urgente'"
+                  >{{ doc.prioridad }}</span
+                >
+              </div>
+              <div class="col-actions-alt">
+                <button class="action-btn cyan-btn" (click)="showPreview(doc, true)">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                  >
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                  </svg>
+                  Revisar y Firmar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Pagination -->
+        <div class="pagination-bar">
+          <span class="pagination-info">{{ pendientesRangeText }}</span>
+          <div class="pagination-controls">
+            <button class="page-prev" (click)="prevPagePendientes()">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+            </button>
+            <button
+              class="page-num"
+              *ngFor="let page of getPagesArray(totalPagesPendientes)"
+              [class.active]="currentPagePendientes === page"
+              (click)="setPagePendientes(page)"
+            >
+              {{ page }}
+            </button>
+            <button class="page-next" (click)="nextPagePendientes()">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- VIEW 3: Gestión de Historias Clínicas -->
+    <div class="content-body animate-fade" *ngIf="currentView === 'historias'">
+      <div class="view-header-row">
+        <div class="view-title-group">
+          <h2>Gestión de Historias Clínicas</h2>
+          <p>Acceda y administre los expedientes médicos digitales.</p>
+        </div>
+        <button class="new-story-btn" (click)="createStory()">
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+          >
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          Nueva Historia
+        </button>
+      </div>
+
+      <!-- Search and Filter Bar -->
+      <div class="search-filters-bar">
+        <div class="search-input-wrapper">
+          <svg
+            class="search-icon"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input
+            type="text"
+            placeholder="Buscar por DNI, Nombre o Apellido..."
+            [(ngModel)]="searchText"
+          />
+        </div>
+        <div class="filter-group">
+          <button class="filter-btn">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+            Fecha
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+          <button class="filter-btn">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+            </svg>
+            Filtros
+          </button>
+        </div>
+      </div>
+
+      <div class="table-container historias-table-container">
+        <div class="custom-table">
+          <div class="table-head">
+            <div class="col-patient">PACIENTE</div>
+            <div class="col-dni">DNI</div>
+            <div class="col-visit">ÚLTIMA VISITA</div>
+            <div class="col-actions">ACCIONES</div>
+          </div>
+          <div class="table-body">
+            <div class="table-row" *ngFor="let p of filteredPacientes">
+              <div class="col-patient">
+                <div class="{{ p.avatarColor }} avatar-circle">{{ p.initials }}</div>
+                <div class="patient-text">
+                  <span class="main-name">{{ p.nombre }}</span>
+                  <span class="sub-info">{{ p.subInfo }}</span>
+                </div>
+              </div>
+              <div class="col-dni">{{ p.dni }}</div>
+              <div class="col-visit">
+                <span class="visit-date">{{ getFormattedVisitDate(p.visitDate) }}</span>
+                <span class="visit-dept text-teal">{{ p.visitDept }}</span>
+              </div>
+              <div class="col-actions">
+                <button class="open-story-btn" (click)="showPreview(p)">
+                  ABRIR HISTORIA
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Pagination -->
+        <div class="pagination-bar">
+          <span class="pagination-info">{{ historiasRangeText }}</span>
+          <div class="pagination-controls">
+            <button class="page-prev" (click)="prevPageHistorias()">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+            </button>
+            <button
+              class="page-num"
+              *ngFor="let page of getPagesArray(totalPagesHistorias)"
+              [class.active]="currentPageHistorias === page"
+              (click)="setPageHistorias(page)"
+            >
+              {{ page }}
+            </button>
+            <button class="page-next" (click)="nextPageHistorias()">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW 6: Crear Nueva Historia Clínica -->
+    <div class="content-body animate-fade" *ngIf="currentView === 'create-story'">
+      <header class="preview-header">
+        <div class="view-title-group">
+          <h2>{{ isNewConsultation ? 'Nueva Consulta' : 'Crear Nueva Historia Clínica' }}</h2>
+          <p>{{ isNewConsultation ? 'Registre los detalles de la nueva atención médica.' : 'Complete los campos para registrar el nuevo ingreso médico.' }}</p>
+        </div>
+      </header>
+
+      <div class="preview-layout">
+        <div class="document-viewer">
+          <div class="document-paper create-mode">
+            <header class="doc-hospital-header">
+              <div class="hospital-info">
+                <h3>HOSPITAL EL CARMEN</h3>
+                <p>RUC: 20146536787</p>
+                <p class="motto">"Año de la esperanza y el fortalecimiento de la democracia"</p>
+              </div>
+              <div class="doc-meta-info">
+                <span class="doc-number">{{ isNewConsultation ? 'NUEVA CONSULTA' : 'NUEVA HISTORIA' }}</span>
+                <span class="doc-date">Fecha: {{ getTodayDate() }}</span>
+              </div>
+            </header>
+
+            <div class="doc-content">
+              <h2 class="doc-title">{{ isNewConsultation ? 'REGISTRO DE NUEVA CONSULTA' : 'REGISTRO DE HISTORIA CLÍNICA' }}</h2>
+
+              <div class="form-section-grid">
+                <div class="form-group-doc">
+                   <label>Nombres</label>
+                   <input
+                     type="text"
+                     [(ngModel)]="newPacienteData.nombres"
+                     placeholder="Ingrese nombres"
+                     [readonly]="isNewConsultation"
+                     [style.background-color]="isNewConsultation ? '#f8fafc' : 'white'"
+                     [class.error-input]="showFormError && !newPacienteData.nombres.trim()"
+                   />
+                   <span class="field-error" *ngIf="showFormError && !newPacienteData.nombres.trim()"
+                     >Este campo es obligatorio</span
+                   >
+                 </div>
+                 <div class="form-group-doc">
+                   <label>Apellidos</label>
+                   <input
+                     type="text"
+                     [(ngModel)]="newPacienteData.apellidos"
+                     placeholder="Ingrese apellidos"
+                     [readonly]="isNewConsultation"
+                     [style.background-color]="isNewConsultation ? '#f8fafc' : 'white'"
+                     [class.error-input]="showFormError && !newPacienteData.apellidos.trim()"
+                   />
+                   <span class="field-error" *ngIf="showFormError && !newPacienteData.apellidos.trim()"
+                     >Este campo es obligatorio</span
+                   >
+                 </div>
+                 <div class="form-group-doc">
+                   <label>DNI</label>
+                   <input
+                     type="text"
+                     [(ngModel)]="newPacienteData.dni"
+                     placeholder="Ingrese 8 dígitos"
+                     maxlength="8"
+                     (keypress)="validateNumber($event)"
+                     [readonly]="isNewConsultation"
+                     [style.background-color]="isNewConsultation ? '#f8fafc' : 'white'"
+                     [class.error-input]="showFormError && !newPacienteData.dni.trim()"
+                   />
+                   <span class="field-error" *ngIf="showFormError && !newPacienteData.dni.trim()"
+                     >Este campo es obligatorio</span
+                   >
+                   <span
+                     class="field-error"
+                     *ngIf="newPacienteData.dni.trim() && newPacienteData.dni.length !== 8"
+                     >Debe tener exactamente 8 dígitos</span
+                   >
+                 </div>
+                 <div class="form-group-doc">
+                   <label>Edad</label>
+                   <input
+                     type="text"
+                     [(ngModel)]="newPacienteData.edad"
+                     placeholder="Ingrese edad"
+                     maxlength="2"
+                     (keypress)="validateNumber($event)"
+                     [readonly]="isNewConsultation"
+                     [style.background-color]="isNewConsultation ? '#f8fafc' : 'white'"
+                     [class.error-input]="showFormError && !newPacienteData.edad.trim()"
+                   />
+                   <span class="field-error" *ngIf="showFormError && !newPacienteData.edad.trim()"
+                     >Este campo es obligatorio</span
+                   >
+                 </div>
+                <div class="form-group-doc">
+                   <label>Sexo</label>
+                   <div class="radio-group-doc">
+                     <label class="radio-option">
+                       <input type="radio" [(ngModel)]="newPacienteData.sexo" value="Masculino" name="sexo" [disabled]="isNewConsultation" />
+                       <span>Masculino</span>
+                     </label>
+                     <label class="radio-option">
+                       <input type="radio" [(ngModel)]="newPacienteData.sexo" value="Femenino" name="sexo" [disabled]="isNewConsultation" />
+                       <span>Femenino</span>
+                     </label>
+                   </div>
+                 </div>
+                <div class="form-group-doc">
+                  <label>Servicio</label>
+                  <input
+                    type="text"
+                    value="Cardiología"
+                    readonly
+                    style="background-color: #f8fafc; cursor: not-allowed"
+                  />
+                </div>
+                <div class="form-group-doc">
+                  <label>Prioridad</label>
+                  <div class="radio-group-doc">
+                    <label class="radio-option">
+                      <input
+                        type="radio"
+                        [(ngModel)]="newPacienteData.prioridad"
+                        value="Urgente"
+                        name="prioridad"
+                      />
+                      <span>Urgente</span>
+                    </label>
+                    <label class="radio-option">
+                      <input
+                        type="radio"
+                        [(ngModel)]="newPacienteData.prioridad"
+                        value="No urgente"
+                        name="prioridad"
+                      />
+                      <span>No urgente</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <section class="doc-section-form">
+                <h4>DIAGNÓSTICO DE EGRESO</h4>
+                <textarea
+                  rows="3"
+                  [(ngModel)]="newPacienteData.diagnostico"
+                  placeholder="Ingrese diagnóstico de egreso..."
+                  [class.error-input]="showFormError && !newPacienteData.diagnostico.trim()"
+                ></textarea>
+                <span
+                  class="field-error"
+                  *ngIf="showFormError && !newPacienteData.diagnostico.trim()"
+                  >Este campo es obligatorio</span
+                >
+              </section>
+
+              <section class="doc-section-form">
+                <h4>RESUMEN DE HISTORIA CLÍNICA</h4>
+                <textarea
+                  rows="4"
+                  [(ngModel)]="newPacienteData.resumen"
+                  placeholder="Detalle el resumen de historia clínica..."
+                  [class.error-input]="showFormError && !newPacienteData.resumen.trim()"
+                ></textarea>
+                <span class="field-error" *ngIf="showFormError && !newPacienteData.resumen.trim()"
+                  >Este campo es obligatorio</span
+                >
+              </section>
+
+              <section class="doc-section-form">
+                <h4>TRATAMIENTO Y RECOMENDACIONES</h4>
+                <textarea
+                  rows="3"
+                  [(ngModel)]="newPacienteData.tratamiento"
+                  placeholder="Prescripciones, cuidados y pautas a seguir..."
+                  [class.error-input]="showFormError && !newPacienteData.tratamiento.trim()"
+                ></textarea>
+                <span
+                  class="field-error"
+                  *ngIf="showFormError && !newPacienteData.tratamiento.trim()"
+                  >Este campo es obligatorio</span
+                >
+              </section>
+            </div>
+          </div>
+        </div>
+
+        <aside class="actions-panel">
+          <div class="details-card">
+            <h3>Acciones de Guardado</h3>
+            <p class="helper-text-doc">
+              Complete todos los campos obligatorios para poder generar el documento médico.
+            </p>
+            <div class="error-message" *ngIf="showFormError && !isFormValid()">
+              Todos los campos deben estar rellenados para poder guardar el registro.
+            </div>
+          </div>
+
+          <button class="sign-digital-btn" (click)="saveAndPreview()">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+              <polyline points="17 21 17 13 7 13 7 21"></polyline>
+              <polyline points="7 3 7 8 15 8"></polyline>
+            </svg>
+            Guardar Registro
+          </button>
+
+           <button class="action-btn-outline" (click)="cancelStory()">
+             <svg
+               width="20"
+               height="20"
+               viewBox="0 0 24 24"
+               fill="none"
+               stroke="currentColor"
+               stroke-width="2"
+               *ngIf="!isNewConsultation"
+             >
+               <line x1="18" y1="6" x2="6" y2="18"></line>
+               <line x1="6" y1="6" x2="18" y2="18"></line>
+             </svg>
+             <svg
+               width="20"
+               height="20"
+               viewBox="0 0 24 24"
+               fill="none"
+               stroke="currentColor"
+               stroke-width="2"
+               *ngIf="isNewConsultation"
+             >
+               <line x1="19" y1="12" x2="5" y2="12"></line>
+               <polyline points="12 19 5 12 12 5"></polyline>
+             </svg>
+             {{ isNewConsultation ? 'Regresar' : 'Cancelar' }}
+           </button>
+
+          <!-- Vista Previa eliminada por solicitud -->
+
+          <div class="legal-notice mini">
+            <div class="notice-icon">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="16" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+              </svg>
+            </div>
+            <div class="notice-text">
+              <p style="margin: 0; font-size: 0.7rem">
+                El registro será guardado encriptado bajo normativas de protección de datos.
+              </p>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <!-- VIEW 2: Vista Previa del Documento -->
+    <div class="content-body animate-fade" *ngIf="currentView === 'preview'">
+      <header class="preview-header">
+        <h2>Resumen de Registro Médico</h2>
+        <div class="header-actions">
+          <button class="fullscreen-btn" (click)="toggleFullScreen()">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+            >
+              <path
+                d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"
+              ></path>
+            </svg>
+            Pantalla Completa
+          </button>
+        </div>
+      </header>
+ 
+       <div class="document-tabs">
+         <div 
+           *ngFor="let v of selectedPatient.versions" 
+           class="tab-item" 
+           [class.active]="activeTab === v"
+           (click)="setTab(v)">
+           {{ v }}
+         </div>
+       </div>
+ 
+       <div class="preview-layout" [class.fullscreen-active]="isFs">
+        <button class="back-fullscreen-btn" *ngIf="isFs" (click)="toggleFullScreen()">
+          <svg
+            width="22"
+            height="22"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+          >
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+          Regresar
+        </button>
+        <div class="document-viewer">
+          <div class="document-paper">
+            <header class="doc-hospital-header">
+              <div class="hospital-info">
+                <h3>HOSPITAL EL CARMEN</h3>
+                <p>RUC: 20146536787</p>
+                <p class="motto">"Año de la esperanza y el fortalecimiento de la democracia"</p>
+              </div>
+              <div class="doc-meta-info">
+                <span class="doc-number">DOC #2023-0892</span>
+                <span class="doc-date">Fecha: {{ selectedPatient.fecha }}</span>
+              </div>
+            </header>
+
+            <div class="doc-content">
+              <h2 class="doc-title">HISTORIA CLÍNICA</h2>
+              <div class="patient-summary">
+                <div class="summary-row">
+                  <strong>Paciente:</strong> <span>{{ selectedPatient.nombre }}</span>
+                </div>
+                <div class="summary-row">
+                  <strong>DNI:</strong> <span>{{ selectedPatient.dni }}</span>
+                </div>
+                <div class="summary-row">
+                  <strong>Edad:</strong> <span>{{ selectedPatient.edad }}</span>
+                </div>
+                <div class="summary-row">
+                  <strong>Sexo:</strong> <span>{{ selectedPatient.sexo || 'Masculino' }}</span>
+                </div>
+                <div class="summary-row">
+                  <strong>Servicio:</strong> <span>{{ selectedPatient.servicio }}</span>
+                </div>
+                <div class="summary-row">
+                  <strong>Prioridad:</strong> <span>{{ selectedPatient.prioridad || 'No urgente' }}</span>
+                </div>
+              </div>
+
+              <section class="doc-section">
+                <h4>DIAGNÓSTICO DE EGRESO</h4>
+                <p>{{ selectedPatient.diagnostico || 'Pneumonia bacteriana no especificada (J15.9). Hipertensión arterial esencial (I10).' }}</p>
+              </section>
+
+              <section class="doc-section">
+                <h4>RESUMEN DE HISTORIA CLÍNICA</h4>
+                <p>
+                  {{ selectedPatient.resumen || 'Paciente ingresa por cuadro de dificultad respiratoria, fiebre de 39°C y tos productiva. Se inició tratamiento antibiótico con ceftriaxona. Presentó evolución favorable con remisión de síntomas al quinto día. Parámetros de laboratorio normalizados.' }}
+                </p>
+              </section>
+
+              <section class="doc-section">
+                <h4>TRATAMIENTO Y RECOMENDACIONES</h4>
+                <p style="white-space: pre-line;">{{ selectedPatient.tratamiento || '• Continuar con Amoxicilina/Ácido Clavulánico 875/125mg c/12h por 5 días.\n• Control por consultorio externo en 7 días.\n• Signos de alarma: fiebre persistente o disnea.' }}</p>
+              </section>
+
+              <div class="signature-box">
+                <div class="signature-placeholder">
+                  Espacio reservado para la firma digital FIRMAPERÚ
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="actions-panel">
+          <div class="details-card">
+            <h3>Detalles del Documento</h3>
+            <div class="detail-item">
+              <label>PACIENTE</label>
+              <p>{{ selectedPatient.nombre }}</p>
+            </div>
+            <div class="detail-item">
+              <label>FECHA DE GENERACIÓN</label>
+              <p>{{ selectedPatient.fecha }}</p>
+            </div>
+          </div>
+
+          <div class="legal-notice">
+            <div class="notice-icon">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="16" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+              </svg>
+            </div>
+            <div class="notice-text">
+              <strong>AVISO LEGAL</strong>
+              <p>
+                Al proceder con la firma digital mediante FIRMAPERÚ, usted certifica la veracidad de
+                la información contenida. Esta firma posee el mismo valor legal que una firma
+                manuscrita según la Ley Nº 27269.
+              </p>
+            </div>
+          </div>
+
+          <button class="sign-digital-btn">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+            </svg>
+             Firmar Digitalmente con FIRMAPERÚ
+           </button>
+ 
+           <button class="new-consult-btn" *ngIf="previousView === 'historias'" (click)="newConsultation()">
+             <svg
+               width="20"
+               height="20"
+               viewBox="0 0 24 24"
+               fill="none"
+               stroke="currentColor"
+               stroke-width="2.5"
+             >
+               <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+             </svg>
+             Nueva Consulta
+           </button>
+ 
+           <button class="back-link-btn" (click)="goBack()">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <line x1="19" y1="12" x2="5" y2="12"></line>
+              <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Regresar
+          </button>
+        </aside>
+      </div>
+    </div>
+
+    <!-- VIEW 5: Historial de Validaciones Realizadas (Documentos Firmados) -->
+    <div class="content-body animate-fade" *ngIf="currentView === 'firmados'">
+      <div class="view-header-row mb-xl">
+        <div class="view-title-group">
+          <h2>Historial de Validaciones Realizadas</h2>
+          <p>Consulte y gestione el registro de validaciones efectuadas en el sistema.</p>
+        </div>
+      </div>
+
+      <div class="search-filters-bar flex-between">
+        <div class="search-input-wrapper flex-grow">
+          <svg
+            class="search-icon"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" placeholder="Buscar por Paciente o DNI..." />
+        </div>
+        <div class="filter-group-alt">
+          <div class="select-wrapper">
+            <span class="select-label">Fecha:</span>
+            <button class="select-btn">
+              Últimos 7 días
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+              </svg>
+            </button>
+          </div>
+          <div class="select-wrapper">
+            <span class="select-label">Estado:</span>
+            <button class="select-btn">
+              Todos
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-container full-width-table">
+        <div class="custom-table">
+          <div class="table-head grid-firmados">
+            <div class="col-patient-firm">PACIENTE</div>
+            <div class="col-val-date">FECHA DE VALIDACIÓN</div>
+            <div class="col-status-badge">ESTADO</div>
+            <div class="col-actions-icons">ACCIONES</div>
+          </div>
+          <div class="table-body">
+            <div class="table-row grid-firmados" *ngFor="let f of paginatedFirmados">
+              <div class="col-patient-firm">
+                <span class="patient-name-bold">{{ f.nombre }}</span>
+                <span class="patient-dni-sub">DNI: {{ f.dni }}</span>
+              </div>
+              <div class="col-val-date">
+                <span class="val-date-text">{{ f.fechaVal }}</span>
+                <span class="val-time-sub">{{ f.horaVal }}</span>
+              </div>
+              <div class="col-status-badge">
+                <span class="status-dot green">{{ f.estado }}</span>
+              </div>
+              <div class="col-actions-icons">
+                <button class="icon-btn-action purple">
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                  </svg>
+                </button>
+                <button class="icon-btn-action teal">
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Pagination -->
+        <div class="pagination-bar">
+          <span class="pagination-info">{{ firmadosRangeText }}</span>
+          <div class="pagination-controls">
+            <button class="page-prev" (click)="prevPageFirmados()">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+            </button>
+            <button
+              class="page-num"
+              *ngFor="let page of getPagesArray(totalPagesFirmados)"
+              [class.active]="currentPageFirmados === page"
+              (click)="setPageFirmados(page)"
+            >
+              {{ page }}
+            </button>
+            <button class="page-next" (click)="nextPageFirmados()">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW 6: Configuración -->
+    <div class="content-body animate-fade" *ngIf="currentView === 'configuracion'">
+      <div class="view-header-row mb-xl">
+        <div class="view-title-group">
+          <h2>Configuración</h2>
+          <p>Gestiona tu información personal, seguridad y preferencias del sistema.</p>
+        </div>
+      </div>
+
+      <!-- User Profile Card -->
+      <div class="settings-card mb-lg">
+        <div class="settings-card-header">
+          <div class="header-with-icon">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <h3>{{ t('profileTitle') }}</h3>
+          </div>
+          <button class="save-changes-btn" (click)="saveChanges()">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+            >
+              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+              <polyline points="17 21 17 13 7 13 7 21"></polyline>
+              <polyline points="7 3 7 8 15 8"></polyline>
+            </svg>
+            {{ t('saveBtn') }}
+          </button>
+        </div>
+        <div class="profile-settings-layout">
+          <div class="avatar-upload-section">
+            <div class="profile-avatar-large">
+              <img
+                src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=200&h=200&fit=crop"
+                alt="User profile"
+              />
+            </div>
+          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>{{ t('fullName') }}</label>
+              <input type="text" [(ngModel)]="userProfile.nombre" />
+            </div>
+            <div class="form-group">
+              <label>{{ t('specialty') }}</label>
+              <input type="text" [(ngModel)]="userProfile.especialidad" />
+            </div>
+            <div class="form-group">
+              <label>{{ t('regNumber') }}</label>
+              <input type="text" [(ngModel)]="userProfile.colegiatura" />
+            </div>
+            <div class="form-group">
+              <label>{{ t('role') }}</label>
+              <input type="text" [(ngModel)]="userProfile.rol" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- System Preferences Card -->
+      <div class="settings-card mb-lg">
+        <div class="settings-card-header">
+          <div class="header-with-icon">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path>
+              <line x1="4" y1="22" x2="4" y2="15"></line>
+            </svg>
+            <h3>{{ t('sysPrefs') }}</h3>
+          </div>
+        </div>
+        <div class="preferences-grid">
+          <div class="form-group">
+            <label>{{ t('interfaceLang') }}</label>
+            <div class="lang-select-container">
+              <div class="custom-select-box" (click)="toggleLanguageDropdown()">
+                <span>{{ currentLang === 'es' ? 'Español (España)' : 'English (US)' }}</span>
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </div>
+              <div class="lang-dropdown" *ngIf="showLanguageDropdown">
+                <div
+                  class="lang-option"
+                  *ngFor="let lang of languages"
+                  (click)="selectLanguage(lang.code)"
+                >
+                  {{ lang.name }}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>{{ t('viewMode') }}</label>
+            <div class="mode-toggle-group">
+              <button class="mode-btn" [class.active]="!isDarkMode" (click)="toggleTheme(false)">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <circle cx="12" cy="12" r="5"></circle>
+                  <line x1="12" y1="1" x2="12" y2="3"></line>
+                  <line x1="12" y1="21" x2="12" y2="23"></line>
+                  <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                  <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                  <line x1="1" y1="12" x2="3" y2="12"></line>
+                  <line x1="21" y1="12" x2="23" y2="12"></line>
+                  <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                  <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+                {{ t('lightMode') }}
+              </button>
+              <button class="mode-btn" [class.active]="isDarkMode" (click)="toggleTheme(true)">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+                {{ t('darkMode') }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Danger Zone Card -->
+      <div class="settings-card danger-card">
+        <div class="danger-content">
+          <div class="danger-text">
+            <h3>{{ t('deleteAcc') }}</h3>
+            <p>{{ t('deleteWarn') }}</p>
+          </div>
+          <button class="delete-account-btn" (click)="deleteAccount()">{{ t('deleteAcc') }}</button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Custom Premium Alert Modal -->
+<div class="custom-alert-overlay" *ngIf="showCustomAlert" (click)="closeAlert()">
+  <div class="custom-alert-card animate-pop" (click)="$event.stopPropagation()">
+    <div class="alert-icon-section" [ngClass]="alertType">
+      <svg *ngIf="alertType === 'warning'" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+        <line x1="12" y1="9" x2="12" y2="13"></line>
+        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+      </svg>
+      <svg *ngIf="alertType === 'success'" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+      </svg>
+      <svg *ngIf="alertType === 'info'" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="16" x2="12" y2="12"></line>
+        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+      </svg>
+    </div>
+    <div class="alert-content-section">
+      <h3>{{ alertTitle }}</h3>
+      <p>{{ alertMessage }}</p>
+    </div>
+    <div class="alert-footer">
+      <button class="alert-close-btn" (click)="closeAlert()">Entendido</button>
+    </div>
+  </div>
+</div>

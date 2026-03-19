@@ -1,0 +1,358 @@
+<div class="register-container animate-page">
+    <div class="register-card" [class.size-step-2]="currentStep === 2" [class.size-step-3]="currentStep === 3"
+        [class.success-card]="registrationSuccess">
+
+        <header class="register-header" *ngIf="!registrationSuccess">
+            <div class="header-top">
+                <div class="header-left">
+                    <h3 *ngIf="currentStep !== 3">Registro de Personal</h3>
+                    <h3 *ngIf="currentStep === 3">
+                        {{ selectedRole === 'medico' ? 'Registro de Médico' : 'Registro de Administrador' }}
+                    </h3>
+                    <span class="step-counter" *ngIf="currentStep !== 3">Paso {{currentStep}}/{{totalSteps}}</span>
+                    <span class="step-counter" *ngIf="currentStep === 3">Paso 3: Validación y finalización</span>
+                </div>
+                <div class="header-right">
+                    <span class="progress-percent">{{progress === 100 ? '100%
+                        Completado' : progress + '% Completado'}}</span>
+                </div>
+            </div>
+            <div class="progress-container">
+                <div class="progress-bar" [style.width.%]="progress"></div>
+            </div>
+        </header>
+
+        <!-- Step 1 Form -->
+        <form [formGroup]="step1Form" (ngSubmit)="nextStep()" class="register-form"
+            *ngIf="currentStep === 1 && !registrationSuccess">
+            <div class="form-row">
+                <div class="form-group col-6">
+                    <label>NOMBRES</label>
+                    <div class="input-wrapper">
+                        <input type="text" formControlName="firstName" placeholder="Ingrese nombres">
+                    </div>
+                    <div class="error-message"
+                        *ngIf="step1Form.get('firstName')?.touched && step1Form.get('firstName')?.errors?.['required']">
+                        Este campo es obligatorio
+                    </div>
+                </div>
+                <div class="form-group col-6">
+                    <label>APELLIDOS</label>
+                    <div class="input-wrapper">
+                        <input type="text" formControlName="lastName" placeholder="Ingrese apellidos">
+                    </div>
+                    <div class="error-message"
+                        *ngIf="step1Form.get('lastName')?.touched && step1Form.get('lastName')?.errors?.['required']">
+                        Este campo es obligatorio
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-12">
+                    <label>NÚMERO DE DNI</label>
+                    <div class="input-wrapper">
+                        <input type="text" formControlName="dni" placeholder="Número de identificación">
+                    </div>
+                    <div class="error-message" *ngIf="step1Form.get('dni')?.touched && step1Form.get('dni')?.errors">
+                        <span *ngIf="step1Form.get('dni')?.errors?.['required']">El DNI es obligatorio</span>
+                        <span *ngIf="step1Form.get('dni')?.errors?.['pattern']">El DNI debe tener exactamente 8
+                            caracteres numéricos</span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-6">
+                    <label>FECHA DE NACIMIENTO</label>
+                    <div class="input-wrapper">
+                        <input type="date" formControlName="birthDate">
+                    </div>
+                    <div class="error-message"
+                        *ngIf="step1Form.get('birthDate')?.touched && step1Form.get('birthDate')?.errors?.['required']">
+                        La fecha es obligatoria
+                    </div>
+                </div>
+                <div class="form-group col-6">
+                    <label>TELÉFONO DE CONTACTO</label>
+                    <div class="input-wrapper">
+                        <svg class="input-icon-left" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <path
+                                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
+                            </path>
+                        </svg>
+                        <input type="tel" formControlName="phone" placeholder="+51 900 000 000">
+                    </div>
+                    <div class="error-message"
+                        *ngIf="step1Form.get('phone')?.touched && step1Form.get('phone')?.errors">
+                        <span *ngIf="step1Form.get('phone')?.errors?.['required']">El teléfono es obligatorio</span>
+                        <span *ngIf="step1Form.get('phone')?.errors?.['pattern']">Ingrese un número válido (9
+                            dígitos)</span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-12">
+                    <label>CORREO ELECTRÓNICO INSTITUCIONAL</label>
+                    <div class="input-wrapper">
+                        <svg class="input-icon-left" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
+                            </path>
+                            <polyline points="22,6 12,13 2,6"></polyline>
+                        </svg>
+                        <input type="email" formControlName="email" placeholder="ejemplo@hospital.com">
+                    </div>
+                    <div class="error-message"
+                        *ngIf="step1Form.get('email')?.touched && step1Form.get('email')?.errors">
+                        <span *ngIf="step1Form.get('email')?.errors?.['required']">El correo es obligatorio</span>
+                        <span *ngIf="step1Form.get('email')?.errors?.['email']">Ingrese un formato de correo
+                            válido</span>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="submit-btn next-btn">
+                Siguiente Paso
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+            </button>
+            <div class="login-redirect">
+                <a routerLink="/login">Ya tengo cuenta. Iniciar sesión</a>
+            </div>
+        </form>
+
+        <!-- Step 2 Form -->
+        <form [formGroup]="step2Form" (ngSubmit)="nextStep()" class="register-form"
+            *ngIf="currentStep === 2 && !registrationSuccess">
+            <div class="section-divider teal-divider"><span>DATOS LABORALES</span></div>
+            <div class="form-row">
+                <div class="form-group col-6">
+                    <label>Rol dentro del sistema</label>
+                    <div class="input-wrapper select-wrapper">
+                        <select formControlName="role">
+                            <option value="" disabled selected>Seleccione un rol</option>
+                            <option *ngFor="let r of roles" [value]="r.value">{{r.label}}</option>
+                        </select>
+                    </div>
+                    <div class="error-message"
+                        *ngIf="step2Form.get('role')?.touched && step2Form.get('role')?.errors?.['required']">
+                        Debe seleccionar un rol
+                    </div>
+                </div>
+                <div class="form-group col-6">
+                    <label>Número de colegiatura profesional</label>
+                    <div class="input-wrapper">
+                        <input type="text" formControlName="colegiatura" placeholder="Ej: COL-29384-MX">
+                    </div>
+                    <div class="error-message"
+                        *ngIf="step2Form.get('colegiatura')?.touched && step2Form.get('colegiatura')?.errors?.['required']">
+                        Este campo es obligatorio
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-6">
+                    <label>Área o departamento</label>
+                    <div class="input-wrapper">
+                        <input type="text" formControlName="department" placeholder="Ej: Cardiología">
+                    </div>
+                    <div class="error-message"
+                        *ngIf="step2Form.get('department')?.touched && step2Form.get('department')?.errors?.['required']">
+                        El área es obligatoria
+                    </div>
+                </div>
+                <div class="form-group col-6">
+                    <label>Especialidad</label>
+                    <div class="input-wrapper">
+                        <input type="text" formControlName="specialty" placeholder="Ej: Cardiólogo">
+                    </div>
+                    <div class="error-message"
+                        *ngIf="step2Form.get('specialty')?.touched && step2Form.get('specialty')?.errors?.['required']">
+                        La especialidad es obligatoria
+                    </div>
+                </div>
+            </div>
+            <div class="section-divider purple-divider"><span>DATOS DE ACCESO</span></div>
+            <div class="form-row">
+                <div class="form-group col-12">
+                    <label>Nombre de usuario</label>
+                    <div class="input-wrapper">
+                        <svg class="input-icon-left" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="4"></circle>
+                            <path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-3.92 7.94"></path>
+                        </svg>
+                        <input type="text" formControlName="username" placeholder="usuario@institucion.gob">
+                    </div>
+                    <div class="error-message"
+                        *ngIf="step2Form.get('username')?.touched && step2Form.get('username')?.errors?.['required']">
+                        El nombre de usuario es obligatorio
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-6">
+                    <label>Contraseña segura</label>
+                    <div class="input-wrapper">
+                        <svg class="input-icon-left" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        </svg>
+                        <input type="password" formControlName="password" placeholder="••••••••">
+                    </div>
+                    <span class="password-hint" *ngIf="!step2Form.get('password')?.errors">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14b8a6" stroke-width="2.5"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="16 11 11 16 8 13"></polyline>
+                        </svg>
+                        8+ caracteres, números y símbolos
+                    </span>
+                    <div class="error-message"
+                        *ngIf="step2Form.get('password')?.touched && step2Form.get('password')?.errors">
+                        <span *ngIf="step2Form.get('password')?.errors?.['required']">La contraseña es
+                            obligatoria</span>
+                        <span *ngIf="step2Form.get('password')?.errors?.['minlength']">Mínimo 8 caracteres</span>
+                    </div>
+                </div>
+            </div>
+            <div class="step-footer">
+                <button type="button" class="back-link-btn" (click)="prevStep()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                    Volver al paso anterior
+                </button>
+                <button type="submit" class="submit-btn next-btn-small">
+                    Siguiente Paso
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </button>
+            </div>
+        </form>
+
+        <!-- Step 3 Form -->
+        <form [formGroup]="step3Form" (ngSubmit)="finishRegistration()" class="register-form"
+            *ngIf="currentStep === 3 && !registrationSuccess">
+            <div class="form-row">
+                <div class="form-group col-12">
+                    <label>{{ selectedRole === 'administrativo' ? 'Código Interno de Empleado' : 'Código interno del
+                        hospital o número de empleado' }}</label>
+                    <div class="input-wrapper">
+                        <svg class="input-icon-left" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" *ngIf="selectedRole !== 'administrativo'"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"
+                                *ngIf="selectedRole !== 'administrativo'"></path>
+
+                            <!-- Icon for Admin Code -->
+                            <rect x="3" y="4" width="18" height="16" rx="2" *ngIf="selectedRole === 'administrativo'">
+                            </rect>
+                            <path d="M7 8h10M7 12h10M7 16h10" *ngIf="selectedRole === 'administrativo'"></path>
+                        </svg>
+                        <input type="text" formControlName="hospitalCode"
+                            [placeholder]="selectedRole === 'administrativo' ? 'Ej: ADM-12345' : 'Ej: HP-99283-X'">
+                    </div>
+                    <div class="error-message"
+                        *ngIf="step3Form.get('hospitalCode')?.touched && step3Form.get('hospitalCode')?.errors?.['required']">
+                        El código es obligatorio
+                    </div>
+                </div>
+            </div>
+
+            <!-- File Upload section - Hide for Admin -->
+            <div class="form-row" *ngIf="selectedRole !== 'administrativo'">
+                <div class="form-group col-12">
+                    <label>Adjuntar documento de respaldo</label>
+                    <span class="file-hint">(ej. carta de contratación, credencial vigente)</span>
+                    <div class="file-dropzone" (click)="fileInput.click()">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                        <p *ngIf="!fileName">Arrastra tu archivo aquí o haz clic para buscar</p>
+                        <p *ngIf="fileName" class="selected-file">{{fileName}}</p>
+                        <button type="button" class="select-file-btn">Seleccionar Archivo</button>
+                        <input #fileInput type="file" (change)="onFileSelected($event)" style="display: none">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Info box - Hide for Admin -->
+            <div class="info-box" *ngIf="selectedRole !== 'administrativo'">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2.5">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+                <p>Su cuenta será validada por un administrador antes de habilitar el acceso completo al sistema médico.
+                </p>
+            </div>
+
+            <div class="terms-container">
+                <label class="checkbox-wrapper">
+                    <input type="checkbox" formControlName="terms">
+                    <span class="terms-text" *ngIf="selectedRole !== 'administrativo'">Acepto los <a
+                            href="javascript:void(0)">términos y condiciones</a> de uso y
+                        privacidad del sistema.</span>
+                    <span class="terms-text" *ngIf="selectedRole === 'administrativo'">Acepto los <a
+                            href="javascript:void(0)">Términos y Condiciones</a> y la Política de Privacidad del sistema
+                        hospitalario.</span>
+                </label>
+                <div class="error-message"
+                    *ngIf="step3Form.get('terms')?.touched && step3Form.get('terms')?.errors?.['required']">
+                    Debes aceptar los términos para continuar
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn final-register-btn">
+                Finalizar Registro
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="16 11 11 16 8 13"></polyline>
+                </svg>
+            </button>
+
+            <button type="button" class="back-link-btn center-back" (click)="prevStep()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Volver al paso anterior
+            </button>
+        </form>
+
+        <!-- Success Interface -->
+        <div class="success-view" *ngIf="registrationSuccess">
+            <div class="success-icon-wrapper">
+                <div class="final-success-check">
+                    <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="3"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                </div>
+            </div>
+            <h3>¡Registro completado!</h3>
+            <p class="subtitle" *ngIf="selectedRole !== 'administrativo'">Tu información ha sido enviada correctamente.
+                Un administrador revisará tus documentos y
+                activará tu cuenta en un plazo de 24-48 horas.</p>
+            <p class="subtitle" *ngIf="selectedRole === 'administrativo'">Tu cuenta ha sido creada exitosamente. Ahora
+                puedes acceder al sistema.</p>
+            <p class="info-note" *ngIf="selectedRole !== 'administrativo'">Recibirás una notificación en tu correo
+                institucional una vez que tu acceso sea
+                habilitado.</p>
+            <button class="submit-btn next-btn" routerLink="/login">Ir al inicio de sesión</button>
+        </div>
+
+        <footer class="register-footer" *ngIf="!registrationSuccess">
+            © 2024 Sistema de Gestión Médica Centralizado. Todos los derechos reservados.
+        </footer>
+    </div>
+</div>

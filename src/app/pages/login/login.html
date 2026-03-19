@@ -1,0 +1,127 @@
+<div class="login-container animate-page">
+    <header>
+        <div class="logo-icon">
+            <img src="logo.png" alt="Logo" style="width: 100%; height: 100%; object-fit: contain;">
+        </div>
+        <h1>Hospital El Carmen</h1>
+    </header>
+
+    <main>
+        <section class="hero-section">
+            <h2>Gestión Inteligente para <br> el Personal Médico</h2>
+            <p>Acceda a su panel de control para gestionar pacientes, citas y expedientes clínicos de forma segura y
+                eficiente.</p>
+
+            <div class="features">
+                <div class="feature-item">
+                    <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    Seguridad de Nivel <br> Médico
+                </div>
+                <div class="feature-item">
+                    <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    Sincronización en Tiempo <br> Real
+                </div>
+            </div>
+        </section>
+
+        <section class="login-card-wrapper">
+            <div class="login-card">
+                <h3>Sistema de Gestión Médica</h3>
+                <p class="subtitle">Ingrese sus credenciales para acceder al portal</p>
+
+                <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                    <div class="form-group">
+                        <label for="username">Correo Electrónico</label>
+                        <div class="input-wrapper">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                            <input id="username" type="text" formControlName="username" placeholder="Ingrese Correo Electrónico">
+                        </div>
+                        <div class="error-message"
+                            *ngIf="loginForm.get('username')?.touched && loginForm.get('username')?.errors">
+                            <span *ngIf="loginForm.get('username')?.errors?.['required']">El correo es
+                                 obligatorio</span>
+                            <span *ngIf="loginForm.get('username')?.errors?.['minlength']">Mínimo 4 caracteres</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Contraseña</label>
+                        <div class="input-wrapper">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                            <input id="password" [type]="showPassword ? 'text' : 'password'" formControlName="password"
+                                placeholder="••••••••">
+                            <button type="button" class="toggle-password" (click)="togglePassword()">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                    *ngIf="!showPassword">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                    *ngIf="showPassword">
+                                    <path
+                                        d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24">
+                                    </path>
+                                    <line x1="1" y1="1" x2="23" y2="23"></line>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="error-message"
+                            *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.errors">
+                            <span *ngIf="loginForm.get('password')?.errors?.['required']">La contraseña es
+                                obligatoria</span>
+                            <span *ngIf="loginForm.get('password')?.errors?.['minlength']">Mínimo 6 caracteres</span>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-btn" [disabled]="loginForm.pending">
+                        Iniciar Sesión
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                            <polyline points="10 17 15 12 10 7"></polyline>
+                            <line x1="15" y1="12" x2="3" y2="12"></line>
+                        </svg>
+                    </button>
+                </form>
+
+                <div class="footer-links">
+                    <span>¿Aún no tienes cuenta? </span>
+                    <a routerLink="/register">Regístrate aquí</a>
+                </div>
+
+                <a routerLink="/forgot-password" class="forgot-password">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        style="vertical-align: middle; margin-right: 4px;">
+                        <path
+                            d="m21 2-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0 3 3L22 7l-3-3y-3.5">
+                        </path>
+                    </svg>
+                    ¿Olvidaste tu contraseña?
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bottom-footer">
+        <div class="legal-links">
+            <a href="#">Términos y Condiciones</a>
+            <a href="#">Política de Privacidad</a>
+            <a href="#">Acuerdo de Confidencialidad (HIPAA)</a>
+        </div>
+        <span>© 2024 HealthConnect Solutions. Todos los derechos reservados.</span>
+    </footer>
+</div>
