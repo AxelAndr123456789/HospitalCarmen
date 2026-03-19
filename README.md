@@ -12,149 +12,198 @@ Huancayo - Perú | 2026
 
 </div>
 
-## 📌 Descripción del Proyecto
+---
 
-Aplicación web desarrollada para el Hospital El Carmen que permite gestionar historias clínicas digitales de manera segura, incorporando firma digital para garantizar la autenticidad, integridad y validez de los documentos médicos.
+## 📌 Tabla de Contenidos
 
-El sistema permite:
+- [Descripción del Proyecto](#-descripción-del-proyecto)
+- [Problema Identificado](#-problema-identificado)
+- [Arquitectura del Sistema](#-arquitectura-del-sistema)
+- [Tecnologías Utilizadas](#-tecnologías-utilizadas)
+- [Características Principales](#-características-principales)
+- [Instalación](#-instalación)
+- [Uso](#-uso)
+- [Scripts Disponibles](#-scripts-disponibles)
+- [Seguridad](#-seguridad)
+- [Beneficios](#-beneficios)
+- [Pruebas Realizadas](#-pruebas-realizadas)
+- [Estructura del Proyecto](#-estructura-del-proyecto)
+- [Recursos Adicionales](#-recursos-adicionales)
+- [Autor](#-autor)
 
-- Registro de pacientes  
-- Gestión de historias clínicas  
-- Firma digital de documentos  
-- Validación de autenticidad  
-- Acceso seguro para personal médico  
+---
 
-## 🎯 Problema Identificado
+## 📋 Descripción del Proyecto
 
-En muchos centros de salud:
+Aplicación web desarrollada para el **Hospital El Carmen** que permite gestionar historias clínicas digitales de manera segura, incorporando firma digital para garantizar la autenticidad, integridad y validez de los documentos médicos.
 
-- Uso de historias clínicas en papel  
-- Riesgo de pérdida o alteración de información  
-- Procesos manuales lentos  
-- Falta de seguridad en documentos médicos  
+### El sistema permite:
 
-El sistema propone una solución digital que mejora la eficiencia y seguridad mediante tecnologías web y firma digital.
+- ✅ Registro de pacientes
+- ✅ Gestión de historias clínicas
+- ✅ Firma digital de documentos
+- ✅ Validación de autenticidad
+- ✅ Acceso seguro para personal médico
+
+---
+
+## ⚠️ Problema Identificado
+
+En muchos centros de salud se presentan las siguientes problemáticas:
+
+| Problema | Consecuencia |
+|----------|--------------|
+| 📄 Uso de historias clínicas en papel | Difícil acceso y almacenamiento |
+| 🔍 Riesgo de pérdida o alteración | Información no confiable |
+| ⏱️ Procesos manuales lentos | Baja eficiencia operativa |
+| 🔒 Falta de seguridad | Documentos vulnerables |
+
+**Solución:** Sistema digital que mejora la eficiencia y seguridad mediante tecnologías web y firma digital.
+
+---
 
 ## 🏗 Arquitectura del Sistema
 
-El sistema sigue una arquitectura cliente-servidor:
+El sistema sigue una arquitectura **cliente-servidor**:
+┌─────────────┐ ┌─────────────┐ ┌─────────────┐
+│ Frontend │────▶│ API REST │────▶│ Base de │
+│ Angular │◀────│ Backend │◀────│ Datos │
+└─────────────┘ └─────────────┘ └─────────────┘
 
-- Frontend: Angular  
-- Backend: API REST  
-- Base de datos: (según implementación)  
+text
 
-### 📂 Estructura del Proyecto
-
-
-src/
-│
-├── app/
-│ ├── components/
-│ ├── services/
-│ ├── models/
-│ ├── pages/
-│ └── app.module.ts
-│
-└── assets/
-
+---
 
 ## 🛠 Tecnologías Utilizadas
 
-- Angular  
-- TypeScript  
-- HTML5 / CSS3  
-- API REST  
-- Firma Digital  
-- Seguridad de datos  
+| Tecnología | Descripción |
+|------------|-------------|
+| **Angular** | Framework frontend |
+| **TypeScript** | Lenguaje de programación |
+| **HTML5 / CSS3** | Maquetación y estilos |
+| **API REST** | Comunicación con backend |
+| **Firma Digital** | Autenticación de documentos |
+| **Seguridad** | Protección de datos clínicos |
 
-## 💻 Development server
+---
 
-Para iniciar un servidor local:
+## ✨ Características Principales
+
+- 📝 **Registro de pacientes** - Gestión completa de datos personales
+- 📋 **Historias clínicas** - Creación y edición de documentos médicos
+- ✍️ **Firma digital** - Autenticación de documentos
+- 🔍 **Validación** - Verificación de integridad de documentos
+- 👥 **Control de acceso** - Roles y permisos de usuario
+
+---
+
+## 🔧 Instalación
+
+### Requisitos Previos
+
+- Node.js
+- npm
+- Angular CLI
+
+### Pasos de Instalación
 
 ```bash
+# 1. Clonar repositorio
+git clone https://github.com/AxelAndr123456789/HospitalCarmen.git
+
+# 2. Entrar al directorio
+cd HospitalCarmen
+
+# 3. Instalar dependencias
+npm install
+
+# 4. Iniciar servidor de desarrollo
 ng serve
+💻 Uso
+Una vez instalado, abre tu navegador y accede a:
 
-Luego abrir en el navegador:
-
+text
 http://localhost:4200/
+Flujo básico de uso:
+Iniciar sesión como personal médico
 
-La aplicación se recargará automáticamente al realizar cambios.
+Registrar nuevo paciente
 
-⚙️ Code scaffolding
+Crear historia clínica
 
-Para generar un nuevo componente:
+Aplicar firma digital
 
-ng generate component nombre-del-componente
+Validar documento
 
-Para ver todas las opciones:
-
-ng generate --help
-📦 Building
-
-Para compilar el proyecto:
-
-ng build
-
-Los archivos se almacenan en:
-
-dist/
-🧪 Running unit tests
-ng test
-🔁 Running end-to-end tests
-ng e2e
-
-Angular CLI no incluye un framework e2e por defecto, se puede integrar uno según necesidad.
-
+📜 Scripts Disponibles
+Comando	Descripción
+ng serve	Inicia servidor de desarrollo
+ng build	Compila el proyecto para producción
+ng test	Ejecuta pruebas unitarias
+ng generate component <nombre>	Genera un nuevo componente
+ng build --configuration production	Build de producción
 🔐 Seguridad
+El sistema implementa múltiples capas de seguridad:
 
-Firma digital para autenticidad de documentos
+🔏 Firma digital - Autenticidad de documentos
 
-Control de acceso por usuarios
+👤 Control de acceso - Usuarios autenticados
 
-Validación de integridad de datos
+🔒 Protección de datos - Información clínica segura
 
-Protección de información clínica
+✅ Validación - Integridad de documentos
 
 📈 Beneficios
+text
+┌─────────────────────────────────────┐
+│                                     │
+│   📉 Papel        →    💻 Digital  │
+│   ⚠️ Inseguro      →    🔒 Seguro   │
+│   🐢 Lento         →    ⚡ Rápido    │
+│   📦 Desorganizado →    📊 Organizado│
+│                                     │
+└─────────────────────────────────────┘
+Reducción del uso de papel - 100% digital
 
-Reducción del uso de papel
+Mayor seguridad - Información protegida
 
-Mayor seguridad de la información médica
+Acceso rápido - Consultas inmediatas
 
-Acceso rápido a historiales clínicos
+Eficiencia hospitalaria - Procesos optimizados
 
-Mejora en la eficiencia hospitalaria
-
-🚀 Instalación
-🔹 Clonar repositorio
-git clone https://github.com/AxelAndr123456789/HospitalCarmen.git
-cd HospitalCarmen
-🔹 Instalar dependencias
-npm install
-🔹 Ejecutar aplicación
-ng serve
-🔧 Build de Producción
-ng build --configuration production
-📊 Pruebas Realizadas
-
-Registro de pacientes ✅
-
-Creación de historia clínica ✅
-
-Firma digital aplicada ✅
-
-Validación de documentos ✅
-
-Acceso seguro ✅
-
+🧪 Pruebas Realizadas
+Módulo	Estado
+Registro de pacientes	✅ Funcional
+Creación de historia clínica	✅ Funcional
+Firma digital aplicada	✅ Funcional
+Validación de documentos	✅ Funcional
+Acceso seguro	✅ Funcional
+📂 Estructura del Proyecto
+text
+src/
+│
+├── app/
+│   ├── components/         # Componentes reutilizables
+│   ├── pages/              # Páginas/Vistas principales
+│   ├── services/           # Servicios para API y lógica
+│   ├── models/             # Interfaces y modelos de datos
+│   ├── guards/             # Protección de rutas
+│   ├── interceptors/       # Interceptores HTTP
+│   └── app.module.ts       # Módulo principal
+│
+├── assets/                  # Recursos estáticos
+├── environments/            # Configuración por entorno
+└── styles.css               # Estilos globales
 📚 Recursos Adicionales
+Documentación oficial de Angular
 
-https://angular.dev/tools/cli
+Guía de firma digital
 
+API REST
+
+👤 Autor
 <div align="center">
-
 UNIVERSIDAD CONTINENTAL
-Proyecto Académico
 
 Integrante:
 Lopez Rodriguez Axel
@@ -163,5 +212,7 @@ Huancayo, Perú - 2026
 
 🔗 Repositorio:
 https://github.com/AxelAndr123456789/HospitalCarmen
+
+⭐️ Si te fue útil este proyecto, ¡no olvides darle una estrella! ⭐️
 
 </div> ```
