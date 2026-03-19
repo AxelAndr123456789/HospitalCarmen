@@ -1,4 +1,3 @@
-markdown
 # 🏥 Sistema de Historias Clínicas Digitales con Firma Digital
 
 <div align="center">
@@ -63,19 +62,20 @@ En muchos centros de salud se presentan las siguientes problemáticas:
 
 ---
 
-## 🏗 Arquitectura del Sistema
+## 🏗️ Arquitectura del Sistema
 
 El sistema sigue una arquitectura **cliente-servidor**:
-┌─────────────┐ ┌─────────────┐ ┌─────────────┐
-│ Frontend │────▶│ API REST │────▶│ Base de │
-│ Angular │◀────│ Backend │◀────│ Datos │
-└─────────────┘ └─────────────┘ └─────────────┘
 
-text
+```
+┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+│  Frontend   │────▶│  API REST   │────▶│  Base de    │
+│   Angular   │◀────│   Backend   │◀────│   Datos     │
+└─────────────┘     └─────────────┘     └─────────────┘
+```
 
 ---
 
-## 🛠 Tecnologías Utilizadas
+## 🛠️ Tecnologías Utilizadas
 
 | Tecnología | Descripción |
 |------------|-------------|
@@ -90,11 +90,11 @@ text
 
 ## ✨ Características Principales
 
-- 📝 **Registro de pacientes** - Gestión completa de datos personales
-- 📋 **Historias clínicas** - Creación y edición de documentos médicos
-- ✍️ **Firma digital** - Autenticación de documentos
-- 🔍 **Validación** - Verificación de integridad de documentos
-- 👥 **Control de acceso** - Roles y permisos de usuario
+- 📝 **Registro de pacientes** — Gestión completa de datos personales
+- 📋 **Historias clínicas** — Creación y edición de documentos médicos
+- ✍️ **Firma digital** — Autenticación de documentos
+- 🔍 **Validación** — Verificación de integridad de documentos
+- 👥 **Control de acceso** — Roles y permisos de usuario
 
 ---
 
@@ -120,67 +120,86 @@ npm install
 
 # 4. Iniciar servidor de desarrollo
 ng serve
-💻 Uso
+```
+
+---
+
+## 💻 Uso
+
 Una vez instalado, abre tu navegador y accede a:
 
-text
+```
 http://localhost:4200/
-Flujo básico de uso:
-Iniciar sesión como personal médico
+```
 
-Registrar nuevo paciente
+### Flujo básico de uso:
 
-Crear historia clínica
+1. Iniciar sesión como personal médico
+2. Registrar nuevo paciente
+3. Crear historia clínica
+4. Aplicar firma digital
+5. Validar documento
 
-Aplicar firma digital
+---
 
-Validar documento
+## 📜 Scripts Disponibles
 
-📜 Scripts Disponibles
-Comando	Descripción
-ng serve	Inicia servidor de desarrollo
-ng build	Compila el proyecto para producción
-ng test	Ejecuta pruebas unitarias
-ng generate component <nombre>	Genera un nuevo componente
-ng build --configuration production	Build de producción
-🔐 Seguridad
+| Comando | Descripción |
+|---------|-------------|
+| `ng serve` | Inicia servidor de desarrollo |
+| `ng build` | Compila el proyecto para producción |
+| `ng test` | Ejecuta pruebas unitarias |
+| `ng generate component <nombre>` | Genera un nuevo componente |
+| `ng build --configuration production` | Build de producción |
+
+---
+
+## 🔐 Seguridad
+
 El sistema implementa múltiples capas de seguridad:
 
-🔏 Firma digital - Autenticidad de documentos
+- 🔏 **Firma digital** — Autenticidad de documentos
+- 👤 **Control de acceso** — Usuarios autenticados
+- 🔒 **Protección de datos** — Información clínica segura
+- ✅ **Validación** — Integridad de documentos
 
-👤 Control de acceso - Usuarios autenticados
+---
 
-🔒 Protección de datos - Información clínica segura
+## 📈 Beneficios
 
-✅ Validación - Integridad de documentos
-
-📈 Beneficios
-text
+```
 ┌─────────────────────────────────────┐
 │                                     │
-│   📉 Papel        →    💻 Digital  │
-│   ⚠️ Inseguro      →    🔒 Seguro   │
-│   🐢 Lento         →    ⚡ Rápido    │
-│   📦 Desorganizado →    📊 Organizado│
+│   📉 Papel        →  💻 Digital     │
+│   ⚠️  Inseguro     →  🔒 Seguro      │
+│   🐢 Lento         →  ⚡ Rápido      │
+│   📦 Desorganizado →  📊 Organizado  │
 │                                     │
 └─────────────────────────────────────┘
-Reducción del uso de papel - 100% digital
+```
 
-Mayor seguridad - Información protegida
+- **Reducción del uso de papel** — 100% digital
+- **Mayor seguridad** — Información protegida
+- **Acceso rápido** — Consultas inmediatas
+- **Eficiencia hospitalaria** — Procesos optimizados
 
-Acceso rápido - Consultas inmediatas
+---
 
-Eficiencia hospitalaria - Procesos optimizados
+## 🧪 Pruebas Realizadas
 
-🧪 Pruebas Realizadas
-Módulo	Estado
-Registro de pacientes	✅ Funcional
-Creación de historia clínica	✅ Funcional
-Firma digital aplicada	✅ Funcional
-Validación de documentos	✅ Funcional
-Acceso seguro	✅ Funcional
-📂 Estructura del Proyecto
-text
+| Módulo | Estado |
+|--------|--------|
+| Registro de pacientes | ✅ Funcional |
+| Creación de historia clínica | ✅ Funcional |
+| Firma digital aplicada | ✅ Funcional |
+| Validación de documentos | ✅ Funcional |
+| Acceso seguro | ✅ Funcional |
+
+---
+
+## 📂 Estructura del Proyecto
+
+```
 src/
 │
 ├── app/
@@ -192,28 +211,31 @@ src/
 │   ├── interceptors/       # Interceptores HTTP
 │   └── app.module.ts       # Módulo principal
 │
-├── assets/                  # Recursos estáticos
-├── environments/            # Configuración por entorno
-└── styles.css               # Estilos globales
-📚 Recursos Adicionales
-Documentación oficial de Angular
+├── assets/                 # Recursos estáticos
+├── environments/           # Configuración por entorno
+└── styles.css              # Estilos globales
+```
 
-Guía de firma digital
+---
 
-API REST
+## 📚 Recursos Adicionales
 
-👤 Autor
+- [Documentación oficial de Angular](https://angular.io/docs)
+- [Guía de firma digital](https://es.wikipedia.org/wiki/Firma_digital)
+- [API REST](https://restfulapi.net/)
+
+---
+
+## 👤 Autor
+
 <div align="center">
-UNIVERSIDAD CONTINENTAL
 
-Integrante:
-Lopez Rodriguez Axel
+**UNIVERSIDAD CONTINENTAL**
 
-Huancayo, Perú - 2026
+Integrante: **Lopez Rodriguez Axel**
 
-🔗 Repositorio:
-https://github.com/AxelAndr123456789/HospitalCarmen
+Huancayo, Perú — 2026
 
-⭐️ Si te fue útil este proyecto, ¡no olvides darle una estrella! ⭐️
+🔗 Repositorio: [https://github.com/AxelAndr123456789/HospitalCarmen](https://github.com/AxelAndr123456789/HospitalCarmen)
 
-</div> ```
+</div>
