@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
+import { AuthService } from '../../services/auth/auth';
 
 @Component({
   selector: 'app-register',
@@ -29,7 +30,11 @@ export class Register {
     return this.step2Form?.get('role')?.value || '';
   }
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(
+    private fb: FormBuilder, 
+    private router: Router,
+    private authService: AuthService
+  ) {
     this.step1Form = this.fb.group({
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
@@ -52,7 +57,6 @@ export class Register {
       hospitalCode: ['', [Validators.required]],
       terms: [false, [Validators.requiredTrue]]
     });
-
   }
 
   nextStep(): void {
@@ -89,11 +93,15 @@ export class Register {
 
   finishRegistration(): void {
     if (this.step3Form.valid) {
-      console.log('Registration Data:', {
+      const registrationData = {
         ...this.step1Form.value,
         ...this.step2Form.value,
         ...this.step3Form.value
-      });
+      };
+      
+      console.log('Registration Data:', registrationData);
+      
+      this.authService.registerUser(registrationData);
       this.registrationSuccess = true;
     } else {
       this.step3Form.markAllAsTouched();

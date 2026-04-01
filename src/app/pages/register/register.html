@@ -7,7 +7,7 @@
                 <div class="header-left">
                     <h3 *ngIf="currentStep !== 3">Registro de Personal</h3>
                     <h3 *ngIf="currentStep === 3">
-                        {{ selectedRole === 'medico' ? 'Registro de Médico' : 'Registro de Administrador' }}
+                        {{ selectedRole === 'medico' ? 'Registro de Médico Especialista' : 'Registro de Personal Administrativo' }}
                     </h3>
                     <span class="step-counter" *ngIf="currentStep !== 3">Paso {{currentStep}}/{{totalSteps}}</span>
                     <span class="step-counter" *ngIf="currentStep === 3">Paso 3: Validación y finalización</span>
@@ -241,8 +241,7 @@
             *ngIf="currentStep === 3 && !registrationSuccess">
             <div class="form-row">
                 <div class="form-group col-12">
-                    <label>{{ selectedRole === 'administrativo' ? 'Código Interno de Empleado' : 'Código interno del
-                        hospital o número de empleado' }}</label>
+                    <label>{{ selectedRole === 'administrativo' ? 'Código Interno de Empleado' : 'Código interno del hospital o número de empleado' }}</label>
                     <div class="input-wrapper">
                         <svg class="input-icon-left" width="18" height="18" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2">

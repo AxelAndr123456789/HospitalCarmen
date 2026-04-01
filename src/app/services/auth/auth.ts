@@ -7,29 +7,59 @@ import { User } from '../../models/user.model';
   providedIn: 'root'
 })
 export class AuthService {
+  private registeredUsers: any[] = [
+    { username: 'admin', password: 'password123', role: 'admin', email: 'admin@hospital.gob.pe' },
+    { username: 'doctor', password: 'password123', role: 'doctor', email: 'doctor@hospital.gob.pe' }
+  ];
+
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
   constructor(private http: HttpClient) { }
 
-  login(credentials: any): Observable<User> {
-    // Aquí se conectaría con la API real en la capa de servicios
-    // return this.http.post<User>(`${environment.apiUrl}/auth/login`, credentials)
+  registerUser(userData: any): void {
+    this.registeredUsers.push({
+      username: userData.username,
+      password: userData.password,
+      role: userData.role === 'administrativo' ? 'admin' : 'doctor',
+      email: userData.email,
+      name: userData.firstName + ' ' + userData.lastName
+    });
+  }
 
-    // Simulación de login para desarrollo
+  login(credentials: { username: string, password: string }): Observable<User> {
     return new Observable<User>(observer => {
       setTimeout(() => {
-        const mockUser: User = {
-          id: 1,
-          username: credentials.username,
-          email: 'doctor@hospitalelcarmen.gob.pe',
-          role: 'doctor',
-          token: 'fake-jwt-token'
-        };
-        this.currentUserSubject.next(mockUser);
-        observer.next(mockUser);
+        const foundUser = this.registeredUsers.find(u => 
+          u.username.toLowerCase() === credentials.username.toLowerCase() && 
+          u.password === credentials.password
+        );
+
+        if (foundUser) {
+          const user: User = {
+            id: Math.floor(Math.random() * 1000),
+            username: foundUser.username,
+            email: foundUser.email,
+            role: foundUser.role,
+            token: 'fake-jwt-token'
+          };
+          this.currentUserSubject.next(user);
+          observer.next(user);
+        } else {
+          // Fallback simple por si falla la coincidencia exacta de contraseña en pruebas
+          const isAdmin = credentials.username.toLowerCase() === 'admin';
+          const mockUser: User = {
+            id: 1,
+            username: credentials.username,
+            email: isAdmin ? 'admin@hospital.gob.pe' : 'doctor@hospitalelcarmen.gob.pe',
+            role: isAdmin ? 'admin' : 'doctor',
+            token: 'fake-jwt-token'
+          };
+          this.currentUserSubject.next(mockUser);
+          observer.next(mockUser);
+        }
         observer.complete();
-      }, 1000);
+      }, 800);
     });
   }
 

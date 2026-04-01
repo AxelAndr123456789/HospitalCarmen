@@ -1,0 +1,645 @@
+<div class="dashboard-container">
+  <!-- Sidebar -->
+  <aside class="sidebar admin-sidebar">
+    <div class="logo-container">
+      <div class="logo-box">
+        <img src="logo.png" alt="Logo" style="width: 100%; height: 100%; object-fit: contain;">
+      </div>
+      <div class="logo-text">
+        <h1 [innerHTML]="'HOSPITAL<br>EL CARMEN'"></h1>
+        <span>GESTIÓN ADMINISTRATIVA</span>
+      </div>
+    </div>
+
+    <nav class="nav-menu">
+      <a href="javascript:void(0)" class="nav-item" [class.active]="currentView === 'inicio'" (click)="setView('inicio')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+        Inicio
+      </a>
+      <a href="javascript:void(0)" class="nav-item" [class.active]="currentView === 'usuarios'" (click)="setView('usuarios')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+          <circle cx="9" cy="7" r="4"></circle>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+        </svg>
+        Gestión de Usuarios
+      </a>
+      <a href="javascript:void(0)" class="nav-item" [class.active]="currentView === 'digitalizacion' || currentView === 'digitalizacion-form'" (click)="setView('digitalizacion')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <line x1="10" y1="9" x2="8" y2="9"></line>
+        </svg>
+        Digitalización
+      </a>
+      <a href="javascript:void(0)" class="nav-item" [class.active]="currentView === 'reportes'" (click)="setView('reportes')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="20" x2="18" y2="10"></line>
+          <line x1="12" y1="20" x2="12" y2="4"></line>
+          <line x1="6" y1="20" x2="6" y2="14"></line>
+        </svg>
+        Reportes
+      </a>
+      <a href="javascript:void(0)" class="nav-item" [class.active]="currentView === 'configuracion'" (click)="setView('configuracion')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+        Configuración
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <header class="top-header">
+      <div class="user-profile">
+        <div class="user-info">
+          <span class="user-name">{{ adminProfile.nombre }}</span>
+          <span class="user-role">Personal Administrativo</span>
+        </div>
+        <img src="https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=100&h=100&fit=crop" alt="Admin Avatar" class="user-avatar">
+      </div>
+      <div class="header-divider"></div>
+      <button class="logout-btn" (click)="logout()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+          <polyline points="16 17 21 12 16 7"></polyline>
+          <line x1="21" y1="12" x2="9" y2="12"></line>
+        </svg>
+        Cerrar Sesión
+      </button>
+    </header>
+
+    <div class="content-body">
+      <!-- VISTA: Inicio (Overview) -->
+      <div class="view-section animate-fade" *ngIf="currentView === 'inicio'">
+        <div class="view-header">
+          <h2>Dashboard de Administración</h2>
+          <p>Bienvenido de nuevo. Aquí tienes un resumen del sistema hospitalario hoy.</p>
+        </div>
+
+        <div class="stats-cards-grid">
+          <div class="admin-stat-card">
+            <div class="stat-content">
+              <span class="stat-label">Usuarios Activos</span>
+              <div class="stat-main">
+                <span class="stat-number">{{ stats.activeUsers }}</span>
+              </div>
+            </div>
+            <div class="stat-icon-bg">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="1.5">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+            </div>
+          </div>
+
+          <div class="admin-stat-card">
+            <div class="stat-content">
+              <span class="stat-label">Usuarios Rechazados</span>
+              <div class="stat-main">
+                <span class="stat-number">{{ stats.rejectedUsers }}</span>
+              </div>
+            </div>
+            <div class="stat-icon-bg">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="1.5">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="15" y1="9" x2="9" y2="15"></line>
+                <line x1="9" y1="9" x2="15" y2="15"></line>
+              </svg>
+            </div>
+          </div>
+
+          <div class="admin-stat-card">
+            <div class="stat-content">
+              <span class="stat-label">Docs. Validados Hoy</span>
+              <div class="stat-main">
+                <span class="stat-number">{{ stats.validatedDocs }}</span>
+              </div>
+            </div>
+            <div class="stat-icon-bg">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#14b8a6" stroke-width="1.5">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-section-card">
+          <div class="table-header-row">
+            <h3>Solicitudes de Registro Pendientes</h3>
+            <span class="see-all">Ver todas →</span>
+          </div>
+          <p class="subtitle">Valida los nuevos perfiles que solicitan acceso al sistema.</p>
+
+          <div class="custom-table admin-requests-table">
+            <div class="table-head">
+              <div class="col-user">USUARIO</div>
+              <div class="col-role">ROL SOLICITADO</div>
+              <div class="col-details">DETALLES SOLICITUD</div>
+              <div class="col-actions">ACCIONES</div>
+            </div>
+            <div class="table-body">
+              <div class="table-row animate-list" *ngFor="let req of getPaginatedInicio()">
+                <div class="col-user">
+                  <div class="avatar-circle" [ngClass]="req.avatarClass">{{ req.initials }}</div>
+                  <div class="user-info">
+                    <span class="name">{{ req.names }}</span>
+                    <span class="surname">{{ req.surnames }}</span>
+                    <span class="sub-info">{{ req.email }}</span>
+                  </div>
+                </div>
+                <div class="col-role">
+                  <span class="role-text">{{ req.role }}</span>
+                </div>
+                <div class="col-details">
+                  <span class="date-text">{{ req.date }}</span>
+                  <span class="dept-text-teal">{{ req.dept | uppercase }}</span>
+                </div>
+                <div class="col-actions">
+                  <button class="btn-validar" (click)="validateRequest(req.id)">Validar</button>
+                  <button class="btn-rechazar" (click)="rejectRequest(req.id)">Rechazar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Pagination for Inicio -->
+          <div class="pagination-footer" *ngIf="pendingRequests.length > itemsPerPage">
+            <span>Mostrando {{ getPaginatedInicio().length }} de {{ pendingRequests.length }} solicitudes</span>
+            <div class="page-controls">
+              <button class="p-btn" (click)="changePage('inicio', pInicio - 1)" [disabled]="pInicio === 1">&lt;</button>
+              <button class="p-btn" [class.active]="pInicio === 1" (click)="changePage('inicio', 1)">1</button>
+              <button class="p-btn" [class.active]="pInicio === 2" (click)="changePage('inicio', 2)" *ngIf="pendingRequests.length > 3">2</button>
+              <button class="p-btn" (click)="changePage('inicio', pInicio + 1)" [disabled]="pInicio * itemsPerPage >= pendingRequests.length">&gt;</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VISTA: Gestión de Usuarios -->
+      <div class="view-section animate-fade" *ngIf="currentView === 'usuarios'">
+        <div class="view-header">
+          <h2>Gestión de Usuarios</h2>
+          <p>Administra el personal del centro médico y sus permisos de acceso.</p>
+        </div>
+
+        <div class="filter-bar-card">
+          <div class="search-input-group">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" placeholder="DNI, Nombre Completo o Email" (input)="onSearchUsuarios($event)">
+          </div>
+          <div class="select-group">
+            <label>ESTADO</label>
+            <select>
+              <option>Todos los Estados</option>
+              <option>Activo</option>
+              <option>Pendiente</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="table-section-card">
+          <div class="custom-table users-table">
+            <div class="table-head">
+              <div class="col-user">USUARIO</div>
+              <div class="col-dept">DEPARTAMENTO</div>
+              <div class="col-status">ESTADO</div>
+              <div class="col-access">ÚLTIMO ACCESO</div>
+            </div>
+            <div class="table-body">
+              <div class="table-row" *ngFor="let user of getPaginatedUsuarios()">
+                <div class="col-user-img">
+                  <div class="avatar-circle" [ngClass]="user.avatarClass">
+                    {{ user.initials }}
+                  </div>
+                  <div class="user-info">
+                    <span class="name">{{ user.names }}</span>
+                    <span class="surname">{{ user.surnames }}</span>
+                    <span class="email">{{ user.email }}</span>
+                  </div>
+                </div>
+                <div class="col-dept text-secondary">{{ user.dept }}</div>
+                <div class="col-status">
+                  <span class="status-badge" [ngClass]="{'active': user.status === 'Activo', 'pending': user.status === 'Pendiente', 'rejected': user.status === 'Rechazado'}">
+                    {{ user.status }}
+                  </span>
+                </div>
+                <div class="col-access text-secondary">{{ user.lastAccess }}</div>
+              </div>
+            </div>
+          </div>
+          <div class="pagination-footer" *ngIf="usersList.length > 0">
+            <span>Mostrando {{ getPaginatedUsuarios().length }} de {{ usersList.length }} usuarios</span>
+            <div class="page-controls">
+              <button class="p-btn" (click)="changePage('usuarios', pUsuarios - 1)" [disabled]="pUsuarios === 1">&lt;</button>
+              
+              <button *ngFor="let page of getPagesArrayUsuarios()" 
+                      class="p-btn" 
+                      [class.active]="pUsuarios === page" 
+                      (click)="changePage('usuarios', page)">
+                {{ page }}
+              </button>
+
+              <button class="p-btn" (click)="changePage('usuarios', pUsuarios + 1)" [disabled]="pUsuarios === getTotalPagesUsuarios()">&gt;</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VISTA: Digitalización -->
+      <div class="view-section animate-fade" *ngIf="currentView === 'digitalizacion'">
+        <div class="view-header">
+          <h2>Digitalización de Documentos</h2>
+        </div>
+
+        <div class="toolbar-digitalization">
+          <div class="left-tools">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+             Documentos Digitalizados
+          </div>
+          <div class="right-tools">
+            <div class="search-mini">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              <input type="text" placeholder="Buscar paciente o ID..." (input)="onSearchDigi($event)">
+            </div>
+            <button class="new-digi-btn" (click)="setView('digitalizacion-form')">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+              Nueva Digitalización
+            </button>
+            <button class="filter-small"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg></button>
+          </div>
+        </div>
+
+        <div class="table-section-card no-mt">
+          <div class="custom-table digi-table">
+            <div class="table-head">
+              <div class="col-patient">PACIENTE</div>
+              <div class="col-date">FECHA DE CARGA</div>
+              <div class="col-status">ESTADO</div>
+              <div class="col-actions">ACCIONES</div>
+            </div>
+            <div class="table-body">
+              <div class="table-row" *ngFor="let doc of getPaginatedDigi()">
+                <div class="col-patient-digi">
+                  <span class="p-name">{{ doc.names }}</span>
+                  <span class="p-surname">{{ doc.surnames }}</span>
+                  <span class="p-dni">DNI: {{ doc.id }}</span>
+                </div>
+                <div class="col-date text-secondary">{{ doc.date }}</div>
+                <div class="col-status">
+                  <span class="status-badge active"><span class="dot"></span> {{ doc.status }}</span>
+                </div>
+                <div class="col-actions-digi">
+                  <button class="icon-btn" (click)="previewFile(doc)" title="Previsualizar">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                  </button>
+                  <button class="icon-btn" (click)="downloadFile(doc)" title="Descargar">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="pagination-footer" *ngIf="digitalizedDocs.length > 0">
+            <span>Mostrando {{ getPaginatedDigi().length }} de {{ digitalizedDocs.length }} documentos</span>
+            <div class="page-controls">
+              <button class="p-btn" (click)="changePage('digi', pDigi - 1)" [disabled]="pDigi === 1">&lt;</button>
+              
+              <button *ngFor="let page of getPagesArrayDigi()" 
+                      class="p-btn" 
+                      [class.active]="pDigi === page" 
+                      (click)="changePage('digi', page)">
+                {{ page }}
+              </button>
+
+              <button class="p-btn" (click)="changePage('digi', pDigi + 1)" [disabled]="pDigi === getTotalPagesDigi()">&gt;</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DIGITALIZATION FORM VIEW (STANDARD 3-STEPS RESTORED) -->
+      <div class="view-section animate-fade" *ngIf="currentView === 'digitalizacion-form'">
+        
+        <header class="view-header compact">
+          <div class="title-with-back">
+            <button class="back-link-btn" (click)="setView('digitalizacion')">
+               <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5"></path><polyline points="12 19 5 12 12 5"></polyline></svg>
+            </button>
+            <h2>Nueva Digitalización</h2>
+          </div>
+          <p>Siga los pasos para vincular un documento al historial clínico.</p>
+        </header>
+
+        <div class="form-steps-container">
+          <!-- Progress Steps (Plomo to Morado) -->
+          <div class="form-steps-progress">
+            <div class="step" [class.active]="currentStep === 1" [class.completed]="currentStep > 1">
+              <div class="step-num">1</div>
+              <div class="step-title">IDENTIFICAR</div>
+            </div>
+            <div class="step-line"></div>
+            <div class="step" [class.active]="currentStep === 2" [class.completed]="currentStep > 2">
+              <div class="step-num">2</div>
+              <div class="step-title">CARGAR</div>
+            </div>
+            <div class="step-line"></div>
+            <div class="step" [class.active]="currentStep === 3" [class.completed]="currentStep > 3">
+              <div class="step-num">3</div>
+              <div class="step-title">FINALIZAR</div>
+            </div>
+          </div>
+
+          <!-- Step Content Wrapper (Zero Scroll Focused) -->
+          <div class="step-content-container">
+            
+            <!-- STEP 1: Dynamic Search -->
+            <div class="step-view-standard animate-fade" *ngIf="currentStep === 1">
+              <div class="search-step-box">
+                <h3>Buscar Paciente por DNI o Nombre</h3>
+                <div class="input-with-search">
+                  <input type="text" placeholder="Escriba nombre o DNI..." (input)="onFormSearchPatient($event)" maxlength="20">
+                  <button class="search-confirm-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></button>
+                </div>
+
+                <!-- Alert Context -->
+                <div class="not-found-banner animate-fade" *ngIf="patientNotFound && !selectedPatient">
+                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                   <span>DNI no encontrado. El paciente no está registrado.</span>
+                </div>
+
+                <div class="patient-preview-card animate-fade" *ngIf="selectedPatient">
+                   <div class="avatar-md" [ngClass]="selectedPatient.avatarClass">{{ selectedPatient.initials }}</div>
+                   <div class="p-details">
+                      <span class="p-label">PACIENTE DETECTADO</span>
+                      <span class="p-name">{{ selectedPatient.name }} {{ selectedPatient.surname }}</span>
+                      <span class="p-dni">DNI: {{ selectedPatient.id }}</span>
+                   </div>
+                </div>
+
+                <div class="step-actions">
+                  <button class="btn-primary-admin" (click)="currentStep = 2" [disabled]="!selectedPatient">Próximo paso →</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- STEP 2: File Dropzone -->
+            <div class="step-view-standard animate-fade" *ngIf="currentStep === 2">
+              <div class="upload-step-box">
+                <h3>Subir Historia Clínica</h3>
+                <div class="dropzone-area" (click)="fileInput.click()">
+                   <input type="file" #fileInput (change)="onFileSelected($event)" class="hidden-input" accept=".pdf">
+                   
+                   <div class="dropzone-content" *ngIf="!uploadedFile">
+                      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                      <p>Haga clic o arrastre el PDF aquí</p>
+                      <span>Formato exclusivo: PDF (Max 10MB)</span>
+                   </div>
+
+                   <div class="file-success" *ngIf="uploadedFile">
+                      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                      <span class="f-name">{{ uploadedFile.name }}</span>
+                   </div>
+                </div>
+
+                <div class="step-actions">
+                  <button class="btn-ghost-admin" (click)="currentStep = 1">Atrás</button>
+                  <button class="btn-primary-admin" (click)="currentStep = 3" [disabled]="!uploadedFile">Próximo paso →</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- STEP 3: Final Link -->
+            <div class="step-view-standard animate-fade" *ngIf="currentStep === 3">
+              <div class="summary-step-box">
+                <h3>Confirmar Vinculación</h3>
+                <div class="summary-details">
+                   <div class="summary-item">
+                      <label>PACIENTE</label>
+                      <span>{{ selectedPatient?.name }} {{ selectedPatient?.surname }}</span>
+                   </div>
+                   <div class="summary-item">
+                      <label>DOCUMENTO</label>
+                      <span>{{ uploadedFile?.name }}</span>
+                   </div>
+                </div>
+
+                <div class="step-actions">
+                  <button class="btn-ghost-admin" (click)="currentStep = 2">Atrás</button>
+                  <button class="btn-success-admin" (click)="processDigitalization()">Vincular Documento</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- VISTA: Reportes (Diseño Analytics Bento) -->
+      <div class="view-section animate-fade" *ngIf="currentView === 'reportes'">
+        <div class="view-header bento-view-header">
+          <div class="header-text">
+            <h2>Reportes y Analítica</h2>
+            <p>Monitoreo en tiempo real del ecosistema de digitalización.</p>
+          </div>
+        </div>
+
+        <div class="analytics-bento-grid">
+          <!-- Card 1: Registro de Usuarios -->
+          <div class="bento-card bento-col-2 bento-row-2">
+            <div class="b-header">
+              <span class="b-title">Actividad de Registro</span>
+              <span class="b-tag tag-purple">Últimos 7 días</span>
+            </div>
+            <div class="css-chart-container">
+              <div class="chart-bars-wrap">
+                <div class="c-bar" style="height: 40%" data-label="Lun"><span>12</span></div>
+                <div class="c-bar" style="height: 65%" data-label="Mar"><span>24</span></div>
+                <div class="c-bar" style="height: 50%" data-label="Mie"><span>18</span></div>
+                <div class="c-bar active" style="height: 90%" data-label="Jue"><span>42</span></div>
+                <div class="c-bar" style="height: 60%" data-label="Vie"><span>28</span></div>
+                <div class="c-bar" style="height: 35%" data-label="Sab"><span>10</span></div>
+                <div class="c-bar" style="height: 25%" data-label="Dom"><span>5</span></div>
+              </div>
+            </div>
+            <div class="b-meta">Monitorización de solicitudes de acceso médico al sistema central.</div>
+          </div>
+
+          <!-- Card 2: Historias Digitalizadas -->
+          <div class="bento-card">
+            <div class="b-header">
+              <span class="b-title">Historias Digitalizadas</span>
+              <div class="health-pulse"></div>
+            </div>
+            <div class="numeric-display">{{ reportStats.totalRegistros }}</div>
+            <div class="b-footer">
+              <span class="up">↑ {{ reportStats.registrosTrend }}</span> que el mes pasado
+            </div>
+          </div>
+
+          <!-- Card 3: Estado del Sistema -->
+          <div class="bento-card">
+            <div class="b-header">
+              <span class="b-title">Integridad de Datos</span>
+            </div>
+            <div class="percentage-big">{{ reportStats.indiceIntegridad }}</div>
+            <div class="b-footer status-excellent">Estado: {{ reportStats.integridadEstado }}</div>
+          </div>
+
+          <!-- Card 4: Progreso de Meta (Eliminado) -->
+
+          <!-- Card 5: Seguridad -->
+          <div class="bento-card">
+            <div class="b-header">
+              <span class="b-title">Seguridad</span>
+            </div>
+            <div class="security-shield-wrap">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+              <span class="security-text-protected">PROTEGIDO</span>
+            </div>
+            <div class="b-desc">Encriptación AES-256 activa en todos los documentos.</div>
+          </div>
+
+          <!-- Card 6: Tiempo Promedio -->
+          <div class="bento-card">
+            <div class="b-header">
+              <span class="b-title">Tiempo de Validación</span>
+            </div>
+            <div class="numeric-display text-warning comp-time-val">{{ reportStats.tiempoAprobacionH }}h {{ reportStats.tiempoAprobacionM }}m</div>
+            <div class="b-footer status-warning">Bajo la meta de 24h</div>
+          </div>
+        </div>
+
+        <!-- Secciones adicionales Refinadas -->
+        <div class="reports-extra-grid">
+          <!-- Productividad -->
+          <div class="table-section-card no-mt">
+            <div class="table-header-row">
+              <h3>Productividad del Personal</h3>
+            </div>
+            <p class="subtitle">Documentos procesados por el equipo administrativo este periodo.</p>
+            <div class="bars-list mt-md">
+              <div class="bar-user-item" *ngFor="let user of productividadUsuarios">
+                <div class="bu-info">
+                  <span>{{ user.nombre }}</span>
+                  <strong class="text-purple">{{ user.cantidad }}</strong>
+                </div>
+                <div class="progress-bar-small bar-md">
+                  <div class="fill purple" [style.width.%]="user.pct"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Validaciones Recientes Mini Table -->
+          <div class="table-section-card no-mt">
+            <div class="table-header-row">
+              <h3>Últimas Validaciones</h3>
+            </div>
+            <div class="tm-body mt-lg">
+              <div class="tm-row" *ngFor="let val of validacionesRecientes">
+                <div class="tm-med-info">
+                  <img [src]="val.img" alt="doc" class="tm-med-avatar">
+                  <div class="tm-med-details">
+                    <span class="med-name">{{ val.medico }}</span>
+                    <span class="med-spec">{{ val.especialidad }}</span>
+                  </div>
+                </div>
+                <span class="status-badge" [ngClass]="val.estado === 'Pendiente' ? 'pending' : 'active'">
+                  {{ val.estado }}
+                </span>
+              </div>
+            </div>
+            <button class="btn-ghost-admin full-width mt-lg">Gestionar Solicitudes</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- VISTA: Configuración -->
+      <div class="view-section animate-fade" *ngIf="currentView === 'configuracion'">
+        <div class="view-header">
+          <h2>Configuración</h2>
+          <p>Gestiona tu información personal, seguridad y preferencias del sistema.</p>
+        </div>
+
+        <div class="settings-main-card">
+          <div class="s-card-header">
+             <div class="h-title"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg> Perfil del Usuario</div>
+             <button class="save-changes-prime"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg> Guardar cambios</button>
+          </div>
+
+          <div class="config-profile-layout">
+            <div class="avatar-edit">
+              <img src="https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=120&h=120&fit=crop" alt="avatar" class="avatar-lg">
+            </div>
+            <div class="fields-grid-config">
+              <div class="form-item"><label>NOMBRE COMPLETO</label><input type="text" [value]="adminProfile.nombre"></div>
+              <div class="form-item"><label>ESPECIALIDAD</label><input type="text" [value]="adminProfile.especialidad"></div>
+              <div class="form-item"><label>NÚMERO DE COLEGIATURA</label><input type="text" [value]="adminProfile.colegiatura"></div>
+              <div class="form-item"><label>ROL</label><input type="text" [value]="adminProfile.rol" readonly></div>
+            </div>
+          </div>
+
+          <div class="s-card-header mt-lg">
+             <div class="h-title"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg> Preferencias del Sistema</div>
+          </div>
+
+          <div class="preferences-config-row">
+            <div class="pref-item">
+              <label>IDIOMA DE LA INTERFAZ</label>
+              <select><option>Español (España)</option></select>
+            </div>
+            <div class="pref-item">
+              <label>MODO DE VISUALIZACIÓN</label>
+              <div class="mode-switch">
+                <button class="m-btn active"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg> Claro</button>
+                <button class="m-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg> Oscuro</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="danger-zone-footer">
+            <div class="dz-info">
+              <h4>Eliminar cuenta</h4>
+              <p>Una vez que elimines tu cuenta, no hay vuelta atrás. Por favor, asegúrate.</p>
+            </div>
+            <button class="btn-delete">Eliminar cuenta</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- IMMERSIVE PREVIEW MODAL -->
+  <div class="admin-modal-overlay animate-fade" *ngIf="previewModalVisible">
+     <div class="preview-modal-container animate-slide-up">
+        <header class="p-modal-header">
+           <div class="p-modal-info">
+              <h3>Previsualización de Documento</h3>
+              <p>{{ selectedDoc?.names }} {{ selectedDoc?.surnames }} • {{ selectedDoc?.fileName }}</p>
+           </div>
+           <div class="p-modal-actions">
+              <button class="p-close-btn" (click)="closePreview()">X</button>
+           </div>
+        </header>
+        <div class="p-modal-body">
+           <!-- Direct sanitization method from TS -->
+           <iframe *ngIf="previewUrl && (selectedDoc?.fileType?.includes('pdf') || !selectedDoc?.fileType)" [src]="getSafeUrl(previewUrl)" width="100%" height="100%" frameborder="0"></iframe>
+           <img *ngIf="previewUrl && (selectedDoc?.fileType?.includes('image') || selectedDoc?.fileType?.includes('jpg') || selectedDoc?.fileType?.includes('png'))" [src]="getSafeUrl(previewUrl)" class="img-preview" alt="Vista previa">
+        </div>
+     </div>
+  </div>
+</div>

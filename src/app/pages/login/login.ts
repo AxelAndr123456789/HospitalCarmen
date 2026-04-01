@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 
+import { AuthService } from '../../services/auth/auth';
+
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -14,7 +16,11 @@ export class Login implements OnInit {
   loginForm: FormGroup;
   showPassword = false;
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private authService: AuthService
+  ) {
     this.loginForm = this.fb.group({
       username: ['', [Validators.required, Validators.minLength(4)]],
       password: ['', [Validators.required, Validators.minLength(6)]]
@@ -29,8 +35,13 @@ export class Login implements OnInit {
 
   onSubmit(): void {
     if (this.loginForm.valid) {
-      console.log('Login attempt:', this.loginForm.value);
-      this.router.navigate(['/dashboard']);
+      this.authService.login(this.loginForm.value).subscribe(user => {
+        if (user.role === 'admin') {
+          this.router.navigate(['/admin-dashboard']);
+        } else {
+          this.router.navigate(['/dashboard']);
+        }
+      });
     } else {
       this.loginForm.markAllAsTouched();
     }
