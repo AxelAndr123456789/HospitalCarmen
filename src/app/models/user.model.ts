@@ -2,6 +2,7 @@ export interface User {
     id: number;
     username: string;
     email: string;
-    role: 'admin' | 'doctor' | 'nurse' | 'patient';
+    name?: string;
+    role: 'admin' | 'doctor' | 'nurse' | 'patient' | 'fedatario';
     token?: string;
 }

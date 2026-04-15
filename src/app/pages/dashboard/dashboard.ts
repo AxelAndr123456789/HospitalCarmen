@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../services/auth/auth';
 
 @Component({
   selector: 'app-dashboard',
@@ -101,8 +102,28 @@ export class Dashboard {
     nombre: 'Juan Pérez Rodríguez',
     especialidad: 'Cirugía General',
     colegiatura: 'CMP-459283',
-    rol: 'Médico',
+    rol: 'Médico Especialista',
   };
+
+  constructor(
+    private router: Router,
+    private authService: AuthService
+  ) {
+    const currentUser = this.authService.currentUserValue;
+    if (currentUser) {
+      this.userProfile.nombre = currentUser.name || currentUser.username;
+      this.userProfile.rol = 'Médico Especialista';
+      
+      // Update welcome messages in translations
+      this.translations.es.welcome = `Bienvenido, ${this.userProfile.nombre}`;
+      this.translations.en.welcome = `Welcome, ${this.userProfile.nombre}`;
+    }
+  }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
 
   // Datos del paciente seleccionado para previsualización
   selectedPatient: any = {
@@ -550,7 +571,7 @@ export class Dashboard {
     });
   }
 
-  constructor(private router: Router) {}
+
 
   t(key: string): string {
     return this.translations[this.currentLang][key] || key;
@@ -891,9 +912,7 @@ export class Dashboard {
     this.currentView = 'historias';
   }
 
-  logout(): void {
-    this.router.navigate(['/login']);
-  }
+
 
   saveChanges(): void {
     alert(

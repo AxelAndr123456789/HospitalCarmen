@@ -38,6 +38,8 @@ export class Login implements OnInit {
       this.authService.login(this.loginForm.value).subscribe(user => {
         if (user.role === 'admin') {
           this.router.navigate(['/admin-dashboard']);
+        } else if (user.role === 'fedatario') {
+          this.router.navigate(['/fedatario-dashboard']);
         } else {
           this.router.navigate(['/dashboard']);
         }

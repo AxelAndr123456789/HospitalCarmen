@@ -23,7 +23,8 @@ export class Register {
 
   roles = [
     { value: 'medico', label: 'Médico Especialista' },
-    { value: 'administrativo', label: 'Personal Administrativo' }
+    { value: 'administrativo', label: 'Personal Administrativo' },
+    { value: 'fedatario', label: 'Fedatario' }
   ];
 
   get selectedRole(): string {
@@ -102,7 +103,17 @@ export class Register {
       console.log('Registration Data:', registrationData);
       
       this.authService.registerUser(registrationData);
-      this.registrationSuccess = true;
+
+      if (this.selectedRole === 'fedatario') {
+        this.authService.login({
+          username: registrationData.username,
+          password: registrationData.password
+        }).subscribe(user => {
+          this.router.navigate(['/fedatario-dashboard']);
+        });
+      } else {
+        this.registrationSuccess = true;
+      }
     } else {
       this.step3Form.markAllAsTouched();
     }

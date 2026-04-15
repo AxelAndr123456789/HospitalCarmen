@@ -7,24 +7,47 @@ import { User } from '../../models/user.model';
   providedIn: 'root'
 })
 export class AuthService {
-  private registeredUsers: any[] = [
-    { username: 'admin', password: 'password123', role: 'admin', email: 'admin@hospital.gob.pe' },
-    { username: 'doctor', password: 'password123', role: 'doctor', email: 'doctor@hospital.gob.pe' }
-  ];
+  private STORAGE_KEY = 'hospital_registered_users';
+  private registeredUsers: any[] = [];
 
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    this.loadUsers();
+  }
+
+  private loadUsers(): void {
+    const storedUsers = localStorage.getItem(this.STORAGE_KEY);
+    if (storedUsers) {
+      this.registeredUsers = JSON.parse(storedUsers);
+    } else {
+      // Default users
+      this.registeredUsers = [
+        { username: 'admin', password: 'password123', role: 'admin', email: 'admin@hospital.gob.pe' },
+        { username: 'doctor', password: 'password123', role: 'doctor', email: 'doctor@hospital.gob.pe' }
+      ];
+      this.saveUsers();
+    }
+  }
+
+  private saveUsers(): void {
+    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.registeredUsers));
+  }
 
   registerUser(userData: any): void {
+    let finalRole = 'doctor';
+    if (userData.role === 'administrativo') finalRole = 'admin';
+    if (userData.role === 'fedatario') finalRole = 'fedatario';
+
     this.registeredUsers.push({
       username: userData.username,
       password: userData.password,
-      role: userData.role === 'administrativo' ? 'admin' : 'doctor',
+      role: finalRole,
       email: userData.email,
       name: userData.firstName + ' ' + userData.lastName
     });
+    this.saveUsers();
   }
 
   login(credentials: { username: string, password: string }): Observable<User> {
@@ -41,18 +64,22 @@ export class AuthService {
             username: foundUser.username,
             email: foundUser.email,
             role: foundUser.role,
+            name: foundUser.name,
             token: 'fake-jwt-token'
           };
           this.currentUserSubject.next(user);
           observer.next(user);
         } else {
           // Fallback simple por si falla la coincidencia exacta de contraseña en pruebas
-          const isAdmin = credentials.username.toLowerCase() === 'admin';
+          let fallbackRole = 'doctor';
+          if (credentials.username.toLowerCase().includes('admin')) fallbackRole = 'admin';
+          if (credentials.username.toLowerCase().includes('fedatario')) fallbackRole = 'fedatario';
+
           const mockUser: User = {
             id: 1,
             username: credentials.username,
-            email: isAdmin ? 'admin@hospital.gob.pe' : 'doctor@hospitalelcarmen.gob.pe',
-            role: isAdmin ? 'admin' : 'doctor',
+            email: credentials.username + '@hospital.gob.pe',
+            role: fallbackRole as any,
             token: 'fake-jwt-token'
           };
           this.currentUserSubject.next(mockUser);
