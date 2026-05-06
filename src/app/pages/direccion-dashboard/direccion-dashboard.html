@@ -1,0 +1,398 @@
+<div class="dashboard-container">
+  <aside class="sidebar">
+    <div class="logo-container">
+      <div class="logo-box">
+        <img src="logo.png" alt="Logo" />
+      </div>
+      <div class="logo-text">
+        <h1>HOSPITAL<br />EL CARMEN</h1>
+        <span>DIRECCIÓN</span>
+      </div>
+    </div>
+
+    <nav class="nav-menu">
+      <a href="javascript:void(0)" class="nav-item" [class.active]="activeView === 'inicio'" (click)="changeView('inicio')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+        Inicio
+      </a>
+      <a href="javascript:void(0)" class="nav-item" [class.active]="activeView === 'documents_received'" (click)="changeView('documents_received')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="12" y1="18" x2="12" y2="12"></line>
+          <polyline points="9 15 12 18 15 15"></polyline>
+        </svg>
+        Documentos Recibidos
+      </a>
+      <a href="javascript:void(0)" class="nav-item" [class.active]="activeView === 'documents_signed'" (click)="changeView('documents_signed')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <polyline points="9 15 11 17 15 13"></polyline>
+        </svg>
+        Documentos Firmados
+      </a>
+      <a href="javascript:void(0)" class="nav-item" [class.active]="activeView === 'documents_sent'" (click)="changeView('documents_sent')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="22" y1="2" x2="11" y2="13"></line>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+        </svg>
+        Documentos Enviados
+      </a>
+      <a href="javascript:void(0)" class="nav-item" [class.active]="activeView === 'expedientes'" (click)="changeView('expedientes')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+        </svg>
+        Expedientes
+      </a>
+      <a href="javascript:void(0)" class="nav-item" [class.active]="activeView === 'reportes'" (click)="changeView('reportes')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="20" x2="18" y2="10"></line>
+          <line x1="12" y1="20" x2="12" y2="4"></line>
+          <line x1="6" y1="20" x2="6" y2="14"></line>
+        </svg>
+        Reportes
+      </a>
+      <a href="javascript:void(0)" class="nav-item" [class.active]="activeView === 'configuracion'" (click)="changeView('configuracion')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+        Configuración
+      </a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <header class="top-header">
+      <div class="user-profile">
+        <div class="user-info">
+          <span class="user-name">{{ currentUser?.name || userProfile.nombre }}</span>
+          <span class="user-role">{{ userProfile.rol }}</span>
+        </div>
+        <img class="user-avatar" [src]="userProfile.avatar" alt="Avatar" />
+      </div>
+      <div class="header-divider"></div>
+      <button class="logout-btn" (click)="logout()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+          <polyline points="16 17 21 12 16 7"></polyline>
+          <line x1="21" y1="12" x2="9" y2="12"></line>
+        </svg>
+        Cerrar Sesión
+      </button>
+    </header>
+
+    <div class="content-wrapper">
+      <div class="view-section animate-fade" *ngIf="activeView === 'inicio'">
+        <div class="view-header">
+          <h2>Dashboard de Dirección</h2>
+          <p>Bienvenido a tu panel. Aquí tienes un resumen de los documentos y expedientes bajo tu gestión.</p>
+        </div>
+
+        <div class="stats-cards-grid">
+          <div class="stat-card">
+            <div class="stat-content">
+              <span class="stat-label">Documentos Recibidos</span>
+              <div class="stat-main">
+                <span class="stat-number">{{ receivedDocs.length }}</span>
+              </div>
+            </div>
+            <div class="stat-icon-bg">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#0d9488" stroke-width="1.5">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+              </svg>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-content">
+              <span class="stat-label">Documentos Firmados</span>
+              <div class="stat-main">
+                <span class="stat-number">{{ signedDocs.length }}</span>
+              </div>
+            </div>
+            <div class="stat-icon-bg">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="1.5">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <polyline points="9 15 11 17 15 13"></polyline>
+              </svg>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-content">
+              <span class="stat-label">Documentos Enviados</span>
+              <div class="stat-main">
+                <span class="stat-number">{{ sentDocs.length }}</span>
+              </div>
+            </div>
+            <div class="stat-icon-bg">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5">
+                <line x1="22" y1="2" x2="11" y2="13"></line>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+              </svg>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-content">
+              <span class="stat-label">Reportes Generados</span>
+              <div class="stat-main">
+                <span class="stat-number">{{ reportActivities.length }}</span>
+              </div>
+            </div>
+            <div class="stat-icon-bg">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="1.5">
+                <line x1="18" y1="20" x2="18" y2="10"></line>
+                <line x1="12" y1="20" x2="12" y2="4"></line>
+                <line x1="6" y1="20" x2="6" y2="14"></line>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-section-card">
+          <div class="table-header-row">
+            <h3>Documentos Recientes</h3>
+            <span class="see-all">Ver todos →</span>
+          </div>
+          <p class="subtitle">Últimos documentos procesados en el sistema.</p>
+
+          <div class="custom-table">
+            <div class="table-head">
+              <div class="col-exp">EXPEDIENTE</div>
+              <div class="col-doc">DOCUMENTO</div>
+              <div class="col-remitente">REMITENTE</div>
+              <div class="col-fecha">FECHA</div>
+              <div class="col-estado">ESTADO</div>
+            </div>
+            <div class="table-body">
+              <div class="table-row animate-list" *ngFor="let item of receivedDocs.slice(0, 3)">
+                <div class="col-exp">{{ item.exp }}</div>
+                <div class="col-doc">{{ item.doc }}</div>
+                <div class="col-remitente">{{ item.remitente }}</div>
+                <div class="col-fecha">{{ item.fecha }}</div>
+                <div class="col-estado">
+                  <span class="status-pill" [ngClass]="item.estado === 'Pendiente' ? 'pill-warning' : item.estado === 'En revisión' ? 'pill-purple' : 'pill-green'">{{ item.estado }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-header" *ngIf="activeView === 'documents_received'">
+        <div>
+          <h2>Documentos Recibidos</h2>
+          <p>Consulta y supervisa los expedientes entrantes desde las distintas áreas.</p>
+        </div>
+      </div>
+
+      <div *ngIf="activeView === 'documents_received'">
+        <div class="stats-grid">
+          <div class="stat-card card-teal">
+            <span class="stat-card-title">Recibidos</span>
+            <h3>{{ receivedDocs.length }}</h3>
+            <p>Documentos en status de revisión o por procesar.</p>
+          </div>
+          <div class="stat-card card-indigo">
+            <span class="stat-card-title">Pendientes</span>
+            <h3>{{ receivedDocs.filter(item => item.estado !== 'Recibido').length }}</h3>
+            <p>Documentos que aún requieren acción.</p>
+          </div>
+        </div>
+
+        <div class="custom-table">
+          <div class="table-head">
+            <div class="col-exp">EXPEDIENTE</div>
+            <div class="col-doc">DOCUMENTO</div>
+            <div class="col-remitente">REMITENTE</div>
+            <div class="col-fecha">FECHA</div>
+            <div class="col-estado">ESTADO</div>
+          </div>
+          <div class="table-body">
+            <div class="table-row" *ngFor="let item of receivedDocs">
+              <div class="col-exp">{{ item.exp }}</div>
+              <div class="col-doc">{{ item.doc }}</div>
+              <div class="col-remitente">{{ item.remitente }}</div>
+              <div class="col-fecha">{{ item.fecha }}</div>
+              <div class="col-estado">
+                <span class="status-pill" [ngClass]="item.estado === 'Pendiente' ? 'pill-warning' : item.estado === 'En revisión' ? 'pill-purple' : 'pill-green'">{{ item.estado }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-header" *ngIf="activeView === 'documents_signed'">
+        <div>
+          <h2>Documentos Firmados</h2>
+          <p>Registros de documentos ya firmados y listos para archivo.</p>
+        </div>
+      </div>
+
+      <div *ngIf="activeView === 'documents_signed'">
+        <div class="custom-table">
+          <div class="table-head">
+            <div class="col-exp">EXPEDIENTE</div>
+            <div class="col-doc">DOCUMENTO</div>
+            <div class="col-remitente">PACIENTE</div>
+            <div class="col-fecha">FECHA</div>
+            <div class="col-estado">ESTADO</div>
+          </div>
+          <div class="table-body">
+            <div class="table-row" *ngFor="let item of signedDocs">
+              <div class="col-exp">{{ item.exp }}</div>
+              <div class="col-doc">{{ item.doc }}</div>
+              <div class="col-remitente">{{ item.paciente }}</div>
+              <div class="col-fecha">{{ item.fecha }}</div>
+              <div class="col-estado">
+                <span class="status-pill" [ngClass]="item.estado === 'Firmado' ? 'pill-green' : 'pill-purple'">{{ item.estado }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-header" *ngIf="activeView === 'documents_sent'">
+        <div>
+          <h2>Documentos Enviados</h2>
+          <p>Historial de documentos enviados a otras dependencias.</p>
+        </div>
+      </div>
+
+      <div *ngIf="activeView === 'documents_sent'">
+        <div class="custom-table">
+          <div class="table-head">
+            <div class="col-exp">EXPEDIENTE</div>
+            <div class="col-doc">DOCUMENTO</div>
+            <div class="col-remitente">DESTINO</div>
+            <div class="col-fecha">FECHA</div>
+            <div class="col-estado">ESTADO</div>
+          </div>
+          <div class="table-body">
+            <div class="table-row" *ngFor="let item of sentDocs">
+              <div class="col-exp">{{ item.exp }}</div>
+              <div class="col-doc">{{ item.doc }}</div>
+              <div class="col-remitente">{{ item.destino }}</div>
+              <div class="col-fecha">{{ item.fecha }}</div>
+              <div class="col-estado">
+                <span class="status-pill pill-blue">{{ item.estado }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-header" *ngIf="activeView === 'expedientes'">
+        <div>
+          <h2>Expedientes</h2>
+          <p>Control de expedientes y búsqueda rápida por paciente o documento.</p>
+        </div>
+      </div>
+
+      <div *ngIf="activeView === 'expedientes'">
+        <div class="search-bar">
+          <input type="text" placeholder="Buscar expediente, nombre o DNI" (input)="onSearchExpedientes($event)" />
+        </div>
+
+        <div class="custom-table">
+          <div class="table-head">
+            <div class="col-exp">EXPEDIENTE</div>
+            <div class="col-doc">DOCUMENTO</div>
+            <div class="col-remitente">NOMBRE</div>
+            <div class="col-fecha">FECHA</div>
+            <div class="col-estado">DOCUMENTOS</div>
+          </div>
+          <div class="table-body">
+            <div class="table-row" *ngFor="let item of getPaginatedExpedientes()">
+              <div class="col-exp">{{ item.expediente }}</div>
+              <div class="col-doc">{{ item.documento }}</div>
+              <div class="col-remitente">{{ item.names }} {{ item.surnames }}</div>
+              <div class="col-fecha">{{ item.date }}</div>
+              <div class="col-estado">{{ item.docsCount }}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pagination">
+          <button class="page-button" [disabled]="pExpedientes === 1" (click)="changePage('expedientes', pExpedientes - 1)">Anterior</button>
+          <button class="page-button" *ngFor="let page of getPagesArrayExpedientes()" [class.active]="page === pExpedientes" (click)="changePage('expedientes', page)">{{ page }}</button>
+          <button class="page-button" [disabled]="pExpedientes === getTotalPagesExpedientes()" (click)="changePage('expedientes', pExpedientes + 1)">Siguiente</button>
+        </div>
+      </div>
+
+      <div class="section-header" *ngIf="activeView === 'reportes'">
+        <div>
+          <h2>Reportes</h2>
+          <p>Análisis y métricas clave para la gestión de documentos.</p>
+        </div>
+      </div>
+
+      <div *ngIf="activeView === 'reportes'">
+        <div class="stats-grid">
+          <div class="stat-card" *ngFor="let card of reportCards" [ngClass]="card.colorClass">
+            <span class="stat-card-title">{{ card.label }}</span>
+            <h3>{{ card.value }}</h3>
+            <p>{{ card.change }}</p>
+          </div>
+        </div>
+
+        <div class="activity-list">
+          <div class="activity-item" *ngFor="let activity of reportActivities">
+            <div>
+              <h4>{{ activity.title }}</h4>
+              <p>{{ activity.detail }}</p>
+            </div>
+            <span class="badge" [ngClass]="activity.badgeClass">{{ activity.estado }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-header" *ngIf="activeView === 'configuracion'">
+        <div>
+          <h2>Configuración</h2>
+          <p>Personaliza tu experiencia con ajustes rápidos.</p>
+        </div>
+      </div>
+
+      <div *ngIf="activeView === 'configuracion'">
+        <div class="settings-panel">
+          <div class="setting-row">
+            <span>Notificaciones</span>
+            <label class="switch">
+              <input type="checkbox" [(ngModel)]="settings.notifications" />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="setting-row">
+            <span>Modo oscuro</span>
+            <label class="switch">
+              <input type="checkbox" [(ngModel)]="settings.darkMode" />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="setting-row">
+            <span>Informes por correo</span>
+            <label class="switch">
+              <input type="checkbox" [(ngModel)]="settings.emailReports" />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="setting-row">
+            <span>Idioma</span>
+            <select [(ngModel)]="settings.language">
+              <option *ngFor="let language of languages" [value]="language.code">{{ language.name }}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

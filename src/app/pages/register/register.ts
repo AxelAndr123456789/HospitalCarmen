@@ -25,7 +25,8 @@ export class Register {
     { value: 'medico', label: 'Médico Especialista' },
     { value: 'administrativo', label: 'Personal Administrativo' },
     { value: 'fedatario', label: 'Fedatario' },
-    { value: 'jefatura', label: 'Jefatura' }
+    { value: 'jefatura', label: 'Jefatura' },
+    { value: 'direccion', label: 'Dirección' }
   ];
 
   get selectedRole(): string {

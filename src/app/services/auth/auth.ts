@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { User } from '../../models/user.model';
 
 @Injectable({
@@ -25,7 +25,8 @@ export class AuthService {
       // Default users
       this.registeredUsers = [
         { username: 'admin', password: 'password123', role: 'admin', email: 'admin@hospital.gob.pe' },
-        { username: 'doctor', password: 'password123', role: 'doctor', email: 'doctor@hospital.gob.pe' }
+        { username: 'doctor', password: 'password123', role: 'doctor', email: 'doctor@hospital.gob.pe' },
+        { username: 'direccion', password: 'password123', role: 'direccion', email: 'direccion@hospital.gob.pe' }
       ];
       this.saveUsers();
     }
@@ -40,6 +41,7 @@ export class AuthService {
     if (userData.role === 'administrativo') finalRole = 'admin';
     if (userData.role === 'fedatario') finalRole = 'fedatario';
     if (userData.role === 'jefatura') finalRole = 'jefatura';
+    if (userData.role === 'direccion') finalRole = 'direccion';
 
     this.registeredUsers.push({
       username: userData.username,
@@ -76,6 +78,7 @@ export class AuthService {
           if (credentials.username.toLowerCase().includes('admin')) fallbackRole = 'admin';
           if (credentials.username.toLowerCase().includes('fedatario')) fallbackRole = 'fedatario';
           if (credentials.username.toLowerCase().includes('jefatura')) fallbackRole = 'jefatura';
+          if (credentials.username.toLowerCase().includes('direccion')) fallbackRole = 'direccion';
 
           const mockUser: User = {
             id: 1,

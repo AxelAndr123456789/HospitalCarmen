@@ -6,6 +6,7 @@ import { Dashboard } from './pages/dashboard/dashboard';
 import { AdminDashboard } from './pages/admin-dashboard/admin-dashboard';
 import { JefaturaDashboard } from './pages/jefatura-dashboard/jefatura-dashboard';
 import { FedatarioDashboard } from './pages/fedatario-dashboard/fedatario-dashboard';
+import { DireccionDashboard } from './pages/direccion-dashboard/direccion-dashboard';
 
 export const routes: Routes = [
     { path: 'login', component: Login },
@@ -15,6 +16,7 @@ export const routes: Routes = [
     { path: 'admin-dashboard', component: AdminDashboard },
     { path: 'fedatario-dashboard', component: FedatarioDashboard },
     { path: 'jefatura-dashboard', component: JefaturaDashboard },
+    { path: 'direccion-dashboard', component: DireccionDashboard },
     { path: '', redirectTo: '/login', pathMatch: 'full' },
     { path: '**', redirectTo: '/login' }
 ];

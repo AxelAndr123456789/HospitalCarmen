@@ -42,6 +42,8 @@ export class Login implements OnInit {
           this.router.navigate(['/fedatario-dashboard']);
         } else if (user.role === 'jefatura') {
           this.router.navigate(['/jefatura-dashboard']);
+        } else if (user.role === 'direccion') {
+          this.router.navigate(['/direccion-dashboard']);
         } else {
           this.router.navigate(['/dashboard']);
         }
