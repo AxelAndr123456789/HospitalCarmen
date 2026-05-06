@@ -3,6 +3,6 @@ export interface User {
     username: string;
     email: string;
     name?: string;
-    role: 'admin' | 'doctor' | 'nurse' | 'patient' | 'fedatario';
+    role: 'admin' | 'doctor' | 'nurse' | 'patient' | 'fedatario' | 'jefatura';
     token?: string;
 }

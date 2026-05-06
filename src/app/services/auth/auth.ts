@@ -39,6 +39,7 @@ export class AuthService {
     let finalRole = 'doctor';
     if (userData.role === 'administrativo') finalRole = 'admin';
     if (userData.role === 'fedatario') finalRole = 'fedatario';
+    if (userData.role === 'jefatura') finalRole = 'jefatura';
 
     this.registeredUsers.push({
       username: userData.username,
@@ -74,6 +75,7 @@ export class AuthService {
           let fallbackRole = 'doctor';
           if (credentials.username.toLowerCase().includes('admin')) fallbackRole = 'admin';
           if (credentials.username.toLowerCase().includes('fedatario')) fallbackRole = 'fedatario';
+          if (credentials.username.toLowerCase().includes('jefatura')) fallbackRole = 'jefatura';
 
           const mockUser: User = {
             id: 1,

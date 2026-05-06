@@ -24,7 +24,8 @@ export class Register {
   roles = [
     { value: 'medico', label: 'Médico Especialista' },
     { value: 'administrativo', label: 'Personal Administrativo' },
-    { value: 'fedatario', label: 'Fedatario' }
+    { value: 'fedatario', label: 'Fedatario' },
+    { value: 'jefatura', label: 'Jefatura' }
   ];
 
   get selectedRole(): string {
