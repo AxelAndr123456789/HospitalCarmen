@@ -68,331 +68,1258 @@
 
   <main class="main-content">
     <header class="top-header">
-      <div class="user-profile">
-        <div class="user-info">
-          <span class="user-name">{{ currentUser?.name || userProfile.nombre }}</span>
-          <span class="user-role">{{ userProfile.rol }}</span>
-        </div>
-        <img class="user-avatar" [src]="userProfile.avatar" alt="Avatar" />
+
+  <!-- BUSCADOR -->
+  <div class="header-search">
+    <svg width="18" height="18" viewBox="0 0 24 24"
+         fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="11" cy="11" r="7"></circle>
+      <line x1="16.5" y1="16.5" x2="21" y2="21"></line>
+    </svg>
+
+    <input
+      type="text"
+      placeholder="Buscar expediente..."
+    />
+  </div>
+
+  <!-- DERECHA -->
+  <div class="header-right">
+
+    <!-- NOTIFICACIÓN -->
+    <button class="notif-btn">
+      <svg width="20" height="20" viewBox="0 0 24 24"
+           fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"></path>
+        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+      </svg>
+
+      <span class="notif-dot"></span>
+    </button>
+
+    <!-- PERFIL -->
+    <div class="user-profile-box">
+
+      <div class="user-info">
+        <span class="user-name">
+          {{ currentUser?.name || userProfile.nombre }}
+        </span>
+
+        <span class="user-role">
+          {{ userProfile.rol }}
+        </span>
       </div>
-      <div class="header-divider"></div>
-      <button class="logout-btn" (click)="logout()">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-          <polyline points="16 17 21 12 16 7"></polyline>
-          <line x1="21" y1="12" x2="9" y2="12"></line>
-        </svg>
-        Cerrar Sesión
-      </button>
-    </header>
+
+      <img
+        class="user-avatar"
+        [src]="userProfile.avatar"
+        alt="Avatar"
+      />
+
+    </div>
+
+    <!-- LOGOUT -->
+    <button class="logout-btn" (click)="logout()">
+
+      <svg width="18" height="18" viewBox="0 0 24 24"
+           fill="none" stroke="currentColor" stroke-width="2.2">
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+        <polyline points="16 17 21 12 16 7"></polyline>
+        <line x1="21" y1="12" x2="9" y2="12"></line>
+      </svg>
+
+      Cerrar Sesión
+
+    </button>
+
+  </div>
+
+</header>
 
     <div class="content-wrapper">
+      <!-- VISTA: Inicio -->
       <div class="view-section animate-fade" *ngIf="activeView === 'inicio'">
         <div class="view-header">
           <h2>Dashboard de Dirección</h2>
-          <p>Bienvenido a tu panel. Aquí tienes un resumen de los documentos y expedientes bajo tu gestión.</p>
+          <p>Bienvenido de nuevo. Aquí tienes un resumen del sistema de gestión documental hoy.</p>
         </div>
 
-        <div class="stats-cards-grid">
-          <div class="stat-card">
-            <div class="stat-content">
-              <span class="stat-label">Documentos Recibidos</span>
-              <div class="stat-main">
-                <span class="stat-number">{{ receivedDocs.length }}</span>
+        <div class="overview-stats">
+          <div class="ov-card ov-recibidos">
+            <div class="ov-card-top">
+              <span class="ov-card-label">Documentos Recibidos (por día)</span>
+              <div class="ov-card-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                </svg>
               </div>
             </div>
-            <div class="stat-icon-bg">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#0d9488" stroke-width="1.5">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                <polyline points="14 2 14 8 20 8"></polyline>
+            <div class="ov-card-body">
+              <span class="ov-card-number">{{ dailyReceivedCount }}</span>
+            </div>
+            <div class="ov-card-footer">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
               </svg>
+              Actualizado hace 2 min
             </div>
           </div>
 
-          <div class="stat-card">
-            <div class="stat-content">
-              <span class="stat-label">Documentos Firmados</span>
-              <div class="stat-main">
-                <span class="stat-number">{{ signedDocs.length }}</span>
+          <div class="ov-card ov-pendientes">
+            <div class="ov-card-top">
+              <span class="ov-card-label">Pendientes de Firma</span>
+              <div class="ov-card-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M3 7h18"></path>
+                  <path d="M7 11h10"></path>
+                  <path d="M11 15h2"></path>
+                </svg>
               </div>
             </div>
-            <div class="stat-icon-bg">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="1.5">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                <polyline points="14 2 14 8 20 8"></polyline>
-                <polyline points="9 15 11 17 15 13"></polyline>
+            <div class="ov-card-body">
+              <span class="ov-card-number">{{ pendingSignatureCount }}</span>
+            </div>
+            <div class="ov-card-footer">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="16" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12.01" y2="8"></line>
               </svg>
+              Requieren atención
             </div>
           </div>
 
-          <div class="stat-card">
-            <div class="stat-content">
-              <span class="stat-label">Documentos Enviados</span>
-              <div class="stat-main">
-                <span class="stat-number">{{ sentDocs.length }}</span>
-              </div>
+          <div class="ov-card ov-firmados">
+            <div class="ov-card-top">
+              <span class="ov-card-label">Firmados Hoy</span>
             </div>
-            <div class="stat-icon-bg">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5">
-                <line x1="22" y1="2" x2="11" y2="13"></line>
-                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            <div class="ov-card-body">
+              <span class="ov-card-number">{{ dailySignedCount }}</span>
+              <span class="ov-card-badge badge-trend">+12% vs ayer</span>
+            </div>
+            <div class="ov-card-footer">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="16" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12.01" y2="8"></line>
               </svg>
+              Meta diaria: 80%
             </div>
           </div>
 
-          <div class="stat-card">
-            <div class="stat-content">
-              <span class="stat-label">Reportes Generados</span>
-              <div class="stat-main">
-                <span class="stat-number">{{ reportActivities.length }}</span>
-              </div>
+          <div class="ov-card ov-enviados">
+            <div class="ov-card-top">
+              <span class="ov-card-label">Enviados Hoy</span>
             </div>
-            <div class="stat-icon-bg">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="1.5">
-                <line x1="18" y1="20" x2="18" y2="10"></line>
-                <line x1="12" y1="20" x2="12" y2="4"></line>
-                <line x1="6" y1="20" x2="6" y2="14"></line>
+            <div class="ov-card-body">
+              <span class="ov-card-number">{{ dailySentCount }}</span>
+            </div>
+            <div class="ov-card-footer">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                <polyline points="17 6 23 6 23 12"></polyline>
               </svg>
+              Procesados correctamente
             </div>
           </div>
         </div>
 
-        <div class="table-section-card">
-          <div class="table-header-row">
-            <h3>Documentos Recientes</h3>
-            <span class="see-all">Ver todos →</span>
-          </div>
-          <p class="subtitle">Últimos documentos procesados en el sistema.</p>
-
-          <div class="custom-table">
-            <div class="table-head">
-              <div class="col-exp">EXPEDIENTE</div>
-              <div class="col-doc">DOCUMENTO</div>
-              <div class="col-remitente">REMITENTE</div>
-              <div class="col-fecha">FECHA</div>
-              <div class="col-estado">ESTADO</div>
+        <div class="section-box priority-section">
+          <div class="section-head">
+            <div class="section-head-left">
+              <svg class="priority-warn-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2.5">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                <line x1="12" y1="9" x2="12" y2="13"></line>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+              </svg>
+              <h2>EXPEDIENTES URGENTES POR REVISAR</h2>
             </div>
-            <div class="table-body">
-              <div class="table-row animate-list" *ngFor="let item of receivedDocs.slice(0, 3)">
-                <div class="col-exp">{{ item.exp }}</div>
-                <div class="col-doc">{{ item.doc }}</div>
-                <div class="col-remitente">{{ item.remitente }}</div>
-                <div class="col-fecha">{{ item.fecha }}</div>
-                <div class="col-estado">
-                  <span class="status-pill" [ngClass]="item.estado === 'Pendiente' ? 'pill-warning' : item.estado === 'En revisión' ? 'pill-purple' : 'pill-green'">{{ item.estado }}</span>
+            <a class="section-link" (click)="changeView('documents_received')">Ver todos los pendientes</a>
+          </div>
+
+          <div class="priority-list">
+            <div class="priority-row" *ngFor="let item of urgentExpedientes">
+              <div class="priority-row-info">
+                <div class="priority-field">
+                  <span class="priority-label">EXPEDIENTE</span>
+                  <span class="priority-value exp-value">{{ item.expediente }}</span>
+                </div>
+                <div class="priority-field">
+                  <span class="priority-label">PACIENTE</span>
+                  <span class="priority-value">{{ item.paciente }}</span>
+                </div>
+                <div class="priority-field">
+                  <span class="priority-label">RECIBIDO</span>
+                  <span class="priority-value">{{ item.recibido }}</span>
                 </div>
               </div>
+              <div class="priority-row-actions">
+                <span class="badge-urgente">URGENTE</span>
+                <button class="btn-atender" (click)="atenderAhora(item)">
+                  Firmar Ahora
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div class="section-header" *ngIf="activeView === 'documents_received'">
-        <div>
-          <h2>Documentos Recibidos</h2>
-          <p>Consulta y supervisa los expedientes entrantes desde las distintas áreas.</p>
+        <div class="section-box historial-section">
+          <div class="section-head">
+            <div>
+              <h2>Historial Reciente de Firmas</h2>
+              <p class="section-subtitle">Registro de firmas más recientes y su estado final.</p>
+            </div>
+            <a class="section-link" (click)="changeView('documents_signed')">Ver el historial completo</a>
+          </div>
+
+          <div class="historial-table-wrap">
+            <table class="historial-table">
+              <thead>
+                <tr>
+                  <th style="width: 20%">EXPEDIENTE</th>
+                  <th style="width: 28%">PACIENTE</th>
+                  <th style="width: 22%">FECHA</th>
+                  <th style="width: 18%">ESTADO</th>
+                  <th style="width: 12%">ACCIÓN</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of recentSignatures">
+                  <td>
+                    <span class="cert-badge">{{ item.expediente }}</span>
+                  </td>
+                  <td>
+                    <div class="paciente-cell">
+                      <div class="paciente-info">
+                        <span class="paciente-name">{{ item.paciente }}</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="fecha-cell">
+                      <span class="fecha-date">{{ item.fecha }}</span>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="status-pill" [ngClass]="item.estado === 'Firmado' ? 'pill-green' : 'pill-blue'">{{ item.estado }}</span>
+                  </td>
+                  <td>
+                    <button class="btn-ver-detalle" (click)="openViewerModal(item)">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                      </svg>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="historial-footer">
+            <span class="footer-info">Mostrando 1 a {{ recentSignatures.length }} de {{ totalSignatures }} registros</span>
+            <div class="pagination">
+              <button class="page-btn" (click)="changeHistorialPage(historialPage - 1)" [disabled]="historialPage === 1">
+                Anterior
+              </button>
+              <button *ngFor="let pg of historialPagesArray" class="page-num" [class.active]="pg === historialPage" (click)="changeHistorialPage(pg)">
+                {{ pg }}
+              </button>
+              <button class="page-btn" (click)="changeHistorialPage(historialPage + 1)" [disabled]="historialPage === totalPages">
+                Siguiente
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
       <div *ngIf="activeView === 'documents_received'">
-        <div class="stats-grid">
-          <div class="stat-card card-teal">
-            <span class="stat-card-title">Recibidos</span>
-            <h3>{{ receivedDocs.length }}</h3>
-            <p>Documentos en status de revisión o por procesar.</p>
-          </div>
-          <div class="stat-card card-indigo">
-            <span class="stat-card-title">Pendientes</span>
-            <h3>{{ receivedDocs.filter(item => item.estado !== 'Recibido').length }}</h3>
-            <p>Documentos que aún requieren acción.</p>
-          </div>
+        <div class="view-header">
+          <h2>Documentos Recibidos</h2>
+          <p>Consulta y supervisa los expedientes entrantes desde las distintas áreas.</p>
         </div>
 
-        <div class="custom-table">
-          <div class="table-head">
-            <div class="col-exp">EXPEDIENTE</div>
-            <div class="col-doc">DOCUMENTO</div>
-            <div class="col-remitente">REMITENTE</div>
-            <div class="col-fecha">FECHA</div>
-            <div class="col-estado">ESTADO</div>
+        <div class="doc-row-top">
+          <div class="doc-row-search">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="7"></circle>
+              <line x1="16.5" y1="16.5" x2="21" y2="21"></line>
+            </svg>
+            <input type="text" placeholder="Buscar por expediente" class="doc-filter-input" (input)="onSearchReceived($event)">
           </div>
-          <div class="table-body">
-            <div class="table-row" *ngFor="let item of receivedDocs">
-              <div class="col-exp">{{ item.exp }}</div>
-              <div class="col-doc">{{ item.doc }}</div>
-              <div class="col-remitente">{{ item.remitente }}</div>
-              <div class="col-fecha">{{ item.fecha }}</div>
-              <div class="col-estado">
-                <span class="status-pill" [ngClass]="item.estado === 'Pendiente' ? 'pill-warning' : item.estado === 'En revisión' ? 'pill-purple' : 'pill-green'">{{ item.estado }}</span>
-              </div>
+
+          <div class="doc-filter-box">
+            <span class="df-label">PACIENTE</span>
+            <select class="doc-filter-select" [(ngModel)]="pacienteFilterReceived">
+              <option>Todos los pacientes</option>
+              <option *ngFor="let item of receivedDocs">{{ item.paciente }}</option>
+            </select>
+          </div>
+
+          <div class="doc-filter-box">
+            <span class="df-label">REMITENTE</span>
+            <select class="doc-filter-select" [(ngModel)]="remitenteFilter">
+              <option>Todos los remitentes</option>
+              <option>Unidad de Emergencias</option>
+              <option>Cirugía Mayor</option>
+              <option>Pediatría</option>
+            </select>
+          </div>
+
+          <div class="doc-filter-box">
+            <span class="df-label">FECHA</span>
+            <select class="doc-filter-select" [(ngModel)]="fechaFilterReceived">
+              <option>Últimos 30 días</option>
+            </select>
+          </div>
+
+          <div class="doc-filter-box">
+            <span class="df-label">PRIORIDAD</span>
+            <select class="doc-filter-select" [(ngModel)]="prioridadFilterReceived">
+              <option>Todas las prioridades</option>
+              <option>Urgente</option>
+              <option>Media</option>
+              <option>Alta</option>
+            </select>
+          </div>
+
+          <button class="btn-apply-filters" (click)="applyReceivedFilters()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="4" y1="21" x2="4" y2="14"></line>
+              <line x1="4" y1="10" x2="4" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12" y2="3"></line>
+              <line x1="20" y1="21" x2="20" y2="16"></line>
+              <line x1="20" y1="12" x2="20" y2="3"></line>
+              <line x1="1" y1="14" x2="7" y2="14"></line>
+              <line x1="9" y1="8" x2="15" y2="8"></line>
+              <line x1="17" y1="16" x2="23" y2="16"></line>
+            </svg>
+            Aplicar filtros
+          </button>
+        </div>
+
+        <div class="section-box doc-main-card">
+          <div class="doc-table-wrap">
+            <table class="doc-table">
+              <thead>
+                <tr>
+                  <th style="width: 15%">EXPEDIENTE</th>
+                  <th style="width: 15%">PACIENTE</th>
+                  <th style="width: 24%">REMITENTE</th>
+                  <th style="width: 20%">FECHA</th>
+                  <th style="width: 16%">PRIORIDAD</th>
+                  <th style="width: 10%">ACCIONES</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of getFilteredReceivedDocs()">
+                  <td><span class="exp-id">{{ item.exp }}</span></td>
+                  <td><span class="paciente-name">{{ item.paciente }}</span></td>
+                  <td><span class="emisor-name">{{ item.remitente }}</span></td>
+                  <td><span class="doc-date">{{ item.fecha }}</span></td>
+                  <td>
+                    <span class="doc-badge"
+                          [ngClass]="{
+                            'bg-urgente': item.estado === 'Urgente',
+                            'bg-media': item.estado === 'Media',
+                            'bg-baja': item.estado === 'Baja'
+                          }">
+                      {{ item.estado }}
+                    </span>
+                  </td>
+                  <td>
+                    <div class="doc-row-actions">
+                      <button class="s-btn-action" title="Ver" (click)="openViewerModal(item, 'received')">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                          <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                      </button>
+                      <button class="btn-enviar-doc" (click)="openSignInterface(item)">Firmar</button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="doc-pagination-footer">
+            <span class="doc-page-info">Mostrando 1 - {{ getFilteredReceivedDocs().length }} de {{ receivedDocs.length }} documentos</span>
+            <div class="doc-pagination">
+              <button class="d-page-nav">&lt;</button>
+              <button class="d-page-num active">1</button>
+              <button class="d-page-num">2</button>
+              <button class="d-page-num">3</button>
+              <button class="d-page-nav">&gt;</button>
             </div>
           </div>
-        </div>
-      </div>
-
-      <div class="section-header" *ngIf="activeView === 'documents_signed'">
-        <div>
-          <h2>Documentos Firmados</h2>
-          <p>Registros de documentos ya firmados y listos para archivo.</p>
         </div>
       </div>
 
       <div *ngIf="activeView === 'documents_signed'">
-        <div class="custom-table">
-          <div class="table-head">
-            <div class="col-exp">EXPEDIENTE</div>
-            <div class="col-doc">DOCUMENTO</div>
-            <div class="col-remitente">PACIENTE</div>
-            <div class="col-fecha">FECHA</div>
-            <div class="col-estado">ESTADO</div>
+        <div class="view-header">
+          <h2>Documentos Firmados</h2>
+          <p>Revisa el historial de firma y envía los documentos listos para completar el proceso.</p>
+        </div>
+
+        <div class="doc-row-top">
+          <div class="doc-row-search">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="7"></circle>
+              <line x1="16.5" y1="16.5" x2="21" y2="21"></line>
+            </svg>
+            <input type="text" placeholder="Buscar por expediente" class="doc-filter-input" (input)="onSearchSigned($event)">
           </div>
-          <div class="table-body">
-            <div class="table-row" *ngFor="let item of signedDocs">
-              <div class="col-exp">{{ item.exp }}</div>
-              <div class="col-doc">{{ item.doc }}</div>
-              <div class="col-remitente">{{ item.paciente }}</div>
-              <div class="col-fecha">{{ item.fecha }}</div>
-              <div class="col-estado">
-                <span class="status-pill" [ngClass]="item.estado === 'Firmado' ? 'pill-green' : 'pill-purple'">{{ item.estado }}</span>
-              </div>
+
+          <div class="doc-filter-box">
+            <span class="df-label">PACIENTE</span>
+            <select class="doc-filter-select" [(ngModel)]="pacienteFilterSigned">
+              <option>Todos los pacientes</option>
+              <option *ngFor="let doc of signedDocs">{{ doc.paciente }}</option>
+            </select>
+          </div>
+
+          <div class="doc-filter-box">
+            <span class="df-label">FECHA DE FIRMA</span>
+            <select class="doc-filter-select" [(ngModel)]="fechaFilterSigned">
+              <option>Últimos 30 días</option>
+            </select>
+          </div>
+
+          <div class="doc-filter-box">
+            <span class="df-label">ESTADO</span>
+            <select class="doc-filter-select" [(ngModel)]="estadoFilterSigned">
+              <option>Cualquier estado</option>
+              <option>Firmado</option>
+              <option>Enviado</option>
+            </select>
+          </div>
+
+          <button class="btn-apply-filters" (click)="applySignedFilters()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="4" y1="21" x2="4" y2="14"></line>
+              <line x1="4" y1="10" x2="4" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12" y2="3"></line>
+              <line x1="20" y1="21" x2="20" y2="16"></line>
+              <line x1="20" y1="12" x2="20" y2="3"></line>
+              <line x1="1" y1="14" x2="7" y2="14"></line>
+              <line x1="9" y1="8" x2="15" y2="8"></line>
+              <line x1="17" y1="16" x2="23" y2="16"></line>
+            </svg>
+            Aplicar filtros
+          </button>
+        </div>
+
+        <div class="section-box doc-main-card">
+          <div class="doc-table-wrap">
+            <table class="doc-table signed-table">
+              <thead>
+                <tr>
+                  <th style="width: 18%">EXPEDIENTE</th>
+                  <th style="width: 30%">PACIENTE</th>
+                  <th style="width: 22%">FECHA DE FIRMA</th>
+                  <th style="width: 12%">ESTADO</th>
+                  <th style="width: 18%">ACCIONES</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let doc of getFilteredSignedDocs()">
+                  <td><span class="s-exp">{{ doc.exp }}</span></td>
+                  <td>
+                    <div class="emisor-cell">
+                      <span class="emisor-name">{{ doc.paciente }}</span>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="s-fecha-wrap">
+                      <span class="s-fecha">{{ doc.fecha }}</span>
+                    </span>
+                  </td>
+                  <td>
+                    <span class="doc-badge"
+                          [ngClass]="{
+                            'bg-firmado': doc.estado === 'Firmado',
+                            'bg-enviado': doc.estado === 'Enviado'
+                          }">
+                      {{ doc.estado }}
+                    </span>
+                  </td>
+                  <td>
+                    <div class="doc-row-actions">
+                      <button class="s-btn-action" title="Ver" (click)="openViewerModal(doc, 'signed')">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                          <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                      </button>
+                      <button class="btn-icon-action btn-send" title="Enviar" (click)="openDerivarModal(doc)">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                          <line x1="22" y1="2" x2="11" y2="13"></line>
+                          <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="doc-pagination-footer">
+            <span class="doc-page-info">Mostrando 1 - {{ getFilteredSignedDocs().length }} de {{ signedTotal }}</span>
+            <div class="doc-pagination">
+              <button class="d-page-nav">&lt;</button>
+              <button class="d-page-num active">1</button>
+              <button class="d-page-num">2</button>
+              <button class="d-page-num">3</button>
+              <button class="d-page-nav">&gt;</button>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="section-header" *ngIf="activeView === 'documents_sent'">
-        <div>
-          <h2>Documentos Enviados</h2>
-          <p>Historial de documentos enviados a otras dependencias.</p>
+      <div *ngIf="activeView === 'sign_interface'" class="sign-interface-view">
+        <div class="view-header">
+          <button class="back-btn" (click)="cancelSignInterface()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M19 12H5"></path>
+              <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Volver
+          </button>
+          <h2>Revisar y Firmar Documento</h2>
+          <p>Panel de Firma de Dirección - Revise los registros clínicos antes de la validación</p>
+        </div>
+
+        <div class="document-sign-container">
+          <div class="document-viewer">
+            <div class="paper">
+              <header class="paper-header">
+                <div class="doc-title">
+                  <h3>DOCUMENTO DE REQUERIMIENTO</h3>
+                  <span>ID DOC: {{ selectedDoc?.exp || '#EXP-2024-089' }}</span>
+                </div>
+                <div class="hospital-info">
+                  <strong>Hospital General</strong>
+                  <span>Lima, Perú</span>
+                </div>
+              </header>
+
+              <div class="paper-body">
+                <div class="patient-grid">
+                  <div>
+                    <label>NOMBRE DEL PACIENTE</label>
+                    <p>{{ selectedDoc?.paciente || 'GARCÍA MORALES, RICARDO ANTONIO' }}</p>
+                  </div>
+                  <div>
+                    <label>ID PACIENTE (DNI)</label>
+                    <p>45672901-X</p>
+                  </div>
+                </div>
+
+                <div class="diagnosis-section">
+                  <label>DIAGNÓSTICO CLÍNICO Y OBSERVACIONES</label>
+                  <p>
+                    El paciente presenta síntomas respiratorios agudos y fiebre persistente (38,5 °C)
+                    durante 72 horas. Los exámenes iniciales indican una posible infección bacteriana del
+                    tracto respiratorio superior...
+                  </p>
+                </div>
+
+                <div class="image-placeholder">
+                  Marcador para Imagen Médica (Ref. Radiografía: 099-B)
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="sign-actions">
+            <button type="button" class="btn-secondary" (click)="cancelSignInterface()">Cancelar</button>
+            <button type="button" class="btn-primary" (click)="confirmSign()">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 21h10"></path>
+                <path d="M7 17l7-14 2 8"></path>
+              </svg>
+              Firmar Documento
+            </button>
+          </div>
         </div>
       </div>
 
       <div *ngIf="activeView === 'documents_sent'">
-        <div class="custom-table">
-          <div class="table-head">
-            <div class="col-exp">EXPEDIENTE</div>
-            <div class="col-doc">DOCUMENTO</div>
-            <div class="col-remitente">DESTINO</div>
-            <div class="col-fecha">FECHA</div>
-            <div class="col-estado">ESTADO</div>
+        <div class="view-header">
+          <h2>Documentos Enviados</h2>
+          <p>Seguimiento de documentos enviados al Fedatario Institucional.</p>
+        </div>
+
+        <div class="doc-row-top">
+          <div class="doc-row-search">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="7"></circle>
+              <line x1="16.5" y1="16.5" x2="21" y2="21"></line>
+            </svg>
+            <input type="text" placeholder="Buscar por expediente" class="doc-filter-input" (input)="onSearchEnviados($event)">
           </div>
-          <div class="table-body">
-            <div class="table-row" *ngFor="let item of sentDocs">
-              <div class="col-exp">{{ item.exp }}</div>
-              <div class="col-doc">{{ item.doc }}</div>
-              <div class="col-remitente">{{ item.destino }}</div>
-              <div class="col-fecha">{{ item.fecha }}</div>
-              <div class="col-estado">
-                <span class="status-pill pill-blue">{{ item.estado }}</span>
+
+          <div class="doc-filter-box">
+            <span class="df-label">PACIENTE</span>
+            <select class="doc-filter-select" [(ngModel)]="pacienteFilterSent">
+              <option>Todos los pacientes</option>
+              <option *ngFor="let doc of sentDocs">{{ doc.paciente }}</option>
+            </select>
+          </div>
+
+          <div class="doc-filter-box">
+            <span class="df-label">EMISOR</span>
+            <select class="doc-filter-select" [(ngModel)]="emisorFilter">
+              <option>Todos los emisores</option>
+              <option *ngFor="let doc of sentDocs">{{ doc.emisor }}</option>
+            </select>
+          </div>
+
+          <div class="doc-filter-box">
+            <span class="df-label">FECHA DE ENVÍO</span>
+            <select class="doc-filter-select" [(ngModel)]="fechaFilterSent">
+              <option>Últimos 30 días</option>
+            </select>
+          </div>
+
+          <div class="doc-filter-box">
+            <span class="df-label">PRIORIDAD</span>
+            <select class="doc-filter-select" [(ngModel)]="prioridadFilterSent">
+              <option>Cualquier prioridad</option>
+              <option>Urgente</option>
+              <option>Media</option>
+              <option>Baja</option>
+            </select>
+          </div>
+
+          <button class="btn-apply-filters" (click)="applySentFilters()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="4" y1="21" x2="4" y2="14"></line>
+              <line x1="4" y1="10" x2="4" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12" y2="3"></line>
+              <line x1="20" y1="21" x2="20" y2="16"></line>
+              <line x1="20" y1="12" x2="20" y2="3"></line>
+              <line x1="1" y1="14" x2="7" y2="14"></line>
+              <line x1="9" y1="8" x2="15" y2="8"></line>
+              <line x1="17" y1="16" x2="23" y2="16"></line>
+            </svg>
+            Aplicar filtros
+          </button>
+        </div>
+
+        <div class="section-box doc-main-card">
+          <div class="doc-table-wrap">
+            <table class="doc-table">
+              <thead>
+                <tr>
+                  <th style="width: 15%">EXPEDIENTE</th>
+                  <th style="width: 18%">PACIENTE</th>
+                  <th style="width: 18%">EMISOR</th>
+                  <th style="width: 22%">FECHA DE ENVÍO</th>
+                  <th style="width: 12%">PRIORIDAD</th>
+                  <th style="width: 15%">ACCIONES</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let doc of getPaginatedEnviados()">
+                  <td><span class="exp-id">{{ doc.expediente }}</span></td>
+                  <td><span class="paciente-name">{{ doc.paciente }}</span></td>
+                  <td><span class="emisor-name">{{ doc.emisor }}</span></td>
+                  <td><span class="doc-date">{{ doc.fechaEnvio }}</span></td>
+                  <td>
+                    <span class="doc-badge"
+                          [ngClass]="{
+                            'bg-urgente': doc.prioridad === 'Urgente',
+                            'bg-media': doc.prioridad === 'Media',
+                            'bg-baja': doc.prioridad === 'Baja'
+                          }">
+                      {{ doc.prioridad }}
+                    </span>
+                  </td>
+                  <td>
+                    <div class="doc-row-actions">
+                      <button class="s-btn-action" title="Ver" (click)="openViewerModal(doc, 'sent')">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                          <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="doc-pagination-footer">
+            <span class="doc-page-info">Mostrando 1 - {{ getPaginatedEnviados().length }} de {{ getFilteredEnviados().length }} documentos</span>
+            <div class="doc-pagination">
+              <button class="d-page-nav" (click)="changePage('enviados', pEnviados - 1)" [disabled]="pEnviados === 1">&lt;</button>
+              <button *ngFor="let page of getPagesArrayEnviados()" 
+                      class="d-page-num" 
+                      [class.active]="pEnviados === page" 
+                      (click)="changePage('enviados', page)">
+                {{ page }}
+              </button>
+              <button class="d-page-nav" (click)="changePage('enviados', pEnviados + 1)" [disabled]="pEnviados === getTotalPagesEnviados()">&gt;</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VISTA: Expedientes -->
+      <div class="view-section animate-fade" *ngIf="activeView === 'expedientes'">
+        <div class="view-header">
+          <h2>Gestión de Expedientes</h2>
+          <p>Supervise y gestione el flujo documental de los pacientes del sistema.</p>
+        </div>
+
+        <div class="exp-bottom-stats" style="margin-bottom: 24px; margin-top: 0;">
+          <div class="eb-card eb-purple">
+            <div class="eb-top">
+              <div class="eb-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+                </svg>
+              </div>
+              <span class="eb-badge">HOY</span>
+            </div>
+            <span class="eb-label">Expedientes Nuevos</span>
+            <span class="eb-value">{{ expedientesStats.nuevos }}</span>
+          </div>
+
+          <div class="eb-card eb-white">
+            <div class="eb-top">
+              <div class="eb-icon-box cyan-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+              </div>
+              <span class="eb-trend">+12%</span>
+            </div>
+            <span class="eb-label grey-label">Pendientes de Firma</span>
+            <span class="eb-value dark-value">{{ expedientesStats.pendientesFirma }}</span>
+          </div>
+
+          <div class="eb-card eb-teal-grad">
+            <div class="eb-top">
+              <div class="eb-icon-box dark-teal-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="section-header" *ngIf="activeView === 'expedientes'">
-        <div>
-          <h2>Expedientes</h2>
-          <p>Control de expedientes y búsqueda rápida por paciente o documento.</p>
-        </div>
-      </div>
-
-      <div *ngIf="activeView === 'expedientes'">
-        <div class="search-bar">
-          <input type="text" placeholder="Buscar expediente, nombre o DNI" (input)="onSearchExpedientes($event)" />
-        </div>
-
-        <div class="custom-table">
-          <div class="table-head">
-            <div class="col-exp">EXPEDIENTE</div>
-            <div class="col-doc">DOCUMENTO</div>
-            <div class="col-remitente">NOMBRE</div>
-            <div class="col-fecha">FECHA</div>
-            <div class="col-estado">DOCUMENTOS</div>
-          </div>
-          <div class="table-body">
-            <div class="table-row" *ngFor="let item of getPaginatedExpedientes()">
-              <div class="col-exp">{{ item.expediente }}</div>
-              <div class="col-doc">{{ item.documento }}</div>
-              <div class="col-remitente">{{ item.names }} {{ item.surnames }}</div>
-              <div class="col-fecha">{{ item.date }}</div>
-              <div class="col-estado">{{ item.docsCount }}</div>
+            <span class="eb-label">EFECTIVIDAD MENSUAL</span>
+            <span class="eb-value">{{ expedientesStats.efectividad }}</span>
+            <div class="eb-watermark">
+              <svg width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
             </div>
           </div>
         </div>
 
-        <div class="pagination">
-          <button class="page-button" [disabled]="pExpedientes === 1" (click)="changePage('expedientes', pExpedientes - 1)">Anterior</button>
-          <button class="page-button" *ngFor="let page of getPagesArrayExpedientes()" [class.active]="page === pExpedientes" (click)="changePage('expedientes', page)">{{ page }}</button>
-          <button class="page-button" [disabled]="pExpedientes === getTotalPagesExpedientes()" (click)="changePage('expedientes', pExpedientes + 1)">Siguiente</button>
-        </div>
-      </div>
+        <div class="doc-row-top">
+          <div class="doc-row-search">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="7"></circle>
+              <line x1="16.5" y1="16.5" x2="21" y2="21"></line>
+            </svg>
+            <input type="text" placeholder="Buscar por expediente" class="doc-filter-input" (input)="onSearchExpedientesDiseno($event)">
+          </div>
 
-      <div class="section-header" *ngIf="activeView === 'reportes'">
-        <div>
-          <h2>Reportes</h2>
-          <p>Análisis y métricas clave para la gestión de documentos.</p>
+          <div class="doc-filter-box">
+            <span class="df-label">PACIENTE</span>
+            <input type="text" placeholder="Buscar por paciente" class="doc-filter-input doc-filter-input-short" [(ngModel)]="pacienteFilterExpedientes">
+          </div>
+
+          <div class="doc-filter-box">
+            <span class="df-label">FECHA</span>
+            <select class="doc-filter-select" [(ngModel)]="fechaRange">
+              <option>Últimos 30 días</option>
+              <option>Últimos 7 días</option>
+              <option>Últimos 3 meses</option>
+            </select>
+          </div>
+
+          <div class="doc-filter-box">
+            <span class="df-label">ESTADO</span>
+            <select class="doc-filter-select" [(ngModel)]="estadoFilter">
+              <option>Todos los estados</option>
+              <option>ABIERTO</option>
+              <option>EN PROCESO</option>
+              <option>CERRADO</option>
+            </select>
+          </div>
+
+          <button class="btn-apply-filters" (click)="applyExpedientesFilters()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="4" y1="21" x2="4" y2="14"></line>
+              <line x1="4" y1="10" x2="4" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12" y2="3"></line>
+              <line x1="20" y1="21" x2="20" y2="16"></line>
+              <line x1="20" y1="12" x2="20" y2="3"></line>
+              <line x1="1" y1="14" x2="7" y2="14"></line>
+              <line x1="9" y1="8" x2="15" y2="8"></line>
+              <line x1="17" y1="16" x2="23" y2="16"></line>
+            </svg>
+            Aplicar filtros
+          </button>
+        </div>
+
+        <div class="section-box doc-main-card">
+          <div class="doc-table-wrap">
+            <table class="doc-table exp-table">
+              <thead>
+                <tr>
+                  <th>N° EXPEDIENTE</th>
+                  <th>PACIENTE</th>
+                  <th>FECHA DE CREACIÓN</th>
+                  <th>DOCUMENTOS TOTALES</th>
+                  <th>ESTADO</th>
+                  <th>ACCIONES</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let ex of getFilteredExpedientesDiseno()">
+                  <td><span class="e-nro">{{ ex.nro }}</span></td>
+                  <td>
+                    <div class="e-paciente-cell">
+                      <div class="avatar-circle active avatarPurple">{{ ex.initials }}</div>
+                      <div class="e-paciente-info">
+                        <span class="e-pac-name">{{ ex.paciente }}</span>
+                        <span class="e-pac-id">ID: {{ ex.id }}</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="text-center"><span class="e-fecha">{{ ex.fecha }}</span></td>
+                  <td class="text-center">
+                    <div class="e-docs-count">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <polyline points="10 9 9 9 8 9"></polyline>
+                      </svg>
+                      <span>{{ ex.archivos }} archivos</span>
+                    </div>
+                  </td>
+                  <td class="text-center">
+                    <span class="exp-badge"
+                          [ngClass]="{
+                            'e-bg-abierto': ex.estado === 'ABIERTO',
+                            'e-bg-proceso': ex.estado === 'EN PROCESO',
+                            'e-bg-cerrado': ex.estado === 'CERRADO'
+                          }">
+                      {{ ex.estado }}
+                    </span>
+                  </td>
+                  <td class="text-center">
+                    <div class="doc-row-actions">
+                      <button class="s-btn-action" title="Ver detalle">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                          <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="doc-pagination-footer">
+            <span class="doc-page-info">Mostrando 1-{{ getFilteredExpedientesDiseno().length }} de {{ expTotalCount }} expedientes</span>
+            <div class="doc-pagination">
+              <button class="d-page-nav">&lt;</button>
+              <button class="d-page-num active">1</button>
+              <button class="d-page-num">2</button>
+              <button class="d-page-num">3</button>
+              <button class="d-page-nav">&gt;</button>
+            </div>
+          </div>
         </div>
       </div>
 
       <div *ngIf="activeView === 'reportes'">
-        <div class="stats-grid">
-          <div class="stat-card" *ngFor="let card of reportCards" [ngClass]="card.colorClass">
-            <span class="stat-card-title">{{ card.label }}</span>
-            <h3>{{ card.value }}</h3>
-            <p>{{ card.change }}</p>
+        <div class="view-header">
+          <h2>Reportes</h2>
+          <p>Obtén un panorama de los indicadores clave de gestión de documentos.</p>
+        </div>
+
+        <div class="report-grid">
+          <div class="report-card" *ngFor="let report of reportCards" [ngClass]="report.colorClass">
+            <span>{{ report.label }}</span>
+            <strong>{{ report.value }}</strong>
+            <p>{{ report.change }}</p>
           </div>
         </div>
 
-        <div class="activity-list">
-          <div class="activity-item" *ngFor="let activity of reportActivities">
-            <div>
-              <h4>{{ activity.title }}</h4>
-              <p>{{ activity.detail }}</p>
+        <div class="activity-card">
+          <div class="table-header-row">
+            <h3>Actividad reciente</h3>
+          </div>
+          <div class="activity-list">
+            <div class="activity-item" *ngFor="let item of reportActivities">
+              <div>
+                <strong>{{ item.title }}</strong>
+                <p>{{ item.detail }}</p>
+              </div>
+              <span class="badge" [ngClass]="item.badgeClass">{{ item.estado }}</span>
             </div>
-            <span class="badge" [ngClass]="activity.badgeClass">{{ activity.estado }}</span>
           </div>
         </div>
       </div>
 
-      <div class="section-header" *ngIf="activeView === 'configuracion'">
-        <div>
+      <div class="view-section animate-fade" *ngIf="activeView === 'configuracion'">
+        <div class="view-header">
           <h2>Configuración</h2>
-          <p>Personaliza tu experiencia con ajustes rápidos.</p>
+          <p>Gestiona tu información personal, seguridad y preferencias del sistema.</p>
+        </div>
+
+        <div class="settings-main-card">
+          <div class="s-card-header">
+             <div class="h-title"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg> Perfil de Dirección</div>
+             <button class="save-changes-prime"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg> Guardar cambios</button>
+          </div>
+
+          <div class="config-profile-layout">
+            <div class="avatar-edit">
+              <img [src]="userProfile.avatar" alt="avatar" class="avatar-lg">
+            </div>
+            <div class="fields-grid-config">
+              <div class="form-item"><label>NOMBRE COMPLETO</label><input type="text" [value]="userProfile.nombre"></div>
+              <div class="form-item"><label>CARGO</label><input type="text" [value]="userProfile.cargo"></div>
+              <div class="form-item"><label>UNIDAD ORGÁNICA</label><input type="text" [value]="userProfile.unidad"></div>
+              <div class="form-item"><label>ROL</label><input type="text" [value]="userProfile.rol" readonly></div>
+            </div>
+          </div>
+
+          <div class="s-card-header mt-lg">
+             <div class="h-title"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg> Preferencias del Sistema</div>
+          </div>
+
+          <div class="preferences-config-row">
+            <div class="pref-item">
+              <label>IDIOMA DE LA INTERFAZ</label>
+              <select [(ngModel)]="settings.language">
+                <option *ngFor="let lang of languages" [value]="lang.code">{{ lang.name }}</option>
+              </select>
+            </div>
+            <div class="pref-item">
+              <label>MODO DE VISUALIZACIÓN</label>
+              <div class="mode-switch">
+                <button class="m-btn" [class.active]="!settings.darkMode" (click)="settings.darkMode = false"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg> Claro</button>
+                <button class="m-btn" [class.active]="settings.darkMode" (click)="settings.darkMode = true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg> Oscuro</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="danger-zone-footer">
+            <div class="dz-info">
+              <h4>Eliminar cuenta</h4>
+              <p>Una vez que elimines tu cuenta, no hay vuelta atrás. Por favor, asegúrate.</p>
+            </div>
+            <button class="btn-delete">Eliminar cuenta</button>
+          </div>
         </div>
       </div>
 
-      <div *ngIf="activeView === 'configuracion'">
-        <div class="settings-panel">
-          <div class="setting-row">
-            <span>Notificaciones</span>
-            <label class="switch">
-              <input type="checkbox" [(ngModel)]="settings.notifications" />
-              <span class="slider"></span>
-            </label>
+      <!-- MODAL DERIVAR DOCUMENTO -->
+<div class="modal-overlay" *ngIf="showDerivarModal">
+  <div class="modal-derivar animate-fade">
+
+    <!-- HEADER -->
+    <div class="modal-header">
+      <div class="modal-title">
+        <div class="modal-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+        </div>
+
+        <h3>Derivar Documentos a Secretaría</h3>
+      </div>
+
+      <button class="close-btn" (click)="closeDerivarModal()">
+        ?
+      </button>
+    </div>
+
+    <!-- BODY -->
+    <div class="modal-body">
+
+      <!-- INFO TOP -->
+      <div class="top-info-grid">
+
+        <div class="info-box">
+          <span>N° DE EXPEDIENTE</span>
+          <strong>{{ selectedDoc?.exp || '#EXP-2024-089' }}</strong>
+        </div>
+
+        <div class="info-box">
+          <span>N° DE DOCUMENTO</span>
+          <strong>#DOC-2024-089</strong>
+        </div>
+
+        <div class="info-box">
+          <span>FECHA DE ENVÍO</span>
+          <strong>24/05/2024</strong>
+        </div>
+
+      </div>
+
+      <!-- ORIGEN -->
+      <div class="origin-section">
+
+        <div class="section-label">
+          Origen del Documento
+        </div>
+
+        <div class="origin-grid">
+
+          <div class="origin-card">
+            <span>NOMBRE DEL EMISOR</span>
+            <strong>{{ userProfile.nombre }}</strong>
           </div>
-          <div class="setting-row">
-            <span>Modo oscuro</span>
-            <label class="switch">
-              <input type="checkbox" [(ngModel)]="settings.darkMode" />
-              <span class="slider"></span>
-            </label>
+
+          <div class="origin-card">
+            <span>UNIDAD ORGÁNICA</span>
+            <strong>{{ userProfile.unidad }}</strong>
           </div>
-          <div class="setting-row">
-            <span>Informes por correo</span>
-            <label class="switch">
-              <input type="checkbox" [(ngModel)]="settings.emailReports" />
-              <span class="slider"></span>
-            </label>
+
+          <div class="origin-card">
+            <span>CARGO</span>
+            <strong>{{ userProfile.cargo }}</strong>
           </div>
-          <div class="setting-row">
-            <span>Idioma</span>
-            <select [(ngModel)]="settings.language">
-              <option *ngFor="let language of languages" [value]="language.code">{{ language.name }}</option>
-            </select>
-          </div>
+
         </div>
       </div>
+
+      <!-- ARCHIVOS -->
+      <div class="files-wrapper">
+
+        <div class="file-item" *ngFor="let file of [1,2,3]">
+
+          <div class="file-left">
+
+            <div class="file-icon">
+              ??
+            </div>
+
+            <div class="file-data">
+              <strong>documento_escaneado_089.pdf</strong>
+              <span>4.2 MB  Escaneado hoy 09:12 AM</span>
+            </div>
+
+          </div>
+
+          <button class="file-view">
+            ??
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="modal-footer">
+
+      <button class="btn-cancel" (click)="closeDerivarModal()">
+        Cancelar
+      </button>
+
+      <button class="btn-derivar">
+        ? Derivar Documento
+      </button>
+
+    </div>
+
+  </div>
+</div>
+
     </div>
   </main>
+
+  <!-- MODAL VISOR DOCUMENTOS -->
+<div class="viewer-overlay" *ngIf="showViewerModal">
+
+  <div class="viewer-modal">
+
+    <!-- HEADER -->
+    <div class="viewer-topbar">
+
+      <div class="viewer-left">
+        <h3>Visor de Documentos</h3>
+        <span>
+          {{ selectedDoc?.exp || 'QC-2024-0892 | ALEJANDRO MARTÍNEZ RUIZ' }}
+        </span>
+      </div>
+
+      <!-- TABS -->
+      <div class="viewer-tabs">
+
+      <button
+        class="viewer-tab"
+        *ngFor="let tab of viewerTabs; let i = index"
+        [class.active]="i === 0">
+
+        {{ tab }}
+
+      </button>
+
+    </div>
+
+      <!-- ACTIONS -->
+      <div class="viewer-actions">
+
+        <button class="viewer-icon-btn">
+          ??
+        </button>
+
+        <button class="viewer-icon-btn">
+          ?
+        </button>
+
+        <button class="viewer-close" (click)="closeViewerModal()">
+          ? Cerrar
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- CONTENT -->
+    <div class="viewer-content">
+
+      <div class="viewer-paper">
+
+        <!-- DOCUMENT HEADER -->
+        <div class="paper-head">
+
+          <div class="paper-head-left">
+            <h1>HOSPITAL EL CARMEN</h1>
+
+            <p>Unidad de Gestión de Expedientes Clínicos</p>
+
+            <span>RFC: CMV920824-H01</span>
+          </div>
+
+          <div class="paper-head-right">
+            <h2>Historia Clínica Electrónica</h2>
+
+            <p>Código: HCE-V3-2024</p>
+
+            <span>Página 1 de 4</span>
+          </div>
+
+        </div>
+
+        <div class="paper-divider"></div>
+
+        <!-- INFO BOXES -->
+        <div class="paper-info-grid">
+
+          <div class="paper-info-box">
+
+            <small>DATOS DEL PACIENTE</small>
+
+            <strong>
+              {{ selectedDoc?.paciente || 'Alejandro Martínez Ruiz' }}
+            </strong>
+
+            <span>42 años | Masculino | 1290-82-4412-1</span>
+
+          </div>
+
+          <div class="paper-info-box">
+
+            <small>DATOS DE CONSULTA</small>
+
+            <strong>14 de Mayo, 2024</strong>
+
+            <span>Medicina Interna | Dr. Francisco Soler</span>
+
+          </div>
+
+        </div>
+
+        <!-- SECTION -->
+        <div class="paper-section">
+
+          <h4>1. MOTIVO DE CONSULTA</h4>
+
+          <p>
+            Paciente refiere dolor torácico de intensidad moderada (6/10) con duración de 15 minutos,
+            irradiado a brazo izquierdo, acompañado de diaforesis y náuseas.
+            Inicio súbito tras actividad física ligera.
+          </p>
+
+        </div>
+
+        <!-- SECTION -->
+        <div class="paper-section">
+
+          <h4>2. EXPLORACIÓN FÍSICA</h4>
+
+          <div class="medical-stats">
+
+            <div class="stat-box">
+              <small>T.A.</small>
+              <strong>145/95</strong>
+            </div>
+
+            <div class="stat-box">
+              <small>F.C.</small>
+              <strong>88 lpm</strong>
+            </div>
+
+            <div class="stat-box">
+              <small>TEMP.</small>
+              <strong>36.7 °C</strong>
+            </div>
+
+            <div class="stat-box">
+              <small>SatO2</small>
+              <strong>96%</strong>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- SECTION -->
+        <div class="paper-section">
+
+          <h4>3. DIAGNÓSTICO</h4>
+
+          <p>
+            Angina de pecho inestable (I20.0). Se solicita ECG de 12 derivaciones
+            y marcadores de daño miocárdico de urgencia.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
 </div>
+
+</div>
+
+          
