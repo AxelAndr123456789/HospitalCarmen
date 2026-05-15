@@ -23,6 +23,12 @@ export class DireccionDashboard implements OnInit {
   showDerivarModal = false;
   showViewerModal = false;
 
+  derivarFiles = [
+    { name: 'documento_escaneado_089.pdf', detail: '4.2 MB - Escaneado hoy 09:12 AM', selected: true },
+    { name: 'documento_escaneado_089.pdf', detail: '3.8 MB - Escaneado hoy 09:14 AM', selected: true },
+    { name: 'documento_escaneado_089.pdf', detail: '2.6 MB - Escaneado hoy 09:16 AM', selected: true },
+  ];
+
   userProfile = {
     nombre: 'Ana María Torres',
     rol: 'Dirección',
@@ -218,6 +224,7 @@ export class DireccionDashboard implements OnInit {
 
   openDerivarModal(doc: any): void {
   this.selectedDoc = doc;
+  this.derivarFiles = this.derivarFiles.map(file => ({ ...file, selected: true }));
   this.showDerivarModal = true;
   }
 
@@ -232,31 +239,35 @@ export class DireccionDashboard implements OnInit {
   // DOCUMENTOS RECIBIDOS
   if (type === 'received') {
     this.viewerTabs = [
+      'Historia Clínica',
       'Doc. Requerimiento',
-      'Historia Clínica'
+      'Oficio'
     ];
   }
 
   // DOCUMENTOS FIRMADOS
   else if (type === 'signed') {
     this.viewerTabs = [
-      'Oficio',
-      'Doc. Requerimiento'
+      'Doc. Requerimiento',
+      'Oficio'      
     ];
   }
 
   // DOCUMENTOS ENVIADOS
   else if (type === 'sent') {
     this.viewerTabs = [
-      'Oficio',
+      'Historia Clínica',
       'Doc. Requerimiento',
-      'Historia Clínica'
+      'Oficio'   
     ];
   }
 
   // DEFAULT
   else {
-    this.viewerTabs = ['Documento'];
+    this.viewerTabs = [
+      'Doc. Requerimiento',
+      'Oficio'
+    ];
   }
 }
   closeViewerModal(): void {

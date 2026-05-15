@@ -3094,3 +3094,31 @@
   font-size:22px;
   color:#0f172a;
 }
+
+.selectable-file {
+  cursor: pointer;
+}
+
+.file-check-wrap {
+  width: 34px;
+  height: 34px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  flex-shrink: 0;
+}
+
+.file-check {
+  width: 18px;
+  height: 18px;
+  accent-color: #7c3aed;
+  cursor: pointer;
+}
+
+.selectable-file:has(.file-check:checked) {
+  border-color: #7c3aed;
+  background: #faf7ff;
+}
