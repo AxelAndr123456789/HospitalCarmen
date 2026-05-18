@@ -191,110 +191,10 @@
 
     <!-- ═══════════════════  INICIO / OVERVIEW  ═══════════════════ -->
     <div class="content-wrapper" *ngIf="activeView === 'overview'">
-      <!-- Stats Row: 3 cards -->
-      <div class="overview-stats">
-        <!-- Por Firmar -->
-        <div class="ov-card ov-firmar">
-          <div class="ov-card-top">
-            <span class="ov-card-label">Por Firmar</span>
-            <div class="ov-card-icon firmar-icon">
-              <svg
-                width="22"
-                height="22"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                <polyline points="14 2 14 8 20 8"></polyline>
-                <circle cx="12" cy="14" r="3"></circle>
-              </svg>
-            </div>
-          </div>
-          <div class="ov-card-body">
-            <span class="ov-card-number">{{ porFirmar }}</span>
-            <span class="ov-card-badge badge-prioridad">Prioridad Alta</span>
-          </div>
-          <div class="ov-card-footer">
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <circle cx="12" cy="12" r="10"></circle>
-              <polyline points="12 6 12 12 16 14"></polyline>
-            </svg>
-            Actualizado hace 2 min
-          </div>
-        </div>
-
-        <!-- Firmados Hoy -->
-        <div class="ov-card ov-firmados">
-          <div class="ov-card-top">
-            <span class="ov-card-label">Firmados Hoy</span>
-          </div>
-          <div class="ov-card-body">
-            <span class="ov-card-number">{{ firmadosHoy }}</span>
-            <span class="ov-card-badge badge-trend">+12% vs ayer</span>
-          </div>
-          <div class="ov-card-footer">
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <circle cx="12" cy="12" r="10"></circle>
-              <line x1="12" y1="16" x2="12" y2="12"></line>
-              <line x1="12" y1="8" x2="12.01" y2="8"></line>
-            </svg>
-            Meta diaria: 80%
-          </div>
-        </div>
-
-        <!-- Tiempo Promedio -->
-        <div class="ov-card ov-tiempo">
-          <div class="ov-card-top">
-            <span class="ov-card-label">Tiempo Promedio</span>
-            <div class="ov-card-icon tiempo-icon">
-              <svg
-                width="22"
-                height="22"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <circle cx="12" cy="12" r="10"></circle>
-                <polyline points="12 6 12 12 16 14"></polyline>
-              </svg>
-            </div>
-          </div>
-          <div class="ov-card-body">
-            <span class="ov-card-number">{{ tiempoPromedio }}</span>
-            <span class="ov-card-unit">min</span>
-          </div>
-          <div class="ov-card-footer ov-footer-green">
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
-              <polyline points="17 6 23 6 23 12"></polyline>
-            </svg>
-            Reducción de 11 min
-          </div>
-        </div>
+      <!-- View Header -->
+      <div class="view-header" style="margin-bottom: 2rem;">
+        <h2 style="font-size: 1.5rem; font-weight: 800; color: #1e293b;">Panel de Inicio</h2>
+        <p style="color: #64748b; font-size: 0.95rem;">Bienvenido de nuevo. Resumen general de su actividad notarial y documentos prioritarios.</p>
       </div>
 
       <!-- Pendientes de Alta Prioridad -->
@@ -321,28 +221,25 @@
           <a class="section-link" (click)="changeView('documents')">Ver todos los pendientes</a>
         </div>
 
+        <!-- Table header -->
+        <div class="priority-table-head">
+          <span>EXPEDIENTE</span>
+          <span>PACIENTE</span>
+          <span>RECIBIDO</span>
+          <span>PRIORIDAD</span>
+          <span>ACCIÓN</span>
+        </div>
         <div class="priority-list">
-          <div class="priority-row" *ngFor="let p of pendientesAlta">
-            <div class="priority-row-info">
-              <div class="priority-field">
-                <span class="priority-label">EXPEDIENTE</span>
-                <span class="priority-value exp-value">{{ p.expediente }}</span>
-              </div>
-              <div class="priority-field">
-                <span class="priority-label">PACIENTE</span>
-                <span class="priority-value">{{ p.paciente }}</span>
-              </div>
-              <div class="priority-field">
-                <span class="priority-label">RECIBIDO</span>
-                <span class="priority-value">{{ p.recibido }}</span>
-              </div>
-            </div>
-            <div class="priority-row-actions">
-              <span class="badge-urgente">URGENTE</span>
-              <button class="btn-atender" (click)="atenderAhora(p.expediente)">
-                Atender Ahora
-              </button>
-            </div>
+          <div class="priority-table-row" *ngFor="let p of pendientesAlta">
+            <span class="priority-value exp-value">{{ p.expediente }}</span>
+            <span class="priority-value">{{ p.paciente }}</span>
+            <span class="priority-value recibido-value">{{ p.recibido }}</span>
+            <span class="doc-badge" [ngClass]="{'bg-urgente': p.prioridad === 'URGENTE' || p.prioridad === 'ALTA' || !p.prioridad, 'bg-media': p.prioridad === 'MEDIA', 'bg-baja': p.prioridad === 'BAJA'}">
+              {{ p.prioridad || 'URGENTE' }}
+            </span>
+            <button class="btn-atender" (click)="atenderAhora(p.expediente)">
+              Atender Ahora
+            </button>
           </div>
         </div>
       </div>
@@ -457,389 +354,227 @@
       </div>
     </div>
 
-    <!-- ══════════════  DOCUMENTOS RECIBIDOS  ══════════════ -->
     <div class="content-wrapper" *ngIf="activeView === 'documents_received'">
+      <div class="view-header">
+        <h2>Documentos Recibidos</h2>
+        <p>Valida y procesa los expedientes enviados para su certificación institucional.</p>
+      </div>
 
-      <!-- Stats Grid -->
-      <div class="doc-stats-grid">
-        <div class="doc-stat-card">
-          <div class="doc-stat-top">
-            <div class="doc-icon indigo-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><polyline points="9 15 12 18 15 15"></polyline></svg>
-            </div>
-            <span class="doc-trend up">+8% &nearr;</span>
-          </div>
-          <span class="doc-stat-label">Total Recibidos</span>
-          <span class="doc-stat-value">{{ receivedDocsStats.total }}</span>
+      <div class="filter-bar-card">
+        <div class="search-input-group">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" placeholder="DNI, Nombre Completo o Email" (input)="onSearchRecibidos($event)">
         </div>
-
-        <div class="doc-stat-card">
-          <div class="doc-stat-top">
-            <div class="doc-icon cyan-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
-            </div>
-          </div>
-          <span class="doc-stat-label">Nuevos Hoy</span>
-          <span class="doc-stat-value">{{ receivedDocsStats.nuevos }}</span>
-        </div>
-
-        <div class="doc-stat-card">
-          <div class="doc-stat-top">
-            <div class="doc-icon orange-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-            </div>
-          </div>
-          <span class="doc-stat-label">Por Procesar</span>
-          <span class="doc-stat-value">{{ receivedDocsStats.porProcesar }}</span>
-        </div>
-
-        <div class="doc-stat-card green-bg-card">
-          <div class="doc-stat-top">
-            <div class="doc-icon white-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-            </div>
-          </div>
-          <span class="doc-stat-label text-white">Procesados Hoy</span>
-          <span class="doc-stat-value text-white">{{ receivedDocsStats.completadosHoy }}</span>
+        <div class="select-group">
+          <label>ESTADO</label>
+          <select (change)="onFilterEstadoRecibidos($event)">
+            <option>Todos los Estados</option>
+            <option>Urgente</option>
+            <option>Media</option>
+            <option>Baja</option>
+          </select>
         </div>
       </div>
 
-      <!-- Main Table Card -->
-      <div class="section-box doc-main-card">
-        <div class="doc-table-header">
-          <h3>Documentos Recibidos para Validación</h3>
-          <div class="doc-actions">
-            <button class="btn-adv-filters">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
-              Filtros Avanzados
-            </button>
+      <div class="table-section-card no-mt">
+        <div class="table-header-row">
+          <h3>Bandeja de Recibidos</h3>
+          <span class="see-all">Total: {{ receivedDocsList.length }}</span>
+        </div>
 
+        <div class="custom-table">
+          <div class="table-head grid-recibidos">
+            <div class="col-center">N° DE<br>EXPEDIENTE</div>
+            <div class="col-center">N° DE<br>DOCUMENTO</div>
+            <div class="col-center">FECHA RECEPCIÓN</div>
+            <div class="col-center">PRIORIDAD</div>
+            <div class="col-center">EMISOR</div>
           </div>
-        </div>
-
-        <div class="doc-table-wrap">
-          <table class="doc-table">
-            <thead>
-              <tr>
-                <th>
-                  ID EXPEDIENTE
-                  <input type="text" placeholder="Filtrar..." class="doc-filter-input">
-                </th>
-                <th>
-                  ID DOCUMENTO
-                  <input type="text" placeholder="Filtrar..." class="doc-filter-input">
-                </th>
-                <th>
-                  FECHA RECEPCIÓN
-                  <select class="doc-filter-select"><option>Todas</option></select>
-                </th>
-                <th>
-                  PRIORIDAD
-                  <select class="doc-filter-select"><option>Todas</option></select>
-                </th>
-                <th>
-                  EMISOR
-                  <input type="text" placeholder="Buscar emisor..." class="doc-filter-input wider-input">
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let d of receivedDocsList">
-                <td><span class="exp-id">{{ d.exp }}</span></td>
-                <td><span class="doc-id">{{ d.doc }}</span></td>
-                <td><span class="doc-date">{{ d.fecha }}</span></td>
-                <td>
-                  <span class="doc-badge"
-                        [ngClass]="{'bg-urgente': d.prioridad === 'URGENTE',
-                                    'bg-media':   d.prioridad === 'MEDIA',
-                                    'bg-baja':     d.prioridad === 'BAJA'}">
-                    {{ d.prioridad }}
-                  </span>
-                </td>
-                <td>
-                  <div class="emisor-cell">
-                    <span class="emisor-name">{{ d.emisor }}</span>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="doc-pagination-footer">
-          <span class="doc-page-info">Mostrando 1-{{ receivedDocsList.length }} de {{ receivedDocsStats.total }} documentos</span>
-          <div class="doc-pagination">
-            <button class="d-page-nav">&lt;</button>
-            <button class="d-page-num active">1</button>
-            <button class="d-page-num">2</button>
-            <button class="d-page-num">3</button>
-            <span class="d-page-dots">...</span>
-            <button class="d-page-num">{{ receivedTotalPages }}</button>
-            <button class="d-page-nav">&gt;</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ══════════════  DOCUMENTOS PENDIENTES  ══════════════ -->
-    <div class="content-wrapper" *ngIf="activeView === 'documents'">
-      
-      <!-- Stats Grid -->
-      <div class="doc-stats-grid">
-        <div class="doc-stat-card">
-          <div class="doc-stat-top">
-            <div class="doc-icon purple-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="8" y1="13" x2="16" y2="13"></line><line x1="8" y1="17" x2="16" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-            </div>
-            <span class="doc-trend up">+12% &nearr;</span>
-          </div>
-          <span class="doc-stat-label">Total Pendientes</span>
-          <span class="doc-stat-value">{{ docStats.total }}</span>
-        </div>
-
-        <div class="doc-stat-card">
-          <div class="doc-stat-top">
-            <div class="doc-icon red-icon">
-              <!-- Warning Triangle Icon -->
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
-                <line x1="12" y1="9" x2="12" y2="13"></line>
-                <line x1="12" y1="17" x2="12.01" y2="17"></line>
-              </svg>
+          <div class="table-body">
+            <div class="table-row grid-recibidos" *ngFor="let d of receivedDocsList">
+              <div class="col-center"><span class="exp-text">#{{ d.exp }}</span></div>
+              <div class="col-center"><span class="doc-text">{{ d.doc }}</span></div>
+              <div class="col-center text-secondary">{{ d.fecha }}</div>
+              <div class="col-center">
+                <span class="doc-badge" [ngClass]="{'bg-urgente': d.prioridad === 'URGENTE', 'bg-media': d.prioridad === 'MEDIA', 'bg-baja': d.prioridad === 'BAJA'}">
+                  {{ d.prioridad }}
+                </span>
+              </div>
+              <div class="col-center">
+                <span class="emisor-name">{{ d.emisor }}</span>
+              </div>
             </div>
           </div>
-          <span class="doc-stat-label">Alta Prioridad</span>
-          <span class="doc-stat-value">{{ docStats.altaPrioridad }}</span>
         </div>
-
-        <div class="doc-stat-card">
-          <div class="doc-stat-top">
-            <div class="doc-icon blue-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-            </div>
-          </div>
-          <span class="doc-stat-label">Vencen Hoy</span>
-          <span class="doc-stat-value">{{ docStats.vencenHoy }}</span>
-        </div>
-
-        <div class="doc-stat-card green-bg-card">
-          <div class="doc-stat-top">
-            <div class="doc-icon white-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-            </div>
-          </div>
-          <span class="doc-stat-label text-white">Completados Hoy</span>
-          <span class="doc-stat-value text-white">{{ docStats.completadosHoy }}</span>
-        </div>
-      </div>
-
-      <!-- Main Table Card -->
-      <div class="section-box doc-main-card">
-        <div class="doc-table-header">
-          <h3>Listado de Documentos</h3>
-          <div class="doc-actions">
-            <button class="btn-adv-filters">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
-              Filtros Avanzados
-            </button>
-            <button class="btn-new-doc">
-              + Nuevo Documento
-            </button>
-          </div>
-        </div>
-
-        <div class="doc-table-wrap">
-          <table class="doc-table">
-            <thead>
-              <tr>
-                <th>
-                  ID EXPEDIENTE
-                  <input type="text" placeholder="Filtrar..." class="doc-filter-input">
-                </th>
-                <th>
-                  ID DOCUMENTO
-                  <input type="text" placeholder="Filtrar..." class="doc-filter-input">
-                </th>
-                <th>
-                  FECHA DE ENVÍO
-                  <select class="doc-filter-select"><option>Todas</option></select>
-                </th>
-                <th>
-                  PRIORIDAD
-                  <select class="doc-filter-select"><option>Todas</option></select>
-                </th>
-                <th>
-                  EMISOR
-                  <input type="text" placeholder="Buscar emisor..." class="doc-filter-input wider-input">
-                </th>
-                <th class="actions-th">ACCIONES</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let d of documentosList">
-                <td><span class="exp-id">{{ d.exp }}</span></td>
-                <td><span class="doc-id">{{ d.doc }}</span></td>
-                <td><span class="doc-date">{{ d.fecha }}</span></td>
-                <td>
-                  <span class="doc-badge" 
-                        [ngClass]="{'bg-urgente': d.prioridad === 'URGENTE', 
-                                    'bg-media': d.prioridad === 'MEDIA', 
-                                    'bg-baja': d.prioridad === 'BAJA'}">
-                    {{ d.prioridad }}
-                  </span>
-                </td>
-                <td>
-                  <div class="emisor-cell">
-                    <span class="emisor-name">{{ d.emisor }}</span>
-                  </div>
-                </td>
-                <td>
-                  <div class="doc-row-actions">
-                    <button class="btn-ver-doc">Ver</button>
-                    <button class="btn-enviar-doc">Enviar</button>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="doc-pagination-footer">
-          <span class="doc-page-info">Mostrando 1-{{ documentosList.length }} de {{ docStats.total }} documentos</span>
-          <div class="doc-pagination">
-            <button class="d-page-nav">&lt;</button>
-            <button class="d-page-num active">1</button>
-            <button class="d-page-num">2</button>
-            <button class="d-page-num">3</button>
-            <span class="d-page-dots">...</span>
-            <button class="d-page-num">{{ docTotalPages }}</button>
-            <button class="d-page-nav">&gt;</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ══════════════  DOCUMENTOS FIRMADOS  ══════════════ -->
-    <div class="content-wrapper" *ngIf="activeView === 'documents_signed'">
-      
-      <!-- Top Filters & Stat -->
-      <div class="signed-top-grid">
         
-        <!-- Filter 1 -->
-        <div class="signed-filter-box">
-          <span class="sf-label">FECHA DE FIRMA</span>
-          <div class="sf-input-wrap">
-            <svg class="sf-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
-            </svg>
-            <select class="sf-input">
-              <option>Últimos 30 días</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- Filter 2 -->
-        <div class="signed-filter-box">
-          <span class="sf-label">NOMBRE DEL PACIENTE</span>
-          <div class="sf-input-wrap">
-            <svg class="sf-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle>
-            </svg>
-            <input type="text" class="sf-input" placeholder="Filtrar por paciente...">
-          </div>
-        </div>
-
-        <!-- Filter 3 -->
-        <div class="signed-filter-box">
-          <span class="sf-label">ESTADO</span>
-          <div class="sf-input-wrap">
-            <svg class="sf-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
-            </svg>
-            <select class="sf-input">
-              <option>Cualquier estado</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- Stat Card -->
-        <div class="signed-stat-box">
-          <div class="ss-info">
-            <span class="ss-number">{{ signedTotalFirmados }}</span>
-            <span class="ss-label">TOTAL FIRMADOS</span>
-          </div>
-          <div class="ss-icon-wrap">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
-            </svg>
+        <div class="pagination-footer">
+          <span>Mostrando {{ receivedDocsList.length }} de {{ receivedDocsStats.total }} resultados</span>
+          <div class="page-controls">
+            <button class="p-btn">&lt;</button>
+            <button class="p-btn active">1</button>
+            <button class="p-btn">2</button>
+            <button class="p-btn">&gt;</button>
           </div>
         </div>
       </div>
+    </div>
 
-      <!-- Main Table -->
-      <div class="section-box doc-main-card">
-        <div class="doc-table-wrap">
-          <table class="doc-table signed-table">
-            <thead>
-              <tr>
-                <th style="width: 17%">EXPEDIENTE</th>
-                <th style="width: 13%">DOCUMENTO</th>
-                <th style="width: 32%">PACIENTE</th>
-                <th style="width: 17%">FECHA FIRMA</th>
-                <th style="width: 11%">ESTADO</th>
-                <th style="width: 10%">ACCIÓN</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let doc of signedDocs">
-                <td><span class="s-exp">{{ doc.exp }}</span></td>
-                <td><span class="s-doc">{{ doc.doc }}</span></td>
-                <td>
-                  <div class="emisor-cell">
-                    <span class="emisor-name">{{ doc.paciente }}</span>
-                  </div>
-                </td>
-                <td>
-                  <span class="s-fecha-wrap">
-                    <span class="s-fecha">{{ doc.fecha.split(',')[0] }},</span>
-                    <span class="s-hora">{{ doc.fecha.split(',')[1] }}</span>
-                  </span>
-                </td>
-                <td>
-                  <span class="doc-badge" 
-                        [ngClass]="{'s-bg-firmado': doc.estado === 'FIRMADO', 
-                                    's-bg-pendiente': doc.estado === 'PENDIENTE', 
-                                    's-bg-observado': doc.estado === 'OBSERVADO'}">
-                    {{ doc.estado }}
-                  </span>
-                </td>
-                <td>
-                  <div class="doc-row-actions">
-                    <button class="s-btn-action">
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8v0z"></path><circle cx="12" cy="12" r="3"></circle>
-                      </svg>
-                    </button>
-                    <button class="s-btn-action action-teal">
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line>
-                      </svg>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+    <div class="content-wrapper" *ngIf="activeView === 'documents'">
+      <div class="view-header">
+        <h2>Documentos Pendientes</h2>
+        <p>Listado de documentos que requieren firma o validación notarial inmediata.</p>
+      </div>
+
+      <div class="filter-bar-card">
+        <div class="search-input-group">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" placeholder="DNI, Nombre Completo o Email" (input)="onSearchPendientes($event)">
+        </div>
+        <div class="select-group">
+          <label>ESTADO</label>
+          <select (change)="onFilterEstadoPendientes($event)">
+            <option>Todos los Estados</option>
+            <option>Urgente</option>
+            <option>Media</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="table-section-card no-mt">
+        <div class="table-header-row">
+          <h3>Documentos en Espera</h3>
+          <button class="btn-new-doc" style="background: #10b981; color: white; border: none; padding: 8px 16px; border-radius: 10px; font-weight: 700; cursor: pointer;">
+            + Nueva Certificación
+          </button>
         </div>
 
-        <div class="doc-pagination-footer">
-          <span class="doc-page-info">Mostrando 1 - {{ signedDocs.length }} de {{ signedTotal }} documentos</span>
-          <div class="doc-pagination">
-            <button class="d-page-nav">&lt;</button>
-            <button class="d-page-num active">1</button>
-            <button class="d-page-num">2</button>
-            <button class="d-page-num">3</button>
-            <button class="d-page-nav">&gt;</button>
+        <div class="custom-table">
+          <div class="table-head grid-fedatario">
+            <div class="col-center">N° DE<br>EXPEDIENTE</div>
+            <div class="col-center">N° DE<br>DOCUMENTO</div>
+            <div class="col-center">FECHA ENVÍO</div>
+            <div class="col-center">PRIORIDAD</div>
+            <div class="col-center">EMISOR</div>
+            <div class="col-center">ACCIONES</div>
+          </div>
+          <div class="table-body">
+            <div class="table-row grid-fedatario" *ngFor="let d of documentosList">
+              <div class="col-center"><span class="exp-text">#{{ d.exp }}</span></div>
+              <div class="col-center"><span class="doc-text">{{ d.doc }}</span></div>
+              <div class="col-center text-secondary">{{ d.fecha }}</div>
+              <div class="col-center">
+                <span class="doc-badge" [ngClass]="{'bg-urgente': d.prioridad === 'URGENTE', 'bg-media': d.prioridad === 'MEDIA', 'bg-baja': d.prioridad === 'BAJA'}">
+                  {{ d.prioridad }}
+                </span>
+              </div>
+              <div class="col-center">
+                <span class="emisor-name">{{ d.emisor }}</span>
+              </div>
+              <div class="col-center" style="gap: 8px;">
+                <button class="btn-details" style="padding: 6px 12px; font-size: 0.75rem;">Ver</button>
+                <button class="btn-validar" style="padding: 6px 12px; font-size: 0.75rem;">FIRMAR</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="pagination-footer">
+          <span>Mostrando {{ documentosList.length }} de {{ docStats.total }} resultados</span>
+          <div class="page-controls">
+            <button class="p-btn">&lt;</button>
+            <button class="p-btn active">1</button>
+            <button class="p-btn">&gt;</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-wrapper" *ngIf="activeView === 'documents_signed'">
+      <div class="view-header">
+        <h2>Documentos Firmados</h2>
+        <p>Historial de documentos que han sido validados y firmados satisfactoriamente.</p>
+      </div>
+
+      <div class="filter-bar-card">
+        <div class="search-input-group">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" placeholder="DNI, Nombre Completo o Email" (input)="onSearchFirmados($event)">
+        </div>
+        <div class="select-group">
+          <label>ESTADO</label>
+          <select (change)="onFilterEstadoFirmados($event)">
+            <option>Todos los Estados</option>
+            <option>Firmado</option>
+            <option>Pendiente</option>
+            <option>Observado</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="table-section-card no-mt">
+        <div class="table-header-row">
+          <h3>Historial de Certificaciones</h3>
+          <span class="see-all">Total: {{ signedTotal }}</span>
+        </div>
+
+        <div class="custom-table">
+          <div class="table-head grid-firmados">
+            <div class="col-center">N° DE<br>EXPEDIENTE</div>
+            <div class="col-center">N° DE<br>DOCUMENTO</div>
+            <div class="col-center">PACIENTE</div>
+            <div class="col-center">FECHA FIRMA</div>
+            <div class="col-center">ESTADO</div>
+            <div class="col-center">ACCIÓN</div>
+          </div>
+          <div class="table-body">
+            <div class="table-row grid-firmados" *ngFor="let doc of signedDocs">
+              <div class="col-center"><span class="exp-text">#{{ doc.exp }}</span></div>
+              <div class="col-center"><span class="doc-text">{{ doc.doc }}</span></div>
+              <div class="col-center">
+                <span class="paciente-name">{{ doc.paciente }}</span>
+              </div>
+              <div class="col-center">
+                <div class="date-stack">
+                  <span class="s-fecha" style="font-weight: 800; color: #475569;">{{ doc.fecha.split(',')[0] }}</span>
+                  <span class="s-hora">{{ doc.fecha.split(',')[1] }}</span>
+                </div>
+              </div>
+              <div class="col-center">
+                <span class="doc-badge" [ngClass]="{'s-bg-firmado': doc.estado === 'FIRMADO', 's-bg-pendiente': doc.estado === 'PENDIENTE', 's-bg-observado': doc.estado === 'OBSERVADO'}">
+                  {{ doc.estado }}
+                </span>
+              </div>
+              <div class="col-center" style="gap: 8px;">
+                <button class="icon-btn" style="color: #6366f1;" title="Ver">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8v0z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                </button>
+                <button class="icon-btn" style="color: #14b8a6;" title="Descargar">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                </button>
+                <button class="icon-btn" style="color: #f59e0b;" title="Enviar" (click)="enviarAAdministracion(doc)">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="pagination-footer">
+          <span>Mostrando {{ signedDocs.length }} de {{ signedTotal }} resultados</span>
+          <div class="page-controls">
+            <button class="p-btn">&lt;</button>
+            <button class="p-btn active">1</button>
+            <button class="p-btn">2</button>
+            <button class="p-btn">&gt;</button>
           </div>
         </div>
       </div>
@@ -848,152 +583,83 @@
     <!-- ══════════════  EXPEDIENTES  ══════════════ -->
     <div class="content-wrapper" *ngIf="activeView === 'expedientes'">
       
-      <!-- Top Stats Cards -->
-      <div class="exp-bottom-stats" style="margin-bottom: 24px; margin-top: 0;">
-        
-        <div class="eb-card eb-purple">
-          <div class="eb-top">
-            <div class="eb-icon-box">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
-              </svg>
-            </div>
-            <span class="eb-badge">HOY</span>
-          </div>
-          <span class="eb-label">Expedientes Nuevos</span>
-          <span class="eb-value">{{ expedientesStats.nuevos }}</span>
-        </div>
-
-        <div class="eb-card eb-white">
-          <div class="eb-top">
-            <div class="eb-icon-box cyan-icon">
-              <!-- signature icon style -->
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle>
-              </svg>
-            </div>
-            <span class="eb-trend">+12%</span>
-          </div>
-          <span class="eb-label grey-label">Pendientes de Firma</span>
-          <span class="eb-value dark-value">{{ expedientesStats.pendientesFirma }}</span>
-        </div>
-
-        <div class="eb-card eb-teal-grad">
-          <div class="eb-top">
-            <div class="eb-icon-box dark-teal-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-            </div>
-          </div>
-          <span class="eb-label">EFECTIVIDAD MENSUAL</span>
-          <span class="eb-value">{{ expedientesStats.efectividad }}</span>
-          <!-- background watermark icon -->
-          <div class="eb-watermark">
-            <svg width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          </div>
-        </div>
-
+      <!-- View Header -->
+      <div class="view-header" style="margin-bottom: 2rem;">
+        <h2 style="font-size: 1.5rem; font-weight: 800; color: #1e293b;">Gestión de Expedientes</h2>
+        <p style="color: #64748b; font-size: 0.95rem;">Consulta y administración de los expedientes clínicos digitalizados del sistema.</p>
       </div>
       
-      <!-- Top Filter Bar -->
-      <div class="exp-filter-bar">
-        <div class="exp-filter-item">
-          <span class="ef-label">RANGO DE FECHAS</span>
-          <div class="ef-input-wrap">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
-            </svg>
-            <input type="text" value="01/01/2024 - 31/12/2024" readonly class="ef-input">
-          </div>
-        </div>
-
-        <div class="exp-filter-item">
-          <span class="ef-label">ESTADO</span>
-          <div class="ef-input-wrap">
-            <select class="ef-select">
-              <option>Todos los estados</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="exp-filter-item">
-          <span class="ef-label">PRIORIDAD</span>
-          <div class="ef-input-wrap">
-            <select class="ef-select">
-              <option>Cualquier prioridad</option>
-            </select>
-          </div>
-        </div>
-
-        <button class="btn-apply-filters">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line>
+      <!-- Filter Bar -->
+      <div class="filter-bar-card">
+        <div class="search-input-group">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
           </svg>
-          Aplicar Filtros
-        </button>
+          <input type="text" placeholder="DNI, Nombre Completo o Email" (input)="onSearchExpedientes($event)">
+        </div>
+        <div class="select-group">
+          <label>ESTADO</label>
+          <select (change)="onFilterEstadoExpedientes($event)">
+            <option>Todos los Estados</option>
+            <option>Abierto</option>
+            <option>En Proceso</option>
+            <option>Cerrado</option>
+          </select>
+        </div>
       </div>
 
-      <!-- Main Table -->
-      <div class="section-box doc-main-card">
-        <div class="doc-table-wrap">
-          <table class="doc-table exp-table">
-            <thead>
-              <tr>
-                <th>N° EXPEDIENTE</th>
-                <th>PACIENTE</th>
-                <th>FECHA DE CREACIÓN</th>
-                <th>DOCUMENTOS TOTALES</th>
-                <th>ESTADO</th>
-                <th>ACCIONES</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let ex of expedientesListDiseno">
-                <td><span class="e-nro">{{ ex.nro }}</span></td>
-                <td>
-                  <div class="e-paciente-cell">
-                    <div class="avatar-circle active avatarPurple">{{ ex.initials }}</div>
-                    <div class="e-paciente-info">
-                      <span class="e-pac-name">{{ ex.paciente }}</span>
-                      <span class="e-pac-id">ID: {{ ex.id }}</span>
-                    </div>
-                  </div>
-                </td>
-                <td class="text-center"><span class="e-fecha">{{ ex.fecha }}</span></td>
-                <td class="text-center">
-                  <div class="e-docs-count">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline>
-                    </svg>
-                    <span>{{ ex.archivos }} archivos</span>
-                  </div>
-                </td>
-                <td class="text-center">
-                  <span class="exp-badge" 
-                        [ngClass]="{'e-bg-abierto': ex.estado === 'ABIERTO', 
-                                    'e-bg-proceso': ex.estado === 'EN PROCESO', 
-                                    'e-bg-cerrado': ex.estado === 'CERRADO'}">
-                    {{ ex.estado }}
-                  </span>
-                </td>
-                <td class="text-center">
-                  <div class="doc-row-actions">
-                    <button class="s-btn-action"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8v0z"></path><circle cx="12" cy="12" r="3"></circle></svg></button>
-                    <button class="s-btn-action action-teal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg></button>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+      <div class="table-section-card no-mt">
+        <div class="table-header-row">
+          <h3>Repositorio Institucional</h3>
+          <span class="see-all">Total: {{ expTotalCount }}</span>
+        </div>
+        <div class="custom-table" style="margin-top: 1.5rem;">
+            <div class="table-head grid-expedientes">
+              <div class="col-center">N° DE<br>EXPEDIENTE</div>
+              <div class="col-center">N° DE<br>DOCUMENTO</div>
+              <div class="col-center">PACIENTE</div>
+              <div class="col-center">DOCS</div>
+              <div class="col-center">ESTADO</div>
+              <div class="col-center">ACCIONES</div>
+            </div>
+          <div class="table-body">
+            <div class="table-row grid-expedientes" *ngFor="let ex of expedientesListDiseno">
+              <div class="col-center"><span class="exp-text">#{{ ex.nro }}</span></div>
+              <div class="col-center"><span class="doc-text">{{ ex.id }}</span></div>
+              <div class="col-center">
+                <span class="paciente-name">{{ ex.paciente }}</span>
+              </div>
+              <div class="col-center">
+                <div class="e-docs-count">
+                  <span>{{ ex.archivos }}</span>
+                </div>
+              </div>
+              <div class="col-center">
+                <span class="doc-badge" [ngClass]="{'e-bg-abierto': ex.estado === 'ABIERTO', 'e-bg-proceso': ex.estado === 'EN PROCESO', 'e-bg-cerrado': ex.estado === 'CERRADO'}">
+                  {{ ex.estado }}
+                </span>
+              </div>
+              <div class="col-center" style="gap: 8px;">
+                <button class="icon-btn" style="color: #6366f1;">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8v0z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                </button>
+                <button class="icon-btn" style="color: #14b8a6;">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="doc-pagination-footer">
-          <span class="doc-page-info">Mostrando 1-10 de {{ expTotalCount }} expedientes</span>
-          <div class="doc-pagination">
-            <button class="d-page-nav">&lt;</button>
-            <button class="d-page-num active">1</button>
-            <button class="d-page-num">2</button>
-            <button class="d-page-num">3</button>
-            <button class="d-page-nav">&gt;</button>
+        <div class="pagination-footer" style="display: flex; justify-content: space-between; align-items: center; padding-top: 1.5rem; border-top: 1px solid #f1f5f9; margin-top: 1.5rem;">
+          <span style="font-size: 0.85rem; color: #64748b;">Mostrando 1-10 de {{ expTotalCount }} expedientes</span>
+          <div class="page-controls" style="display: flex; gap: 8px;">
+            <button class="p-btn" style="border: 1px solid #e2e8f0; background: white; padding: 6px 12px; border-radius: 8px; cursor: pointer;">&lt;</button>
+            <button class="p-btn active" style="border: 1px solid #7c3aed; background: #7c3aed; color: white; padding: 6px 12px; border-radius: 8px; cursor: pointer;">1</button>
+            <button class="p-btn" style="border: 1px solid #e2e8f0; background: white; padding: 6px 12px; border-radius: 8px; cursor: pointer;">2</button>
+            <button class="p-btn" style="border: 1px solid #e2e8f0; background: white; padding: 6px 12px; border-radius: 8px; cursor: pointer;">3</button>
+            <button class="p-btn" style="border: 1px solid #e2e8f0; background: white; padding: 6px 12px; border-radius: 8px; cursor: pointer;">&gt;</button>
           </div>
         </div>
       </div>
@@ -1005,22 +671,10 @@
     <!-- ══════════════  REPORTES  ══════════════ -->
     <div class="content-wrapper" *ngIf="activeView === 'reportes'">
       
-      <!-- Top Stats Row -->
-      <div class="rep-stats-grid">
-        <div class="rep-stat-card" *ngFor="let s of reporteStats">
-          <div class="rep-stat-row">
-            <div class="rep-icon-box" [ngClass]="'box-' + s.color">
-              <svg *ngIf="s.icon==='file-text'" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-              <svg *ngIf="s.icon==='clock'" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-              <svg *ngIf="s.icon==='alert-triangle'" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-              <svg *ngIf="s.icon==='shield-check'" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><polyline points="9 12 11 14 15 10"></polyline></svg>
-            </div>
-            <div class="rep-trend" *ngIf="s.trend" [ngClass]="s.trendUp ? 'up' : 'down'">{{ s.trend }}</div>
-            <div class="rep-badge-custom" *ngIf="s.badge" [ngClass]="'badge-' + s.color">{{ s.badge }}</div>
-          </div>
-          <span class="rep-label">{{ s.label }}</span>
-          <span class="rep-value">{{ s.value }}</span>
-        </div>
+      <!-- View Header -->
+      <div class="view-header" style="margin-bottom: 2rem;">
+        <h2 style="font-size: 1.5rem; font-weight: 800; color: #1e293b;">Reportes y Estadísticas</h2>
+        <p style="color: #64748b; font-size: 0.95rem;">Análisis detallado de la productividad, tiempos de respuesta y volumen documental procesado.</p>
       </div>
 
       <!-- Bento Charts Grid -->

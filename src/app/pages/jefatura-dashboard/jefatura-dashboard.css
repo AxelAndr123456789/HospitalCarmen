@@ -1,4 +1,4 @@
-﻿:root {
+:root {
   --primary-color: #0d9488;
   --primary-light: #14b8a6;
   --primary-dark: #0f766e;
@@ -1094,36 +1094,47 @@
 .doc-row-actions {
   display: flex;
   justify-content: center;
-  gap: 10px;
-  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: nowrap;
 }
 
 .btn-icon-action {
   border: none;
-  border-radius: 12px;
-  padding: 10px;
+  border-radius: 8px;
+  padding: 6px;
+  width: 32px;
+  height: 32px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: #f8f4ff;
+  background: #f3e8ff;
   color: var(--purple);
   cursor: pointer;
   transition: all 0.2s ease;
+  flex-shrink: 0;
 }
 
 .btn-icon-action:hover {
-  background: #f1eaff;
+  background: #ede9fe;
+  transform: translateY(-1px);
 }
 
 .btn-ver-doc,
 .btn-enviar-doc {
   border: none;
-  border-radius: 10px;
-  padding: 10px 14px;
-  font-size: 0.82rem;
+  border-radius: 8px;
+  padding: 0 10px;
+  height: 32px;
+  font-size: 0.75rem;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .btn-ver-doc {
@@ -1254,12 +1265,19 @@
   border: none;
   color: #7c3aed;
   cursor: pointer;
-  transition: transform 0.2s ease;
+  transition: all 0.2s ease;
   padding: 6px;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  flex-shrink: 0;
 }
 
 .s-btn-action:hover {
-  transform: scale(1.05);
+  background: #f3e8ff;
   color: #4c1d95;
 }
 

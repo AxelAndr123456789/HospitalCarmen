@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { AuthService } from '../../services/auth/auth';
+import { DocumentSharedService } from '../fedatario-dashboard/document-shared.service';
+import { NotificationService } from '../../services/notification/notification.service';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -12,9 +14,9 @@ import { AuthService } from '../../services/auth/auth';
   templateUrl: './admin-dashboard.html',
   styleUrl: './admin-dashboard.css',
 })
-export class AdminDashboard {
+export class AdminDashboard implements OnInit {
   // Navigation State
-  currentView: 'inicio' | 'usuarios' | 'digitalizacion' | 'digitalizacion-form' | 'expedientes' | 'documentos-enviados' | 'reportes' | 'configuracion' = 'inicio';
+  currentView: 'inicio' | 'usuarios' | 'digitalizacion' | 'digitalizacion-form' | 'expedientes' | 'documentos-enviados' | 'documentos-recibidos' | 'reportes' | 'configuracion' = 'inicio';
   
   // Pagination State
   pInicio = 1;
@@ -22,12 +24,14 @@ export class AdminDashboard {
   pDigi = 1;
   pExpedientes = 1;
   pEnviados = 1;
+  pRecibidos = 1;
   itemsPerPage = 3;
 
   searchTermUsuarios = '';
   searchTermDigi = '';
   searchTermExpedientes = '';
   searchTermEnviados = '';
+  searchTermRecibidos = '';
   patientNotFound = false;
   
   // Selection/Upload State
@@ -35,6 +39,8 @@ export class AdminDashboard {
   selectedPatient: any = null;
   uploadedFile: any = null;
   uploadedFileUrl: string | null = null;
+  uploadedReqFile: any = null;
+  uploadedReqFileUrl: string | null = null;
   
   // Preview Modal State
   previewModalVisible = false;
@@ -44,7 +50,7 @@ export class AdminDashboard {
   derivativeData: any = {
     expediente: '#EXP-2024-089',
     fecha: '24/05/2024',
-    prioridad: 'Media',
+    prioridad: 'URGENTE',
     emisor: 'Admin Usuario',
     unidad: 'Administración Central',
     cargo: 'Jefe de Digitalización'
@@ -248,6 +254,44 @@ export class AdminDashboard {
     }
   ];
 
+  receivedDocuments = [
+    { 
+      expediente: '#EXP-2024-0891', 
+      documento: 'Historia Clínica',
+      paciente: 'Ricardo Montaner Pérez',
+      date: '22 Oct 2023', 
+      time: '14:30',
+      emisor: 'Juan Fedatario',
+      emisorInitials: 'JF',
+      status: 'Firmado',
+      avatarClass: 'avatarCyan'
+    },
+    { 
+      expediente: '#EXP-2024-0891', 
+      documento: 'Historia Clínica',
+      paciente: 'Ricardo Montaner Pérez',
+      date: '15 May 2026', 
+      time: '23:08',
+      emisor: 'Axel Fedatario',
+      emisorInitials: 'AL',
+      status: 'Firmado',
+      avatarClass: 'avatarPink'
+    },
+    { 
+      expediente: '#EXP-2024-0915', 
+      documento: 'Historia Clínica',
+      paciente: 'Carlos Méndez Sol',
+      date: '21 Oct 2023', 
+      time: '17:45',
+      emisor: 'Juan Fedatario',
+      emisorInitials: 'JF',
+      status: 'Firmado',
+      avatarClass: 'avatarIndigo'
+    }
+  ];
+
+  private _receivedDocumentsOriginal = [...this.receivedDocuments];
+
   // Report Stats
   reportStats = {
     totalRegistros: '1,240',
@@ -303,7 +347,9 @@ export class AdminDashboard {
   constructor(
     private router: Router, 
     private sanitizer: DomSanitizer,
-    private authService: AuthService
+    private authService: AuthService,
+    private documentSharedService: DocumentSharedService,
+    private notificationService: NotificationService
   ) {
     // Get current user info from auth service
     const currentUser = this.authService.currentUserValue;
@@ -312,11 +358,24 @@ export class AdminDashboard {
     }
   }
 
+  ngOnInit() {
+    // Clear return storage once to ensure new mock data is visible if it was cached
+    localStorage.removeItem('hospital_returned_docs');
+    
+    this.documentSharedService.returnedDocuments$.subscribe(docs => {
+      if (docs && docs.length > 0) {
+        this.receivedDocuments = [...docs, ...this._receivedDocumentsOriginal];
+      } else {
+        this.receivedDocuments = [...this._receivedDocumentsOriginal];
+      }
+    });
+  }
+
   getSafeUrl(url: string | null): SafeResourceUrl | null {
     return url ? this.sanitizer.bypassSecurityTrustResourceUrl(url) : null;
   }
 
-  setView(view: 'inicio' | 'usuarios' | 'digitalizacion' | 'digitalizacion-form' | 'expedientes' | 'documentos-enviados' | 'reportes' | 'configuracion'): void {
+  setView(view: 'inicio' | 'usuarios' | 'digitalizacion' | 'digitalizacion-form' | 'expedientes' | 'documentos-enviados' | 'documentos-recibidos' | 'reportes' | 'configuracion'): void {
     this.currentView = view;
   }
 
@@ -327,7 +386,7 @@ export class AdminDashboard {
 
   // Operations
   viewDetails(reqId: number): void {
-    alert(`Visualizando detalles de la solicitud ID: ${reqId}`);
+    this.notificationService.info(`Visualizando detalles de la solicitud ID: ${reqId}`, 'Detalle de Solicitud');
   }
 
   validateRequest(reqId: number): void {
@@ -390,16 +449,26 @@ export class AdminDashboard {
   onFileSelected(event: any) {
     const file = event.target.files[0];
     if (file) {
-      // Exclusive PDF validation
       if (file.type !== 'application/pdf') {
-        alert('Por favor, seleccione un archivo PDF. El sistema ya no acepta imágenes por protocolo de seguridad.');
-        // Reset file input if needed
+        this.notificationService.warning('Por favor, seleccione un archivo PDF.', 'Formato no válido');
         event.target.value = '';
         return;
       }
       this.uploadedFile = file;
-      // Generate preview URL
       this.uploadedFileUrl = URL.createObjectURL(file);
+    }
+  }
+
+  onReqFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      if (file.type !== 'application/pdf') {
+        this.notificationService.warning('Por favor, seleccione un archivo PDF.', 'Formato no válido');
+        event.target.value = '';
+        return;
+      }
+      this.uploadedReqFile = file;
+      this.uploadedReqFileUrl = URL.createObjectURL(file);
     }
   }
 
@@ -408,8 +477,8 @@ export class AdminDashboard {
   }
 
   processDigitalization() {
-    if (!this.selectedPatient || !this.uploadedFile) {
-      alert('Por favor seleccione un paciente y suba un archivo.');
+    if (!this.selectedPatient || !this.uploadedFile || !this.uploadedReqFile) {
+      this.notificationService.warning('Por favor seleccione un paciente y suba ambos archivos requeridos.', 'Campos requeridos');
       return;
     }
 
@@ -460,9 +529,11 @@ export class AdminDashboard {
     this.selectedPatient = null;
     this.uploadedFile = null;
     this.uploadedFileUrl = null;
+    this.uploadedReqFile = null;
+    this.uploadedReqFileUrl = null;
     this.currentStep = 1;
     this.setView('digitalizacion');
-    alert('Documento procesado correctamente y cargado al sistema.');
+    this.notificationService.success('El documento ha sido procesado y cargado exitosamente al sistema.', 'Digitalización Completa');
   }
 
   previewFile(doc: any) {
@@ -476,7 +547,7 @@ export class AdminDashboard {
       this.selectedDoc = doc;
       this.previewModalVisible = true;
     } else {
-      alert('Previsualización no disponible para este documento de prueba.');
+      this.notificationService.info('Previsualización no disponible para este documento de prueba.', 'Sin vista previa');
     }
   }
 
@@ -487,7 +558,7 @@ export class AdminDashboard {
       link.download = doc.fileName || 'documento-digitalizado';
       link.click();
     } else {
-      alert('Descarga no disponible para este documento de prueba.');
+      this.notificationService.info('Descarga no disponible para este documento de prueba.', 'Sin descarga');
     }
   }
 
@@ -531,8 +602,28 @@ export class AdminDashboard {
 
       // Add to sent list (at the beginning)
       this.sentDocuments.unshift(newSentDoc);
+
+      // Map priority to Fedatario format
+      const prioridadMap: { [key: string]: 'URGENTE' | 'MEDIA' | 'BAJA' } = {
+        'Urgente': 'URGENTE',
+        'Media': 'MEDIA',
+        'Baja': 'BAJA',
+        'Alta': 'URGENTE'
+      };
+      const prioridadFed = prioridadMap[this.derivativeData.prioridad] || 'MEDIA';
+
+      // Derive to Fedatario via shared service
+      this.documentSharedService.addDerivedDocument({
+        exp: this.derivativeData.expediente.replace('#', ''),
+        doc: this.selectedDoc.documento || 'DOC-0000',
+        fecha: dateStr + ' ' + timeStr,
+        prioridad: prioridadFed,
+        emisor: this.adminProfile.nombre,
+        paciente: (this.selectedDoc.names || '') + ' ' + (this.selectedDoc.surnames || ''),
+        avatar: ''
+      });
       
-      alert(`Documento ${this.derivativeData.expediente} derivado correctamente.`);
+      this.notificationService.success(`Documento ${this.derivativeData.expediente} derivado correctamente al Fedatario.`, 'Derivación Exitosa ✓');
       this.closeSendModal();
     }
   }
@@ -580,6 +671,24 @@ export class AdminDashboard {
   getPaginatedEnviados() {
     const list = this.getFilteredEnviados();
     return list.slice((this.pEnviados - 1) * this.itemsPerPage, this.pEnviados * this.itemsPerPage);
+  }
+
+  getFilteredRecibidos() {
+    let list = this.receivedDocuments;
+    if (this.searchTermRecibidos) {
+      const term = this.searchTermRecibidos.toLowerCase();
+      list = list.filter(d => 
+        d.expediente.toLowerCase().includes(term) || 
+        d.paciente.toLowerCase().includes(term) ||
+        d.emisor.toLowerCase().includes(term)
+      );
+    }
+    return list;
+  }
+
+  getPaginatedRecibidos() {
+    const list = this.getFilteredRecibidos();
+    return list.slice((this.pRecibidos - 1) * this.itemsPerPage, this.pRecibidos * this.itemsPerPage);
   }
 
   getFilteredExpedientes() {
@@ -641,12 +750,18 @@ export class AdminDashboard {
     this.pEnviados = 1;
   }
 
-  changePage(section: 'inicio' | 'usuarios' | 'digi' | 'expedientes' | 'enviados', page: number) {
+  onSearchRecibidos(event: any) {
+    this.searchTermRecibidos = event.target.value;
+    this.pRecibidos = 1;
+  }
+
+  changePage(section: 'inicio' | 'usuarios' | 'digi' | 'expedientes' | 'enviados' | 'recibidos', page: number) {
     if (section === 'inicio') this.pInicio = page;
     if (section === 'usuarios') this.pUsuarios = page;
     if (section === 'digi') this.pDigi = page;
     if (section === 'expedientes') this.pExpedientes = page;
     if (section === 'enviados') this.pEnviados = page;
+    if (section === 'recibidos') this.pRecibidos = page;
   }
 
   getTotalPagesUsuarios(): number {
@@ -682,6 +797,15 @@ export class AdminDashboard {
 
   getPagesArrayEnviados(): number[] {
     const total = this.getTotalPagesEnviados();
+    return Array.from({ length: total }, (_, i) => i + 1);
+  }
+
+  getTotalPagesRecibidos(): number {
+    return Math.ceil(this.getFilteredRecibidos().length / this.itemsPerPage);
+  }
+
+  getPagesArrayRecibidos(): number[] {
+    const total = this.getTotalPagesRecibidos();
     return Array.from({ length: total }, (_, i) => i + 1);
   }
 }
